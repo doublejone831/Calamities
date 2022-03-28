@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm The Calamities - Benchmark 1</title>
+    <style>
+        .center {
+            text-align: center;
+            width: 50%;
+            margin-left: 25%;
+        }
+        .header {
+            font-size: 44px;
+        }
+        td, table {
+            border: 1px solid black;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1 class="header">Calm the Calamities</h1>
+        <h1 class="header">Game Design Document</h1>
+        <h2>by David Silverman, Wei Hang Hong, and Jiwon Jang</h2>
+    </div>
+    <hr>
+    <div class="center">
+        <h1 class="header">Introduction</h1>
+        <h3>This document describes a game called “Calm The Calamities”, which is a top-down, RPG/puzzle game in which you use different elemental abilities to save a world that you have created. This game employs many basic 2D game techniques such as tiled backgrounds, collision detection, and efficient memory management.</h3>
+    </div>
+    <div class="center">
+        <h1 class="header">Technology</h1>
+        <h3>Calm The Calamities will be developed as a web application using the Wolfie2D game engine, created by Richard McKenna. Original music and sounds will be created using Petaporon, and original artwork will be created using Piskel and Tiled.</h3>
+    </div>
+    <div class="center">
+        <h1 class="header">Backstory</h1>
+        <h3>You are a young god who just finished creating your first world. You feel tired after making the world so you decided to take a nap. The nap turns into a millennium long slumber. While you were asleep, your powers leaked out from your body into your world. They took the shape of violent spirits, creating all kinds of natural disasters throughout your world. </h3>
+    </div>
+    <div class="center">
+        <h1 class="header">Objective</h1>
+        <h3>Your job is to navigate through a series of puzzles, navigating around various elements (“calamities”) that serve as obstacles, and defeating the boss spirits to gain your elemental powers back.</h3>
+        <h3>
+        Each level consists of two rooms, a puzzle room and a boss room. The level is focused around a certain calamity (e.g. earth, wind, etc), although multiple calamities can be present in a level. You can use your elemental powers to assist you as well in this area. Once you clear the puzzle room, you will fight a boss spirit that can damage you, and you must defeat it to gain its power and move on to the next level.
+        </h3>
+    </div>
+    <div class="center">
+        <h1 class="header">Gameplay</h1>
+        <h3>This game will play as a top-down puzzle RPG. In each level, you will use any elemental powers you have gained (you will only have your fists at the start) to solve the puzzle and defeat the boss. For each element/calamity, they can serve as an obstacle which you can interact with if it is in front of you, and which you can place yourself if you have defeated the boss spirit of that element.</h3>
+        <table style="margin-left: 10%;">
+            <tr>
+                <td>Calamity</td>
+                <td>Obstacle Description</td>
+                <td>Interaction (J Key)</td>
+                <td>Placing (K Key)</td>
+            </tr>
+            <tr>
+                <td>Earth</td>
+                <td>Comes in the form of small, medium, or large rocks that can be pushed by the player</td>
+                <td>Push a rock</td>
+                <td>Place the rock in the tile in front of you</td>
+            </tr>
+            <tr>
+                <td>Wind</td>
+                <td>Travels in one of four directions, pushing the player in said direction</td>
+                <td>Turn the wind tile into an airstream that extends multiple tiles</td>
+                <td>Place wind in the tile in front of you</td>
+            </tr>
+            <tr>
+                <td>Water</td>
+                <td>Comes in the form of shallow or deep waters that prevent player movement, or water bubbles that can act as a player shield</td>
+                <td>Turn a water bubble into a wave that extends multiple tiles</td>
+                <td>Place a water bubble in the tile in front of you</td>
+            </tr>
+            <tr>
+                <td>Fire</td>
+                <td>Spreads across tiles to light torches or kill the player</td>
+                <td>Ignite a fire spark to burn the tile in front of it</td>
+                <td>Place a fire spark in the tile in front of you</td>
+            </tr>
+            <tr>
+                <td>Ice</td>
+                <td>Slippery tiles that slide the player. Being near ice for too long can also kill the player</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        </table>
+    </div>
+    <div class="center">
+        <h1 class="header">Controls</h1>
+        <h3>This game will be played using a keyboard, with a mouse necessary to click on various menus. Once you have started the game, use the following:</h3>
+        <ul style="display: table; margin: auto; font-size: 20px">
+            <li><strong>W</strong> - Move Up</li>
+            <li><strong>A</strong> - Move Left</li>
+            <li><strong>S</strong> - Move Down</li>
+            <li><strong>D</strong> - Move Right</li>
+            <li><strong>1,2,3,4,5,6</strong> - Select Elements</li>
+            <li><strong>J</strong> - Interact with Element</li>
+            <li><strong>K</strong> - Place Selected Element</li>
+            <li><strong>ESCAPE</strong> - Pause Game</li>
+        </ul>
+    </div>
+    <div class="center">
+        <h1 class="header">Graphical User Interface</h1>
+        <h2>Splash Screen</h2>
+        <img src="GUI/SplashScreen.png">
+        <h2>Main Menu</h2>
+        <img src="GUI/MainMenu.png">
+        <h2>Levels Selection Screen</h2>
+        <img src="GUI/LevelsSelection.png">
+        <h2>Controls Screen</h2>
+        <img src="GUI/Controls.png">
+        <h2>Help Screen</h2>
+        <img src="GUI/Help.png">
+        <h2>In-Game Screen</h2>
+        <img src="GUI/InGame.png">
+        <h2>In-Game Screen (Paused)</h2>
+        <img src="GUI/InGamePause.png">
+    </div>
+    <div class="center">
+        <h1 class="header">Artwork</h1>
+        <h3>Original artwork will be created for this game in the forms of sprites and tiles using Piskel and Tiled. The following needs to be created:</h3>
+        <ul style="display: table; margin: auto; font-size: 20px">
+            <li>
+                The God - Animated sprite, with animations for:
+                <ul style="display: table; margin: auto; font-size: 20px">
+                    <li>Moving</li>
+                    <li>Interacting with Element</li>
+                    <li>Placing an Element</li>
+                    <li>Taking Damage</li>
+                    <li>Dying</li>
+                </ul>
+            </li>
+            <li>
+                Boss Spirits - Animated sprite, with animations for:
+                <ul style="display: table; margin: auto; font-size: 20px">
+                    <li>Moving</li>
+                    <li>Attacking</li>
+                    <li>Taking Damage</li>
+                    <li>Dying</li>
+                </ul>
+            </li>
+            <li>
+                Tiles - For use in 5 puzzle rooms and 5 boss rooms. Tiles include:
+                <ul style="display: table; margin: auto; font-size: 20px">
+                    <li>Floor</li>
+                    <li>Ground</li>
+                    <li>Walls</li>
+                    <li>Elements/Obstacles</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="center">
+        <h1 class="header">Sound Effects</h1>
+        <h3>Original sound effects will be created for this game using Petaporon. They will correspond to the following events:</h3>
+        <ul style="display: table; margin: auto; font-size: 20px">
+            <li><strong>Interacting with Element</strong></li>
+            <li><strong>Placing an Element</strong></li>
+            <li><strong>Taking Damage (God/Boss)</strong></li>
+            <li><strong>Dying (God/Boss)</strong></li>
+            <li><strong>Gaining a Power (End of Level)</strong></li>
+        </ul>
+    </div>
+    <div class="center">
+        <h1 class="header">Music</h1>
+        <h3>Original music will be created for this game using Petaporon.</h3>
+    </div>
+    <div class="center">
+        <h1 class="header">Firebase URL</h1>
+        <a href="https://calm-the-calamities.firebaseapp.com" style="font-size: 20px">calm-the-calamities.firebaseapp.com</a>
+    </div>
+</body>
+</html>
