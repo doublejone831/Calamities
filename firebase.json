@@ -22,7 +22,7 @@
       },
       {
         "source": "/benchmark3",
-        "destination": "/benchmark3/index.html"
+        "destination": "/benchmark1/index.html"
       }
     ]
   }
