@@ -10,7 +10,7 @@
     "rewrites": [
       {
         "source": "/",
-        "destination": "/index1.html"
+        "destination": "/index.html"
       },
       {
         "source": "/benchmark2",
