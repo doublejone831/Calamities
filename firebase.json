@@ -19,15 +19,11 @@
       {
         "source": "/benchmark3",
         "destination": "/benchmark3/index.html"
-      }
-    ],
-    "redirects":[
+      },
       {
-        "source" : "/benchmark1",
-        "destination" : "https://docs.google.com/document/d/1C107ib7Jag1F9h34__N2sHBpiBfjGgcLLbjPSAtpHtg/edit",
-        "type" : 301
+        "source": "/benchmark1",
+        "destination": "/benchmark1/index.html"
       }
     ]
-
   }
 }
