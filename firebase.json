@@ -18,11 +18,11 @@
       },
       {
         "source": "/benchmark2",
-        "destination": "/benchmark1/index.html"
+        "destination": "/benchmark2/index.html"
       },
       {
         "source": "/benchmark3",
-        "destination": "/benchmark1/index.html"
+        "destination": "/benchmark3/index.html"
       }
     ]
   }
