@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"earth.json"
-        }
-    },
  "height":20,
  "infinite":false,
  "layers":[
