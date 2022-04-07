@@ -137,6 +137,14 @@ export default class Label extends UIElement{
 	sizeToText(): void {
 		this.sizeAssigned = false;
 	}
+
+	get textAlpha(): number {
+        return this.textColor.a;
+    }
+
+    set textAlpha(a: number) {
+        this.textColor.a = a;
+    }
 }
 
 export enum VAlign {

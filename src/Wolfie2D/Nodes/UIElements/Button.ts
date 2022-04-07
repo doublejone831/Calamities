@@ -24,4 +24,14 @@ export default class Button extends Label {
 			return this.backgroundColor;
 		}
 	}
+
+	clone(orig: Button, onClickEventId: string) : void {
+		this.backgroundColor = orig.backgroundColor;
+		this.borderColor = orig.borderColor;
+		this.textColor = orig.textColor;
+		this.size = orig.size;
+		this.borderWidth = orig.borderWidth;
+
+		this.onClickEventId = onClickEventId;
+	}
 }
