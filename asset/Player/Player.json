@@ -1,0 +1,92 @@
+{
+	"name": "Player",
+	"spriteSheetImage": "cars.png",
+	"spriteWidth": 256,
+	"spriteHeight": 256,
+	"leftBuffer": 0,
+	"rightBuffer": 0,
+	"topBuffer": 0,
+	"bottomBuffer": 0,
+	"columns": 3,
+	"rows": 4,
+	"animations": [
+		{
+			"name": "driving",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 2
+				},
+				{
+					"index": 1,
+					"duration": 2
+				}
+			]
+		},
+		{
+			"name": "firing",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 3,
+					"duration": 5
+				},
+				{
+					"index": 4,
+					"duration": 5
+				},
+				{
+					"index": 5,
+					"duration": 5
+				},
+				{
+					"index": 6,
+					"duration": 5
+				}
+			]
+		},
+		{
+			"name": "damage",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				},
+				{
+					"index": 7,
+					"duration": 15
+				}
+			]
+		},
+		{
+			"name": "dying",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 8,
+					"duration": 10
+				},
+				{
+					"index": 9,
+					"duration": 10
+				},
+				{
+					"index": 10,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "dead",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 11,
+					"duration": 50
+				}
+			]
+		}
+	]
+}
