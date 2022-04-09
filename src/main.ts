@@ -11,8 +11,8 @@ import SplashScreen from "./game/Scenes/SplashScreen";
         canvasSize: {x: 1200, y: 800},          // The size of the game
         clearColor: {r: 214, g: 179, b: 179},   // The color the game clears to
         inputs: [
-            {name: "forward", keys: ["w"]},
-            {name: "backward", keys: ["s"]},
+            {name: "up", keys: ["w"]},
+            {name: "down", keys: ["s"]},
             {name: "left", keys: ["a"]},
             {name: "right", keys: ["d"]},
             {name: "interact", keys: ["j"]},

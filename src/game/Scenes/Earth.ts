@@ -6,6 +6,8 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
+import PlayerController from "../Player/PlayerController";
 
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
@@ -48,7 +50,12 @@ export default class Earth extends Scene {
 
     initializePlayer(): void {
         this.player = this.add.animatedSprite("god", "primary");
+        this.player.animation.play("idle");
         this.player.position.set(3*16, 3*16);
+        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+        this.player.addAI(PlayerController, {tilemap: "Main"});
         // CTC TODO: ADD PLAYERCONTROLLER AI OR SOMETHING TO MAKE KEYBOARD INPUTS WORK
     }
+
+    // CTC TODO: initElementPool? if Rock.ts,Bubble.ts,etc all extend Element.ts, then we can write a json with position & elementType (as well as numObjects at the top) and parse it in this method, creating an array of elements. Size of array would be numObjects + 5 (we can potentially spawn in 1 of each element). If looping through the array would have to check these last 5 for NULL values, this can also be helpful in enforcing the restriction of only 1 element can be placed on the map.
 }
