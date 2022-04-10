@@ -47,8 +47,6 @@ export default class Earth extends Scene {
         this.addLayer("primary", 10);
         
         this.initializeGameboard();
-
-        console.log(this.gameboard);
         
         this.initializePlayer();
 
@@ -61,9 +59,8 @@ export default class Earth extends Scene {
         this.receiver.subscribe([
             CTCevent.INTERACT_ELEMENT, 
             CTCevent.PLACE_ELEMENT,
+            // CTC TODO: subscribe to CTCevent.LEVEL_END event
         ]);
-        
-        // CTC TODO: I DONT KNOW BUT GAMEPLAY STUFF PROBABLY GOES HERE OR IN UPDATESCENE METHOD
     }
 
     updateScene(){
@@ -71,6 +68,7 @@ export default class Earth extends Scene {
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
+                // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
                 case CTCevent.INTERACT_ELEMENT:
                     console.log("interact happened");
                     console.log(event.data.get("positionX"));
@@ -83,12 +81,23 @@ export default class Earth extends Scene {
                     break;
             }
         }
+
+        // CTC TODO: if level-end portal is a sprite, then right here you could make this.portal (a Sprite field) and test this.player.position === this.portal.position to fire LEVEL_END event. In this case you could refer to the following to initialize the portal (add this code in its own function or maybe right at the end of initializePlayer function?):
+        /*
+        this.portal = this.add.sprite("portal", "primary"); **HAVE TO LOAD PORTAL AS IMAGE IN LOADSCENE FUNCTION
+        this.player.position.set(3*16 + 8, 3*16 + 8); **CHANGE THE 3s TO BE SOME OTHER TILE POSITION
+        this.portal.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+        this.portal.addAI(ElementController, {});
+
+        if the sprite is animated then you're on your own tbh lol, this should work for a non-animated sprite i hope
+        */
     }
 
     initializePlayer(): void {
         this.player = this.add.animatedSprite("god", "primary");
         this.player.animation.play("idle");
         this.player.position.set(3*16 + 8, 3*16 + 8);
+        // CTC TODO: remove this todo, just note that i did not include player sprite in the gameboard array because thats too much work to update it lol
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.player.addAI(PlayerController, {tilemap: "Main"});
     }

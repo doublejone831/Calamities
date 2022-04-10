@@ -29,7 +29,6 @@ export default class PlayerController extends StateMachineAI {
 
     update(deltaT: number): void {
 		if (Input.isJustPressed("up")) {
-            // CTC TODO: probably shouldnt be able to move if theres, for instance, a rock in the tile youre trying to move in, so have to account for that for each direction.
             if(this.facing_direction == Player_enums.FACING_UP){
                 this.owner.move(new Vec2(0, -16));}
             this.facing_direction = Player_enums.FACING_UP;
@@ -53,7 +52,7 @@ export default class PlayerController extends StateMachineAI {
             this.facing_direction = Player_enums.FACING_RIGHT;
             this.owner.animation.play("walking_right");
         }
-        if (Input.isJustPressed("interact")) {
+        else if (Input.isJustPressed("interact")) {
             this.owner.animation.play("casting_" + this.facing_direction);
             this.interact();
         }
@@ -77,6 +76,7 @@ export default class PlayerController extends StateMachineAI {
         else if (Input.isJustPressed("el5") && this.hasPower[4]) {
             this.selectedElement = 5;
         }
+        // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)
 	}
 
     interact(){
