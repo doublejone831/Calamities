@@ -8,12 +8,14 @@ import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import PlayerController from "../Player/PlayerController";
-
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import { CTCevent } from "./CTCEvent";
 
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
-    
+    protected gameboard : Array<Array<Sprite>>;
     loadScene(){
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
 
@@ -32,23 +34,48 @@ export default class Earth extends Scene {
 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
+        
+
         this.addLayer("primary", 10);
         
         this.initializeElements();
         
         this.initializePlayer();
 
-        this.viewport.follow(this.player);
-
+        this.gameboard = new Array(20);
+            for (var i = 0; i < 20; i++) {
+            this.gameboard[i] = new Array(20);
+        }
         // Zoom in to a reasonable level
         this.viewport.enableZoom();
         this.viewport.setZoomLevel(4);
+        this.viewport.follow(this.player);
 
+        this.receiver.subscribe([
+                                CTCevent.INTERACT_ELEMENT, 
+                                CTCevent.PLACE_ELEMENT,
+                                ]);
+        
         // CTC TODO: I DONT KNOW BUT GAMEPLAY STUFF PROBABLY GOES HERE OR IN UPDATESCENE METHOD
     }
 
     updateScene(){
-        
+        while(this.receiver.hasNextEvent()){
+            let event = this.receiver.getNextEvent();
+
+            switch(event.type){
+                case CTCevent.INTERACT_ELEMENT:
+                    console.log("interact happened");
+                    console.log(event.data.get("positionX"));
+                    console.log(event.data.get("positionY"));
+                    break;
+                case CTCevent.PLACE_ELEMENT:
+                    console.log("placing happened");
+                    console.log(event.data.get("positionX"));
+                    console.log(event.data.get("positionY"));
+                    break;
+            }
+        }
     }
 
     initializePlayer(): void {
