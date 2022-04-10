@@ -25,6 +25,7 @@ export default class PlayerController extends StateMachineAI {
         this.facing_direction = Player_enum.FACING_DOWN;
 
         this.hasPower = new Array(5); // CTC TODO: verify that all are false by default
+
     }
 
     update(deltaT: number): void {
@@ -57,19 +58,19 @@ export default class PlayerController extends StateMachineAI {
             // CTC TODO: get direction player is facing with getPlayerDirection() and tie it into casting animation
             this.place();
         }
-        else if (Input.isJustPressed("el1")) {
+        else if (Input.isJustPressed("el1") && this.hasPower[0]) {
             this.selectedElement = 1;
         }
-        else if (Input.isJustPressed("el2")) {
+        else if (Input.isJustPressed("el2") && this.hasPower[1]) {
             this.selectedElement = 2;
         }
-        else if (Input.isJustPressed("el3")) {
+        else if (Input.isJustPressed("el3") && this.hasPower[2]) {
             this.selectedElement = 3;
         }
-        else if (Input.isJustPressed("el4")) {
+        else if (Input.isJustPressed("el4") && this.hasPower[3]) {
             this.selectedElement = 4;
         }
-        else if (Input.isJustPressed("el5")) {
+        else if (Input.isJustPressed("el5") && this.hasPower[4]) {
             this.selectedElement = 5;
         }
 	}
@@ -80,6 +81,7 @@ export default class PlayerController extends StateMachineAI {
         // assuming we have elementArray, if we find an Element object in front of us, then call its interact function (im assuming it will have one), might have to pass in a parameter for which direction its being interacted with from.
         if(this.facing_direction == Player_enum.FACING_UP){
             this.owner.animation.play("casting_up");
+            //using power code under
         }
         else if(this.facing_direction == Player_enum.FACING_LEFT){
             this.owner.animation.play("casting_left");
@@ -103,6 +105,19 @@ export default class PlayerController extends StateMachineAI {
 
             some of this idea can also probably work for interact() function, idk
         }*/
+        if(this.facing_direction == Player_enum.FACING_UP){
+            this.owner.animation.play("casting_up");
+            //placing element code under
+        }
+        else if(this.facing_direction == Player_enum.FACING_LEFT){
+            this.owner.animation.play("casting_left");
+        }
+        else if(this.facing_direction == Player_enum.FACING_RIGHT){
+            this.owner.animation.play("casting_right");
+        }
+        else if(this.facing_direction == Player_enum.FACING_DOWN){
+            this.owner.animation.play("casting_down");
+        }
     }
 
     getPlayerDirection(): string {
