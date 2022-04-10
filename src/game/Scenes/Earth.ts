@@ -9,10 +9,11 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import PlayerController from "../Player/PlayerController";
 
+
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
-
+    
     loadScene(){
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
 
