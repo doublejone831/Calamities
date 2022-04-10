@@ -1,6 +1,6 @@
 {
-	"name": "Cursor",
-	"spriteSheetImage": "Cursor.png",
+	"name": "cursor",
+	"spriteSheetImage": "cursor.png",
 	"spriteWidth": 16,
 	"spriteHeight": 16,
 	"leftBuffer": 0,
