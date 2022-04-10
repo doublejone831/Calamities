@@ -57,19 +57,19 @@ export default class PlayerController extends StateMachineAI {
             this.owner.animation.play("casting_" + this.facing_direction);
             this.place();
         }
-        else if (Input.isJustPressed("el1")) {
+        else if (Input.isJustPressed("el1") && this.hasPower[0]) {
             this.selectedElement = 1;
         }
-        else if (Input.isJustPressed("el2")) {
+        else if (Input.isJustPressed("el2") && this.hasPower[1]) {
             this.selectedElement = 2;
         }
-        else if (Input.isJustPressed("el3")) {
+        else if (Input.isJustPressed("el3") && this.hasPower[2]) {
             this.selectedElement = 3;
         }
-        else if (Input.isJustPressed("el4")) {
+        else if (Input.isJustPressed("el4") && this.hasPower[3]) {
             this.selectedElement = 4;
         }
-        else if (Input.isJustPressed("el5")) {
+        else if (Input.isJustPressed("el5") && this.hasPower[4]) {
             this.selectedElement = 5;
         }
 	}

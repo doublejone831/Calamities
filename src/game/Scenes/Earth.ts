@@ -23,7 +23,7 @@ export default class Earth extends Scene {
         // Add in the tilemap
         let tilemapLayers = this.add.tilemap("level");
 
-         // Get the wall layer
+         // Get the wall layer 
         this.walls = <OrthogonalTilemap>tilemapLayers[1].getItems()[0];
 
         // Set the viewport bounds to the tilemap
