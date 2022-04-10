@@ -26,7 +26,7 @@
 		},
 		{
 			"name": "walking_down",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 2,
@@ -56,7 +56,7 @@
 		},
 		{
 			"name": "walking_right",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 8,
@@ -86,7 +86,7 @@
 		},
 		{
 			"name": "walking_up",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 14,
@@ -112,7 +112,7 @@
 		},
 		{
 			"name": "walking_left",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 19,
