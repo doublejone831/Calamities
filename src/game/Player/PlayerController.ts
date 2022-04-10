@@ -78,6 +78,7 @@ export default class PlayerController extends StateMachineAI {
         // CTC TODO: Interact with element
         // see below for some idea on testing if theres an element in front of us to interact with
         // assuming we have elementArray, if we find an Element object in front of us, then call its interact function (im assuming it will have one), might have to pass in a parameter for which direction its being interacted with from.
+        
     }
 
     place(): void {
