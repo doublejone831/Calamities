@@ -1,6 +1,6 @@
-export enum Player_enum {
-    FACING_DOWN = "facing_down",
-    FACING_LEFT = "facing_left",
-    FACING_UP = "facing_up",
-    FACING_RIGHT = "facing_right",
+export enum Player_enums {
+    FACING_DOWN = "down",
+    FACING_LEFT = "left",
+    FACING_UP = "up",
+    FACING_RIGHT = "right",
 }
