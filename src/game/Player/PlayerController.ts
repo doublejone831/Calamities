@@ -14,7 +14,6 @@ export default class PlayerController extends StateMachineAI {
     facing_direction: Player_enums;
 
     hasPower: Array<Boolean>;
-    //elementArray, array of all the elements on the map + 5 spaces to place
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -97,8 +96,8 @@ export default class PlayerController extends StateMachineAI {
                 posX += 16;
                 break;
             }
-            posX /= 16;
-            posY /= 16;
+            posX = (posX - 8) / 16;
+            posY = (posY - 8) / 16;
             this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
     }
     placing_element(){
@@ -118,8 +117,8 @@ export default class PlayerController extends StateMachineAI {
                 posX += 16;
                 break;
             }
-            posX /= 16;
-            posY /= 16;
+            posX = (posX - 8) / 16;
+            posY = (posY - 8) / 16;
             this.emitter.fireEvent(CTCevent.PLACE_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
     }
 }

@@ -11,15 +11,20 @@ import PlayerController from "../Player/PlayerController";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import { CTCevent } from "./CTCEvent";
+import ElementController from "../Element/ElementController";
 
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
     protected gameboard : Array<Array<Sprite>>;
     loadScene(){
+        this.load.image("rock_S", "game_assets/sprites/rock_S.png");
+
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
 
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
+
+        this.load.object("board", "game_assets/data/earth_board.json");
     }
 
     startScene(){
@@ -32,29 +37,31 @@ export default class Earth extends Scene {
         // Set the viewport bounds to the tilemap
         let tilemapSize: Vec2 = this.walls.size;
 
-        this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
+        this.gameboard = new Array(this.walls.getDimensions().y);
+        for (var i = 0; i < this.walls.getDimensions().y; i++) {
+            this.gameboard[i] = new Array(this.walls.getDimensions().x).fill(null);
+        }
 
-        
+        this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
         this.addLayer("primary", 10);
         
-        this.initializeElements();
+        this.initializeGameboard();
+
+        console.log(this.gameboard);
         
         this.initializePlayer();
 
-        this.gameboard = new Array(20);
-            for (var i = 0; i < 20; i++) {
-            this.gameboard[i] = new Array(20);
-        }
         // Zoom in to a reasonable level
         this.viewport.enableZoom();
         this.viewport.setZoomLevel(4);
+
         this.viewport.follow(this.player);
 
         this.receiver.subscribe([
-                                CTCevent.INTERACT_ELEMENT, 
-                                CTCevent.PLACE_ELEMENT,
-                                ]);
+            CTCevent.INTERACT_ELEMENT, 
+            CTCevent.PLACE_ELEMENT,
+        ]);
         
         // CTC TODO: I DONT KNOW BUT GAMEPLAY STUFF PROBABLY GOES HERE OR IN UPDATESCENE METHOD
     }
@@ -81,12 +88,20 @@ export default class Earth extends Scene {
     initializePlayer(): void {
         this.player = this.add.animatedSprite("god", "primary");
         this.player.animation.play("idle");
-        this.player.position.set(3*16, 3*16);
+        this.player.position.set(3*16 + 8, 3*16 + 8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.player.addAI(PlayerController, {tilemap: "Main"});
     }
 
-    initializeElements(): void {
-        // CTC TODO: initElementPool? if Rock.ts,Bubble.ts,etc all extend Element.ts, then we can write a json with position & elementType (as well as numObjects at the top) and parse it in this method, creating an array of elements. Size of array would be numObjects + 5 (we can potentially spawn in 1 of each element). If looping through the array would have to check these last 5 for NULL values, this can also be helpful in enforcing the restriction of only 1 element can be placed on the map.
+    initializeGameboard(): void {
+        let boardData = this.load.getObject("board");
+        for (let i = 0; i < boardData.numElements; i++) {
+            let element = boardData.elements[i];
+            let sprite = this.add.sprite(element.type, "primary");
+            sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
+            sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+            sprite.addAI(ElementController, {});
+            this.gameboard[element.position[0]][element.position[1]] = sprite;
+        }
     }
 }
