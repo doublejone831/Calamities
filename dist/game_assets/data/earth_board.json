@@ -6,15 +6,15 @@
 			"type": "rock_S"
 		},
 		{
+			"position": [6, 5],
+			"type": "rock_M"
+		},
+		{
 			"position": [7, 5],
-			"type": "rock_S"
+			"type": "rock_L"
 		},
 		{
-			"position": [5, 7],
-			"type": "rock_S"
-		},
-		{
-			"position": [7, 7],
+			"position": [10, 3],
 			"type": "rock_S"
 		},
 		{

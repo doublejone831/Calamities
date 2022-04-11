@@ -21,7 +21,8 @@ export default class Earth extends Scene {
     protected endposition : Vec2;
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
-
+        this.load.image("rock_M", "game_assets/sprites/rock_M.png");
+        this.load.image("rock_L", "game_assets/sprites/rock_L.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
 
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
@@ -47,7 +48,6 @@ export default class Earth extends Scene {
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
         
-
         this.addLayer("primary", 10);
         
 
@@ -57,9 +57,9 @@ export default class Earth extends Scene {
 
         // Zoom in to a reasonable level
         this.viewport.enableZoom();
-        this.viewport.setZoomLevel(4);
+        this.viewport.setZoomLevel(2.5);
 
-        this.viewport.follow(this.player);
+        //this.viewport.follow(this.player);
 
         this.receiver.subscribe([
                                 CTCevent.INTERACT_ELEMENT, 
@@ -84,52 +84,9 @@ export default class Earth extends Scene {
                     var targetposX = event.data.get("positionX");
                     var targetposY = event.data.get("positionY");
                     var direction = event.data.get("direction");
-                    if(this.gameboard[targetposX][targetposY].imageId == "rock_S"){
-                        var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
-                        var dest = new Vec2; //destination that rock will go. (Index)
-                        switch(direction){
-                            case Player_enums.FACING_UP:
-                                dest.x = targetposX;
-                                dest.y = targetposY - 3;
-                                if(dest.y < 2){ // if it hits the wall
-                                    dest.y = 2; 
-                                }
-                                Vel.x = 0;
-                                Vel.y = -2;
-                                break;
-                            case Player_enums.FACING_RIGHT:
-                                dest.x = targetposX + 3;
-                                dest.y = targetposY;
-                                if(dest.y > 18){
-                                    dest.x = 18;
-                                }
-                                Vel.x = 2;
-                                Vel.y = 0;
-                                break;
-                            case Player_enums.FACING_DOWN:
-                                dest.x = targetposX;
-                                dest.y = targetposY + 3;
-                                if(dest.y > 18){
-                                    dest.y = 18;
-                                }
-                                Vel.x = 0;
-                                Vel.y = 2;
-                                break;
-                            case Player_enums.FACING_LEFT:
-                                dest.x = targetposX - 3;
-                                dest.y = targetposY;
-                                if(dest.x < 2){
-                                    dest.x = 2;
-                                }
-                                Vel.x = -2;
-                                Vel.y = 0;
-                                break;    
-                        }
-                        this.gameboard[targetposX][targetposY].position.set(dest.x*16 + 8, dest.y*16 + 8);
-                        
-        
-                        this.gameboard[dest.x][dest.y] = this.gameboard[targetposX][targetposY];
-                        this.gameboard[targetposX][targetposY] = null;
+                    var target = this.gameboard[targetposX][targetposY];
+                    if(target != null) {
+                        this.activateElement(target, targetposX, targetposY, direction);
                     }
                     break;
                 case CTCevent.PLACE_ELEMENT:
@@ -164,6 +121,73 @@ export default class Earth extends Scene {
             }
         }
     };
+
+    activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Player_enums) : void {
+        var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
+        var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
+        switch(direction){
+            case Player_enums.FACING_UP:
+                switch(target.imageId){
+                    case "rock_S":
+                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
+                        dest.y--;
+                    case "rock_M":
+                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
+                        dest.y--;
+                    case "rock_L":
+                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
+                        dest.y--;
+                        break;
+                }
+                break;
+            case Player_enums.FACING_DOWN:
+                switch(target.imageId){
+                    case "rock_S":
+                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
+                        dest.y++;
+                    case "rock_M":
+                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
+                        dest.y++;
+                    case "rock_L":
+                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
+                        dest.y++;
+                        break;
+                }
+                break;
+            case Player_enums.FACING_LEFT:
+                switch(target.imageId){
+                    case "rock_S":
+                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
+                        dest.x--;
+                    case "rock_M":
+                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
+                        dest.x--;
+                    case "rock_L":
+                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
+                        dest.x--;
+                        break;
+                }
+                break;
+            case Player_enums.FACING_RIGHT:
+                switch(target.imageId){
+                    case "rock_S":
+                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
+                        dest.x++;
+                    case "rock_M":
+                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
+                        dest.x++;
+                    case "rock_L":
+                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
+                        dest.x++;
+                        break;
+                }
+                break;
+        }
+        target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+        this.gameboard[targetposX][targetposY] = null;
+        this.gameboard[dest.x][dest.y] = target;
+    }
+
 
     // CTC TODO: if level-end portal is a sprite, then right here you could make this.portal (a Sprite field) and test this.player.position === this.portal.position to fire LEVEL_END event. In this case you could refer to the following to initialize the portal (add this code in its own function or maybe right at the end of initializePlayer function?):
         /*
