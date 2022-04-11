@@ -89,7 +89,7 @@ export default class Earth extends Scene {
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     var next = event.data.get("next");
-                    if(this.gameboard[next.y][next.x] == null || this.endposition == next){
+                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
                         if(this.endposition == next){
                             this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
