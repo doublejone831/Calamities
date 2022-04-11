@@ -25,30 +25,36 @@ export default class PlayerController extends StateMachineAI {
         this.facing_direction = Player_enums.FACING_DOWN;
 
         this.hasPower = new Array(5).fill(false);
+        this.receiver.subscribe([CTCevent.PLAYER_MOVE])
     }
 
     update(deltaT: number): void {
+        var next_position = this.nextposition();
 		if (Input.isJustPressed("up")) {
             if(this.facing_direction == Player_enums.FACING_UP){
-                this.owner.move(new Vec2(0, -16));}
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+            }
             this.facing_direction = Player_enums.FACING_UP;
             this.owner.animation.play("walking_up");
         }
         else if (Input.isJustPressed("left")) {
             if(this.facing_direction == Player_enums.FACING_LEFT){
-            this.owner.move(new Vec2(-16, 0));}
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+            }
             this.facing_direction = Player_enums.FACING_LEFT;
             this.owner.animation.play("walking_left");
         }
         else if (Input.isJustPressed("down")) {
             if(this.facing_direction == Player_enums.FACING_DOWN){
-            this.owner.move(new Vec2(0, 16));}
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+            }
             this.facing_direction = Player_enums.FACING_DOWN;
             this.owner.animation.play("walking_down");
         }
         else if (Input.isJustPressed("right")) {
             if(this.facing_direction == Player_enums.FACING_RIGHT){
-            this.owner.move(new Vec2(16, 0));}
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+            }
             this.facing_direction = Player_enums.FACING_RIGHT;
             this.owner.animation.play("walking_right");
         }
@@ -77,9 +83,30 @@ export default class PlayerController extends StateMachineAI {
             this.selectedElement = 5;
         }
         // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)
+        while(this.receiver.hasNextEvent()){
+            let event = this.receiver.getNextEvent();
+
+            switch(event.type){
+                case CTCevent.PLAYER_MOVE:
+                    switch(this.facing_direction){
+                        case Player_enums.FACING_UP:
+                            this.owner.move(new Vec2(0, -16));
+                            break;
+                        case Player_enums.FACING_DOWN:
+                            this.owner.move(new Vec2(0, 16));
+                            break;
+                        case Player_enums.FACING_RIGHT:
+                            this.owner.move(new Vec2(16, 0));
+                            break;
+                        case Player_enums.FACING_LEFT:
+                            this.owner.move(new Vec2(-16, 0));
+                            break;
+                    }
+            }
+        }
 	}
 
-    interact(){
+    nextposition(){
         var posX = this.owner.position.x;
         var posY = this.owner.position.y;
         switch(this.facing_direction){
@@ -98,27 +125,19 @@ export default class PlayerController extends StateMachineAI {
             }
             posX = (posX - 8) / 16;
             posY = (posY - 8) / 16;
-            this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
+            // not absolute coordinant => Index of gameboard
+            var next_position = new Vec2(posX, posY);
+
+            return next_position;
+    }
+
+    interact(){
+        var next = this.nextposition();
+        this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": next.x, "positionY": next.y, "type": this.selectedElement});
     }
     placing_element(){
-        var posX = this.owner.position.x;
-        var posY = this.owner.position.y;
-        switch(this.facing_direction){
-            case Player_enums.FACING_DOWN:
-                posY += 16;
-                break;
-            case Player_enums.FACING_UP:
-                posY -= 16;
-                break;
-            case Player_enums.FACING_LEFT:
-                posX -= 16;
-                break;
-            case Player_enums.FACING_RIGHT:
-                posX += 16;
-                break;
-            }
-            posX = (posX - 8) / 16;
-            posY = (posY - 8) / 16;
-            this.emitter.fireEvent(CTCevent.PLACE_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
+        var next = this.nextposition();
+        this.emitter.fireEvent(CTCevent.PLACE_ELEMENT, {"positionX": next.x, "positionY": next.y, "type": this.selectedElement});
     }
+
 }
