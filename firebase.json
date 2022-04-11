@@ -21,9 +21,10 @@
         "destination": "/public/benchmark3/index.html"
       }
     ],
-    "redirect":[{
+    "redirects":[
+      {
       "source": "/benchmark2",
-      "destination": "index.html",
+      "destination": "https://calm-the-calamities.firebaseapp.com/",
       "type": 301
       }
     ]
