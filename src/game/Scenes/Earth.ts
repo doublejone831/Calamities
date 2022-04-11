@@ -19,10 +19,13 @@ export default class Earth extends Scene {
     private player: AnimatedSprite;
     protected gameboard : Array<Array<Sprite>>;
     protected endposition : Vec2;
+    private skillUsed : Array<Boolean>;
+
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
         this.load.image("rock_M", "game_assets/sprites/rock_M.png");
         this.load.image("rock_L", "game_assets/sprites/rock_L.png");
+        this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
 
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
@@ -54,6 +57,8 @@ export default class Earth extends Scene {
         this.initializeGameboard();
         
         this.initializePlayer();
+
+        this.skillUsed = [false, false, false, false, false];
 
         // Zoom in to a reasonable level
         this.viewport.enableZoom();
@@ -97,7 +102,9 @@ export default class Earth extends Scene {
                             let elementSprite = null;
                             if (event.data.get("type") === 1) {
                                 // CTC TODO: if (hasnt already placed one of type 1)
-                                elementSprite = "rock_S";
+                                if(this.skillUsed[0]) break;
+                                elementSprite = "rock_P";
+                                this.skillUsed[0] = true;
                             }
                             if (elementSprite != null) {
                                 let sprite = this.add.sprite(elementSprite, "primary");
@@ -128,6 +135,7 @@ export default class Earth extends Scene {
         switch(direction){
             case Player_enums.FACING_UP:
                 switch(target.imageId){
+                    case "rock_P":
                     case "rock_S":
                         if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
                         dest.y--;
@@ -142,6 +150,7 @@ export default class Earth extends Scene {
                 break;
             case Player_enums.FACING_DOWN:
                 switch(target.imageId){
+                    case "rock_P":
                     case "rock_S":
                         if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
                         dest.y++;
@@ -156,6 +165,7 @@ export default class Earth extends Scene {
                 break;
             case Player_enums.FACING_LEFT:
                 switch(target.imageId){
+                    case "rock_P":
                     case "rock_S":
                         if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
                         dest.x--;
@@ -170,6 +180,7 @@ export default class Earth extends Scene {
                 break;
             case Player_enums.FACING_RIGHT:
                 switch(target.imageId){
+                    case "rock_P":
                     case "rock_S":
                         if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
                         dest.x++;

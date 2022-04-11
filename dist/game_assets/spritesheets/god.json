@@ -145,6 +145,10 @@
 			"repeat": false,
 			"frames": [
 				{
+					"index": 8,
+					"duration": 1
+				},
+				{
 					"index": 25,
 					"duration": 10
 				}
@@ -154,6 +158,10 @@
 			"name": "casting_left",
 			"repeat": false,
 			"frames": [
+				{
+					"index": 19,
+					"duration": 1
+				},
 				{
 					"index": 26,
 					"duration": 10
@@ -165,6 +173,10 @@
 			"repeat": false,
 			"frames": [
 				{
+					"index": 2,
+					"duration": 1
+				},
+				{
 					"index": 27,
 					"duration": 10
 				}
@@ -174,6 +186,10 @@
 			"name": "casting_up",
 			"repeat": false,
 			"frames": [
+				{
+					"index": 19,
+					"duration": 1
+				},
 				{
 					"index": 29,
 					"duration": 10
