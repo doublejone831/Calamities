@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist",
     "site": "calm-the-calamities",
     "ignore": [
       "firebase.json",
@@ -10,19 +10,21 @@
     "rewrites": [
       {
         "source": "/",
-        "destination": "/benchmark1/index.html"
+        "destination": "/public/benchmark1/index.html"
       },
       {
         "source": "/benchmark1",
-        "destination": "/benchmark1/index.html"
-      },
-      {
-        "source": "/benchmark2",
-        "destination": "index.html"
+        "destination": "/public/benchmark1/index.html"
       },
       {
         "source": "/benchmark3",
-        "destination": "/benchmark3/index.html"
+        "destination": "/public/benchmark3/index.html"
+      }
+    ],
+    "redirect":[{
+      "source": "/benchmark2",
+      "destination": "index.html",
+      "type": 301
       }
     ]
   }
