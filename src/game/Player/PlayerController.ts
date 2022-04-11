@@ -4,6 +4,7 @@ import Input from "../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { Player_enums } from "./Player_enums";
+import { CTCevent } from "../Scenes/CTCEvent";
 
 export default class PlayerController extends StateMachineAI {
     protected owner: AnimatedSprite;
@@ -13,7 +14,6 @@ export default class PlayerController extends StateMachineAI {
     facing_direction: Player_enums;
 
     hasPower: Array<Boolean>;
-    //elementArray, array of all the elements on the map + 5 spaces to place
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -29,33 +29,37 @@ export default class PlayerController extends StateMachineAI {
 
     update(deltaT: number): void {
 		if (Input.isJustPressed("up")) {
-            // CTC TODO: probably shouldnt be able to move if theres, for instance, a rock in the tile youre trying to move in, so have to account for that for each direction.
-            this.owner.move(new Vec2(0, -16));
+            if(this.facing_direction == Player_enums.FACING_UP){
+                this.owner.move(new Vec2(0, -16));}
             this.facing_direction = Player_enums.FACING_UP;
             this.owner.animation.play("walking_up");
         }
         else if (Input.isJustPressed("left")) {
-            this.owner.move(new Vec2(-16, 0));
+            if(this.facing_direction == Player_enums.FACING_LEFT){
+            this.owner.move(new Vec2(-16, 0));}
             this.facing_direction = Player_enums.FACING_LEFT;
             this.owner.animation.play("walking_left");
         }
         else if (Input.isJustPressed("down")) {
-            this.owner.move(new Vec2(0, 16));
+            if(this.facing_direction == Player_enums.FACING_DOWN){
+            this.owner.move(new Vec2(0, 16));}
             this.facing_direction = Player_enums.FACING_DOWN;
             this.owner.animation.play("walking_down");
         }
         else if (Input.isJustPressed("right")) {
-            this.owner.move(new Vec2(16, 0));
+            if(this.facing_direction == Player_enums.FACING_RIGHT){
+            this.owner.move(new Vec2(16, 0));}
             this.facing_direction = Player_enums.FACING_RIGHT;
             this.owner.animation.play("walking_right");
         }
-        if (Input.isJustPressed("interact")) {
+        else if (Input.isJustPressed("interact")) {
             this.owner.animation.play("casting_" + this.facing_direction);
             this.interact();
         }
         else if (Input.isJustPressed("place")) {
             this.owner.animation.play("casting_" + this.facing_direction);
-            this.place();
+            this.placing_element();
+            
         }
         else if (Input.isJustPressed("el1") && this.hasPower[0]) {
             this.selectedElement = 1;
@@ -72,24 +76,49 @@ export default class PlayerController extends StateMachineAI {
         else if (Input.isJustPressed("el5") && this.hasPower[4]) {
             this.selectedElement = 5;
         }
+        // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)
 	}
 
-    interact(): void {
-        // CTC TODO: Interact with element
-        // see below for some idea on testing if theres an element in front of us to interact with
-        // assuming we have elementArray, if we find an Element object in front of us, then call its interact function (im assuming it will have one), might have to pass in a parameter for which direction its being interacted with from.
+    interact(){
+        var posX = this.owner.position.x;
+        var posY = this.owner.position.y;
+        switch(this.facing_direction){
+            case Player_enums.FACING_DOWN:
+                posY += 16;
+                break;
+            case Player_enums.FACING_UP:
+                posY -= 16;
+                break;
+            case Player_enums.FACING_LEFT:
+                posX -= 16;
+                break;
+            case Player_enums.FACING_RIGHT:
+                posX += 16;
+                break;
+            }
+            posX = (posX - 8) / 16;
+            posY = (posY - 8) / 16;
+            this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
     }
-
-    place(): void {
-        // CTC TODO: Place element
-        /* Idea: if (hasPower[selectedElement] && elementArray[some position] == null) {
-            direction = getPlayerDirection();
-            use direction to get position of tile in front of player
-            if theres no wall in that tile, loop through elementArray and see if any element's position = above position
-            if none do, then we can create a new element, put it in elementArray & on map in appropriate positions
-            (maybe have to use event firing to update elementArray in Earth.ts if we have it there too?)
-
-            some of this idea can also probably work for interact() function, idk
-        }*/
+    placing_element(){
+        var posX = this.owner.position.x;
+        var posY = this.owner.position.y;
+        switch(this.facing_direction){
+            case Player_enums.FACING_DOWN:
+                posY += 16;
+                break;
+            case Player_enums.FACING_UP:
+                posY -= 16;
+                break;
+            case Player_enums.FACING_LEFT:
+                posX -= 16;
+                break;
+            case Player_enums.FACING_RIGHT:
+                posX += 16;
+                break;
+            }
+            posX = (posX - 8) / 16;
+            posY = (posY - 8) / 16;
+            this.emitter.fireEvent(CTCevent.PLACE_ELEMENT, {"positionX": posX, "positionY": posY, "type": this.selectedElement});
     }
 }
