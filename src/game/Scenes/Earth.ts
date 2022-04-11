@@ -83,9 +83,24 @@ export default class Earth extends Scene {
                     console.log(event.data.get("positionY"));
                     break;
                 case CTCevent.PLACE_ELEMENT:
-                    console.log("placing happened");
-                    console.log(event.data.get("positionX"));
-                    console.log(event.data.get("positionY"));
+                    let placeX = event.data.get("positionX");
+                    let placeY = event.data.get("positionY");
+                    if (!(placeX < 2 || placeX >= this.walls.getDimensions().y - 2 || placeY < 2 || placeY >= this.walls.getDimensions().x - 2)) {
+                        if (this.gameboard[placeX][placeY] == null) {
+                            let elementSprite = null;
+                            if (event.data.get("type") === 1) {
+                                // CTC TODO: if (hasnt already placed one of type 1)
+                                elementSprite = "rock_S";
+                            }
+                            if (elementSprite != null) {
+                                let sprite = this.add.sprite(elementSprite, "primary");
+                                sprite.position.set(placeX*16 + 8, placeY*16 + 8);
+                                sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+                                sprite.addAI(ElementController, {});
+                                this.gameboard[placeX][placeY] = sprite;
+                            }
+                        }
+                    }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     var next = event.data.get("next");
