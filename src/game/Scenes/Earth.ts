@@ -12,11 +12,13 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
+import { Player_enums } from "../Player/Player_enums";
 
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
     protected gameboard : Array<Array<Sprite>>;
+    protected endposition : Vec2;
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
 
@@ -44,8 +46,11 @@ export default class Earth extends Scene {
 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
+        
+
         this.addLayer("primary", 10);
         
+
         this.initializeGameboard();
         
         this.initializePlayer();
@@ -57,10 +62,13 @@ export default class Earth extends Scene {
         this.viewport.follow(this.player);
 
         this.receiver.subscribe([
-            CTCevent.INTERACT_ELEMENT, 
-            CTCevent.PLACE_ELEMENT,
-            // CTC TODO: subscribe to CTCevent.LEVEL_END event
-        ]);
+                                CTCevent.INTERACT_ELEMENT, 
+                                CTCevent.PLACE_ELEMENT,
+                                CTCevent.PLAYER_MOVE_REQUEST,
+                                 // CTC TODO: subscribe to CTCevent.LEVEL_END event
+                                ]);
+        
+       
     }
 
     updateScene(){
@@ -68,7 +76,7 @@ export default class Earth extends Scene {
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
-                // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
+                 // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
                 case CTCevent.INTERACT_ELEMENT:
                     console.log("interact happened");
                     console.log(event.data.get("positionX"));
@@ -79,10 +87,20 @@ export default class Earth extends Scene {
                     console.log(event.data.get("positionX"));
                     console.log(event.data.get("positionY"));
                     break;
+                case CTCevent.PLAYER_MOVE_REQUEST:
+                    var next = event.data.get("next");
+                    if(this.gameboard[next.y][next.x] == null || this.endposition == next){
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
+                        if(this.endposition == next){
+                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
+                        }
+                    }
+                    break;
             }
         }
+    };
 
-        // CTC TODO: if level-end portal is a sprite, then right here you could make this.portal (a Sprite field) and test this.player.position === this.portal.position to fire LEVEL_END event. In this case you could refer to the following to initialize the portal (add this code in its own function or maybe right at the end of initializePlayer function?):
+    // CTC TODO: if level-end portal is a sprite, then right here you could make this.portal (a Sprite field) and test this.player.position === this.portal.position to fire LEVEL_END event. In this case you could refer to the following to initialize the portal (add this code in its own function or maybe right at the end of initializePlayer function?):
         /*
         this.portal = this.add.sprite("portal", "primary"); **HAVE TO LOAD PORTAL AS IMAGE IN LOADSCENE FUNCTION
         this.player.position.set(3*16 + 8, 3*16 + 8); **CHANGE THE 3s TO BE SOME OTHER TILE POSITION
@@ -91,7 +109,7 @@ export default class Earth extends Scene {
 
         if the sprite is animated then you're on your own tbh lol, this should work for a non-animated sprite i hope
         */
-    }
+
 
     initializePlayer(): void {
         this.player = this.add.animatedSprite("god", "primary");
@@ -112,5 +130,7 @@ export default class Earth extends Scene {
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
         }
+        //set portal 
+        //this.gameboard[this.endposition.x][this.endposition.y] = 
     }
 }
