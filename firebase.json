@@ -18,7 +18,7 @@
       },
       {
         "source": "/benchmark2",
-        "destination": "/benchmark2/index.html"
+        "destination": "index.html"
       },
       {
         "source": "/benchmark3",
