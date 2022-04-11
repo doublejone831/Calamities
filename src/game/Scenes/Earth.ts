@@ -20,6 +20,7 @@ export default class Earth extends Scene {
     protected gameboard : Array<Array<Sprite>>;
     protected endposition : Vec2;
     private skillUsed : Array<Boolean>;
+    private elementGUI : AnimatedSprite;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
@@ -27,7 +28,7 @@ export default class Earth extends Scene {
         this.load.image("rock_L", "game_assets/sprites/rock_L.png");
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
-
+        this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
 
         this.load.object("board", "game_assets/data/earth_board.json");
@@ -52,8 +53,9 @@ export default class Earth extends Scene {
 
         
         this.addLayer("primary", 10);
-        
-
+        this.elementGUI = this.add.animatedSprite("element_equipped", "primary");
+        this.elementGUI.animation.play("none_equipped");
+        this.elementGUI.position.set(3*16+4, 19*16);
         this.initializeGameboard();
         
         this.initializePlayer();
@@ -70,6 +72,7 @@ export default class Earth extends Scene {
                                 CTCevent.INTERACT_ELEMENT, 
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
+                                CTCevent.CHANGE_ELEMENT
                                  // CTC TODO: subscribe to CTCevent.LEVEL_END event
                                 ]);
         
@@ -125,6 +128,25 @@ export default class Earth extends Scene {
                         }
                     }
                     break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementGUI.animation.play("earth_equipped");
+                            break;
+                        case 2:
+                            this.elementGUI.animation.play("wind_equipped");
+                            break;
+                        case 3:
+                            this.elementGUI.animation.play("water_equipped");
+                            break;
+                        case 4:
+                            this.elementGUI.animation.play("fire_equipped");
+                            break;
+                        case 5:
+                            this.elementGUI.animation.play("ice_equipped");
+                            break;
+                    }
+                    
             }
         }
     };

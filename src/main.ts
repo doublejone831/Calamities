@@ -8,7 +8,7 @@ import SplashScreen from "./game/Scenes/SplashScreen";
 
     // Set up options for our game
     let options = {
-        canvasSize: {x: 1200, y: 800},          // The size of the game
+        canvasSize: {x: 800, y: 800},          // The size of the game
         clearColor: {r: 214, g: 179, b: 179},   // The color the game clears to
         inputs: [
             {name: "up", keys: ["w"]},
@@ -22,6 +22,7 @@ import SplashScreen from "./game/Scenes/SplashScreen";
             {name: "el3", keys: ["3"]},
             {name: "el4", keys: ["4"]},
             {name: "el5", keys: ["5"]},
+            {name: "esc", keys: ["escape"]}
         ],
         useWebGL: false,                        // Tell the game we want to use webgl
         showDebug: false

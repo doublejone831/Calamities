@@ -24,7 +24,7 @@ export default class PlayerController extends StateMachineAI {
 
         this.facing_direction = Player_enums.FACING_DOWN;
 
-        this.hasPower = new Array(5).fill(false);
+        this.hasPower = new Array(5).fill(true);
         this.receiver.subscribe([CTCevent.PLAYER_MOVE])
     }
 
@@ -69,18 +69,27 @@ export default class PlayerController extends StateMachineAI {
         }
         else if (Input.isJustPressed("el1") && this.hasPower[0]) {
             this.selectedElement = 1;
+            this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
         }
         else if (Input.isJustPressed("el2") && this.hasPower[1]) {
             this.selectedElement = 2;
+            this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
         }
         else if (Input.isJustPressed("el3") && this.hasPower[2]) {
             this.selectedElement = 3;
+            this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
         }
         else if (Input.isJustPressed("el4") && this.hasPower[3]) {
             this.selectedElement = 4;
+            this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
         }
         else if (Input.isJustPressed("el5") && this.hasPower[4]) {
             this.selectedElement = 5;
+            this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
+        }
+        else if (Input.isJustPressed("esc")) {
+            console.log("paused");
+            //CTC todo: pause the game
         }
         // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)
         while(this.receiver.hasNextEvent()){
