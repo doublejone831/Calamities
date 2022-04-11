@@ -81,6 +81,56 @@ export default class Earth extends Scene {
                     console.log("interact happened");
                     console.log(event.data.get("positionX"));
                     console.log(event.data.get("positionY"));
+                    var targetposX = event.data.get("positionX");
+                    var targetposY = event.data.get("positionY");
+                    var direction = event.data.get("direction");
+                    if(this.gameboard[targetposX][targetposY].imageId == "rock_S"){
+                        var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
+                        var dest = new Vec2; //destination that rock will go. (Index)
+                        switch(direction){
+                            case Player_enums.FACING_UP:
+                                dest.x = targetposX;
+                                dest.y = targetposY - 3;
+                                if(dest.y < 2){ // if it hits the wall
+                                    dest.y = 2; 
+                                }
+                                Vel.x = 0;
+                                Vel.y = -2;
+                                break;
+                            case Player_enums.FACING_RIGHT:
+                                dest.x = targetposX + 3;
+                                dest.y = targetposY;
+                                if(dest.y > 18){
+                                    dest.x = 18;
+                                }
+                                Vel.x = 2;
+                                Vel.y = 0;
+                                break;
+                            case Player_enums.FACING_DOWN:
+                                dest.x = targetposX;
+                                dest.y = targetposY + 3;
+                                if(dest.y > 18){
+                                    dest.y = 18;
+                                }
+                                Vel.x = 0;
+                                Vel.y = 2;
+                                break;
+                            case Player_enums.FACING_LEFT:
+                                dest.x = targetposX - 3;
+                                dest.y = targetposY;
+                                if(dest.x < 2){
+                                    dest.x = 2;
+                                }
+                                Vel.x = -2;
+                                Vel.y = 0;
+                                break;    
+                        }
+                        this.gameboard[targetposX][targetposY].position.set(dest.x*16 + 8, dest.y*16 + 8);
+                        
+        
+                        this.gameboard[dest.x][dest.y] = this.gameboard[targetposX][targetposY];
+                        this.gameboard[targetposX][targetposY] = null;
+                    }
                     break;
                 case CTCevent.PLACE_ELEMENT:
                     let placeX = event.data.get("positionX");

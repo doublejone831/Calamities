@@ -8,12 +8,13 @@ import { Element } from "./Element_Enum";
 export default class ElementController extends StateMachineAI {
     protected owner: Sprite;
     protected Type : Element;
-
+    protected Vel : Vec2;
+    protected targetPos : Vec2;
     initializeAI(owner: Sprite, options: Record<string, any>){
         this.owner = owner;
+
     }
 
     update(deltaT: number): void {
-		
-	}
+    }
 }

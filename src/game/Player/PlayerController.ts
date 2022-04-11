@@ -133,7 +133,7 @@ export default class PlayerController extends StateMachineAI {
 
     interact(){
         var next = this.nextposition();
-        this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": next.x, "positionY": next.y, "type": this.selectedElement});
+        this.emitter.fireEvent(CTCevent.INTERACT_ELEMENT, {"positionX": next.x, "positionY": next.y, "direction": this.facing_direction});
     }
     placing_element(){
         var next = this.nextposition();
