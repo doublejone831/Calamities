@@ -1,0 +1,34 @@
+{
+	"name": "torch",
+	"spriteSheetImage": "torch.png",
+	"spriteWidth": 16,
+	"spriteHeight": 16,
+	"leftBuffer": 0,
+	"rightBuffer": 0,
+	"topBuffer": 0,
+	"bottomBuffer": 0,
+	"columns": 2,
+	"rows": 1,
+	"animations": [
+		{
+			"name": "off",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				}
+			]
+		},
+        {
+            "name": "on",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 1,
+                    "duration": 10
+                }
+            ]
+        }
+    ]
+}
