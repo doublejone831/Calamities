@@ -5,6 +5,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { Player_enums } from "./Player_enums";
 import { CTCevent } from "../Scenes/CTCEvent";
+import Earth from "../Scenes/Earth";
 
 export default class PlayerController extends StateMachineAI {
     protected owner: AnimatedSprite;
@@ -89,6 +90,7 @@ export default class PlayerController extends StateMachineAI {
         }
         else if (Input.isJustPressed("esc")) {
             console.log("paused");
+            Earth.paused = !Earth.paused;
             //CTC todo: pause the game
         }
         // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)

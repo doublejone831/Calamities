@@ -16,12 +16,14 @@ import { Player_enums } from "../Player/Player_enums";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class Earth extends Scene {
+    static paused: Boolean;
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
     protected gameboard : Array<Array<Sprite>>;
     protected endposition : Vec2;
     private skillUsed : Array<Boolean>;
     private elementGUI : AnimatedSprite;
+    private pauseGUI: Layer;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
@@ -69,6 +71,12 @@ export default class Earth extends Scene {
         this.elementGUI = this.add.animatedSprite("element_equipped", "primary");
         this.elementGUI.animation.play("none_equipped");
         this.elementGUI.position.set(3*16+4, 19*16);
+
+        this.pauseGUI = this.addUILayer("pauseMenu");
+        this.pauseGUI.setHidden(true);
+        let pauseText = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(5*16, 16), text: "PAUSED (Work In Progress)"});
+        pauseText.textColor = Color.WHITE;
+
         this.initializeGameboard();
         
         this.initializePlayer();
@@ -93,153 +101,158 @@ export default class Earth extends Scene {
     }
 
     updateScene(){
-        while(this.receiver.hasNextEvent()){
-            let event = this.receiver.getNextEvent();
+        if (!Earth.paused) {
+            this.pauseGUI.setHidden(true);
+            while(this.receiver.hasNextEvent()){
+                let event = this.receiver.getNextEvent();
 
-            switch(event.type){
-                 // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
-                case CTCevent.INTERACT_ELEMENT:
-                    console.log("interact happened");
-                    console.log(event.data.get("positionX"));
-                    console.log(event.data.get("positionY"));
-                    var targetposX = event.data.get("positionX");
-                    var targetposY = event.data.get("positionY");
-                    var direction = event.data.get("direction");
-                    var target = this.gameboard[targetposX][targetposY];
-                    if(target != null) {
-                        this.activateElement(target, targetposX, targetposY, direction);
-                    }
-                    break;
-                case CTCevent.PLACE_ELEMENT:
-                    let placeX = event.data.get("positionX");
-                    let placeY = event.data.get("positionY");
-                    if (!(placeX < 2 || placeX >= this.walls.getDimensions().y - 2 || placeY < 2 || placeY >= this.walls.getDimensions().x - 2)) {
-                        if (this.gameboard[placeX][placeY] == null) {
-                            switch(event.data.get("type")) {
-                                case 1:
-                                    if(this.skillUsed[0]) break;
-                                    this.skillUsed[0] = true;
-                                    let place_rock = this.add.sprite("rock_P", "primary");
-                                    place_rock.position.set(placeX*16+8, placeY*16+8);
-                                    place_rock.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_rock.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_rock;
-                                    break;
-                                case 2:
-                                    if(this.skillUsed[1]) break;
-                                    this.skillUsed[1] = true;
-                                    let place_wind = this.add.animatedSprite("whirlwind", "primary");
-                                    place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
-                                    place_wind.animation.play("idle");
-                                    place_wind.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-                                    place_wind.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_wind;
-                                    break;
-                                case 3:
-                                    if(this.skillUsed[2]) break;
-                                    this.skillUsed[2] = true;
-                                    let place_water = this.add.sprite("bubble", "primary");
-                                    place_water.position.set(placeX*16+8, placeY*16+8);
-                                    place_water.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_water.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_water;
-                                    break;
-                                case 4:
-                                    if(this.skillUsed[3]) break;
-                                    this.skillUsed[3] = true;
-                                    let place_fire = this.add.animatedSprite("ember", "primary");
-                                    place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
-                                    place_fire.animation.play("idle");
-                                    place_fire.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-                                    place_fire.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_fire;
-                                    break;
-                                case 5:
-                                    if(this.skillUsed[4]) break;
-                                    this.skillUsed[4] = true;
-                                    let place_ice = this.add.sprite("ice_cube", "primary");
-                                    place_ice.position.set(placeX*16+8, placeY*16+8);
-                                    place_ice.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_ice.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_ice;
-                                    break;
-                            }
-                        } else {
-                            switch(event.data.get("type")){
-                                case 1:
-                                    if(this.gameboard[placeX][placeY].imageId == "rock_P") {
-                                        let sprite = this.gameboard[placeX][placeY];
-                                        sprite.destroy();
-                                        this.gameboard[placeX][placeY] = null;
-                                        this.skillUsed[0] = false;
-                                    }
-                                    break;
-                                case 2:
-                                    if(this.gameboard[placeX][placeY].imageId== "whirlwind") {
-                                        let sprite = this.gameboard[placeX][placeY];
-                                        sprite.destroy();
-                                        this.gameboard[placeX][placeY] = null;
-                                        this.skillUsed[1] = false;
-                                    }
-                                    break;
-                                case 3:
-                                    if(this.gameboard[placeX][placeY].imageId == "bubble") {
-                                        let sprite = this.gameboard[placeX][placeY];
-                                        sprite.destroy();
-                                        this.gameboard[placeX][placeY] = null;
-                                        this.skillUsed[2] = false;
-                                    }
-                                    break;
-                                case 4:
-                                    if(this.gameboard[placeX][placeY].imageId == "ember") {
-                                        let sprite = this.gameboard[placeX][placeY];
-                                        sprite.destroy();
-                                        this.gameboard[placeX][placeY] = null;
-                                        this.skillUsed[3] = false;
-                                    }
-                                    break;
-                                case 5:
-                                    if(this.gameboard[placeX][placeY].imageId == "ice_cube") {
-                                        let sprite = this.gameboard[placeX][placeY];
-                                        sprite.destroy();
-                                        this.gameboard[placeX][placeY] = null;
-                                        this.skillUsed[4] = false;
-                                    }
-                                    break;
-                            }
-                            
+                switch(event.type){
+                    // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
+                    case CTCevent.INTERACT_ELEMENT:
+                        console.log("interact happened");
+                        console.log(event.data.get("positionX"));
+                        console.log(event.data.get("positionY"));
+                        var targetposX = event.data.get("positionX");
+                        var targetposY = event.data.get("positionY");
+                        var direction = event.data.get("direction");
+                        var target = this.gameboard[targetposX][targetposY];
+                        if(target != null) {
+                            this.activateElement(target, targetposX, targetposY, direction);
                         }
-                    }
-                    break;
-                case CTCevent.PLAYER_MOVE_REQUEST:
-                    var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
-                        if(this.endposition == next){
-                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
+                        break;
+                    case CTCevent.PLACE_ELEMENT:
+                        let placeX = event.data.get("positionX");
+                        let placeY = event.data.get("positionY");
+                        if (!(placeX < 2 || placeX >= this.walls.getDimensions().y - 2 || placeY < 2 || placeY >= this.walls.getDimensions().x - 2)) {
+                            if (this.gameboard[placeX][placeY] == null) {
+                                switch(event.data.get("type")) {
+                                    case 1:
+                                        if(this.skillUsed[0]) break;
+                                        this.skillUsed[0] = true;
+                                        let place_rock = this.add.sprite("rock_P", "primary");
+                                        place_rock.position.set(placeX*16+8, placeY*16+8);
+                                        place_rock.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                        place_rock.addAI(ElementController, {});
+                                        this.gameboard[placeX][placeY] = place_rock;
+                                        break;
+                                    case 2:
+                                        if(this.skillUsed[1]) break;
+                                        this.skillUsed[1] = true;
+                                        let place_wind = this.add.animatedSprite("whirlwind", "primary");
+                                        place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
+                                        place_wind.animation.play("idle");
+                                        place_wind.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+                                        place_wind.addAI(ElementController, {});
+                                        this.gameboard[placeX][placeY] = place_wind;
+                                        break;
+                                    case 3:
+                                        if(this.skillUsed[2]) break;
+                                        this.skillUsed[2] = true;
+                                        let place_water = this.add.sprite("bubble", "primary");
+                                        place_water.position.set(placeX*16+8, placeY*16+8);
+                                        place_water.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                        place_water.addAI(ElementController, {});
+                                        this.gameboard[placeX][placeY] = place_water;
+                                        break;
+                                    case 4:
+                                        if(this.skillUsed[3]) break;
+                                        this.skillUsed[3] = true;
+                                        let place_fire = this.add.animatedSprite("ember", "primary");
+                                        place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
+                                        place_fire.animation.play("idle");
+                                        place_fire.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+                                        place_fire.addAI(ElementController, {});
+                                        this.gameboard[placeX][placeY] = place_fire;
+                                        break;
+                                    case 5:
+                                        if(this.skillUsed[4]) break;
+                                        this.skillUsed[4] = true;
+                                        let place_ice = this.add.sprite("ice_cube", "primary");
+                                        place_ice.position.set(placeX*16+8, placeY*16+8);
+                                        place_ice.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                        place_ice.addAI(ElementController, {});
+                                        this.gameboard[placeX][placeY] = place_ice;
+                                        break;
+                                }
+                            } else {
+                                switch(event.data.get("type")){
+                                    case 1:
+                                        if(this.gameboard[placeX][placeY].imageId == "rock_P") {
+                                            let sprite = this.gameboard[placeX][placeY];
+                                            sprite.destroy();
+                                            this.gameboard[placeX][placeY] = null;
+                                            this.skillUsed[0] = false;
+                                        }
+                                        break;
+                                    case 2:
+                                        if(this.gameboard[placeX][placeY].imageId== "whirlwind") {
+                                            let sprite = this.gameboard[placeX][placeY];
+                                            sprite.destroy();
+                                            this.gameboard[placeX][placeY] = null;
+                                            this.skillUsed[1] = false;
+                                        }
+                                        break;
+                                    case 3:
+                                        if(this.gameboard[placeX][placeY].imageId == "bubble") {
+                                            let sprite = this.gameboard[placeX][placeY];
+                                            sprite.destroy();
+                                            this.gameboard[placeX][placeY] = null;
+                                            this.skillUsed[2] = false;
+                                        }
+                                        break;
+                                    case 4:
+                                        if(this.gameboard[placeX][placeY].imageId == "ember") {
+                                            let sprite = this.gameboard[placeX][placeY];
+                                            sprite.destroy();
+                                            this.gameboard[placeX][placeY] = null;
+                                            this.skillUsed[3] = false;
+                                        }
+                                        break;
+                                    case 5:
+                                        if(this.gameboard[placeX][placeY].imageId == "ice_cube") {
+                                            let sprite = this.gameboard[placeX][placeY];
+                                            sprite.destroy();
+                                            this.gameboard[placeX][placeY] = null;
+                                            this.skillUsed[4] = false;
+                                        }
+                                        break;
+                                }
+                                
+                            }
                         }
-                    }
-                    break;
-                case CTCevent.CHANGE_ELEMENT:
-                    switch(event.data.get("el")){
-                        case 1:
-                            this.elementGUI.animation.play("earth_equipped");
-                            break;
-                        case 2:
-                            this.elementGUI.animation.play("wind_equipped");
-                            break;
-                        case 3:
-                            this.elementGUI.animation.play("water_equipped");
-                            break;
-                        case 4:
-                            this.elementGUI.animation.play("fire_equipped");
-                            break;
-                        case 5:
-                            this.elementGUI.animation.play("ice_equipped");
-                            break;
-                    }
-                    
+                        break;
+                    case CTCevent.PLAYER_MOVE_REQUEST:
+                        var next = event.data.get("next");
+                        if(this.gameboard[next.x][next.y] == null || this.endposition == next){
+                            this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
+                            if(this.endposition == next){
+                                this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
+                            }
+                        }
+                        break;
+                    case CTCevent.CHANGE_ELEMENT:
+                        switch(event.data.get("el")){
+                            case 1:
+                                this.elementGUI.animation.play("earth_equipped");
+                                break;
+                            case 2:
+                                this.elementGUI.animation.play("wind_equipped");
+                                break;
+                            case 3:
+                                this.elementGUI.animation.play("water_equipped");
+                                break;
+                            case 4:
+                                this.elementGUI.animation.play("fire_equipped");
+                                break;
+                            case 5:
+                                this.elementGUI.animation.play("ice_equipped");
+                                break;
+                        }
+                }    
             }
+        }
+        else {
+            this.pauseGUI.setHidden(false);
         }
     };
 
