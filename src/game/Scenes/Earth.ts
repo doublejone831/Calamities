@@ -32,6 +32,18 @@ export default class Earth extends Scene {
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
 
         this.load.object("board", "game_assets/data/earth_board.json");
+        //unlock all powers for testing
+        this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
+        this.load.image("gust", "game_assets/sprites/gust.png");
+        this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
+        this.load.image("bubble", "game_assets/sprites/bubble.png");
+        this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
+        this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
+        this.load.image("flames", "game_assets/sprites/flames.png");
+        this.load.image("ignite", "game_assets/sprites/ignite.png");
+        this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
+        this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
+        this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
     }
 
     startScene(){
@@ -102,19 +114,54 @@ export default class Earth extends Scene {
                     let placeY = event.data.get("positionY");
                     if (!(placeX < 2 || placeX >= this.walls.getDimensions().y - 2 || placeY < 2 || placeY >= this.walls.getDimensions().x - 2)) {
                         if (this.gameboard[placeX][placeY] == null) {
-                            let elementSprite = null;
-                            if (event.data.get("type") === 1) {
-                                // CTC TODO: if (hasnt already placed one of type 1)
-                                if(this.skillUsed[0]) break;
-                                elementSprite = "rock_P";
-                                this.skillUsed[0] = true;
-                            }
-                            if (elementSprite != null) {
-                                let sprite = this.add.sprite(elementSprite, "primary");
-                                sprite.position.set(placeX*16 + 8, placeY*16 + 8);
-                                sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-                                sprite.addAI(ElementController, {});
-                                this.gameboard[placeX][placeY] = sprite;
+                            switch(event.data.get("type")) {
+                                case 1:
+                                    if(this.skillUsed[0]) break;
+                                    this.skillUsed[0] = true;
+                                    let place_rock = this.add.sprite("rock_P", "primary");
+                                    place_rock.position.set(placeX*16+8, placeY*16+8);
+                                    place_rock.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                    place_rock.addAI(ElementController, {});
+                                    this.gameboard[placeX][placeY] = place_rock;
+                                    break;
+                                case 2:
+                                    if(this.skillUsed[1]) break;
+                                    this.skillUsed[1] = true;
+                                    let place_wind = this.add.animatedSprite("whirlwind", "primary");
+                                    place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
+                                    place_wind.animation.play("idle");
+                                    place_wind.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+                                    place_wind.addAI(ElementController, {});
+                                    this.gameboard[placeX][placeY] = place_wind;
+                                    break;
+                                case 3:
+                                    if(this.skillUsed[2]) break;
+                                    this.skillUsed[2] = true;
+                                    let place_water = this.add.sprite("bubble", "primary");
+                                    place_water.position.set(placeX*16+8, placeY*16+8);
+                                    place_water.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                    place_water.addAI(ElementController, {});
+                                    this.gameboard[placeX][placeY] = place_water;
+                                    break;
+                                case 4:
+                                    if(this.skillUsed[3]) break;
+                                    this.skillUsed[3] = true;
+                                    let place_fire = this.add.animatedSprite("ember", "primary");
+                                    place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
+                                    place_fire.animation.play("idle");
+                                    place_fire.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+                                    place_fire.addAI(ElementController, {});
+                                    this.gameboard[placeX][placeY] = place_fire;
+                                    break;
+                                case 5:
+                                    if(this.skillUsed[4]) break;
+                                    this.skillUsed[4] = true;
+                                    let place_ice = this.add.sprite("ice_cube", "primary");
+                                    place_ice.position.set(placeX*16+8, placeY*16+8);
+                                    place_ice.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
+                                    place_ice.addAI(ElementController, {});
+                                    this.gameboard[placeX][placeY] = place_ice;
+                                    break;
                             }
                         }
                     }
