@@ -253,6 +253,7 @@ export default class Earth extends Scene {
         }
         else {
             this.pauseGUI.setHidden(false);
+            this.receiver.ignoreEvents();
         }
     };
 
