@@ -13,6 +13,7 @@ import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
 import { Player_enums } from "../Player/Player_enums";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class Earth extends Scene {
     private walls: OrthogonalTilemap;
@@ -163,6 +164,50 @@ export default class Earth extends Scene {
                                     this.gameboard[placeX][placeY] = place_ice;
                                     break;
                             }
+                        } else {
+                            switch(event.data.get("type")){
+                                case 1:
+                                    if(this.gameboard[placeX][placeY].imageId == "rock_P") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[0] = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if(this.gameboard[placeX][placeY].imageId== "whirlwind") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[1] = false;
+                                    }
+                                    break;
+                                case 3:
+                                    if(this.gameboard[placeX][placeY].imageId == "bubble") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[2] = false;
+                                    }
+                                    break;
+                                case 4:
+                                    if(this.gameboard[placeX][placeY].imageId == "ember") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[3] = false;
+                                    }
+                                    break;
+                                case 5:
+                                    if(this.gameboard[placeX][placeY].imageId == "ice_cube") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[4] = false;
+                                    }
+                                    break;
+                            }
+                            
                         }
                     }
                     break;
@@ -201,71 +246,81 @@ export default class Earth extends Scene {
     activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Player_enums) : void {
         var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
+        var dir;
         switch(direction){
             case Player_enums.FACING_UP:
-                switch(target.imageId){
-                    case "rock_P":
-                    case "rock_S":
-                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
-                        dest.y--;
-                    case "rock_M":
-                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
-                        dest.y--;
-                    case "rock_L":
-                        if(dest.y-1<2 || this.gameboard[dest.x][dest.y-1] != null) break;
-                        dest.y--;
-                        break;
-                }
+                dir = new Vec2(0, -1);
                 break;
             case Player_enums.FACING_DOWN:
-                switch(target.imageId){
-                    case "rock_P":
-                    case "rock_S":
-                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
-                        dest.y++;
-                    case "rock_M":
-                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
-                        dest.y++;
-                    case "rock_L":
-                        if(dest.y+1>17 || this.gameboard[dest.x][dest.y+1] != null) break;
-                        dest.y++;
-                        break;
-                }
+                dir = new Vec2(0, 1);
                 break;
             case Player_enums.FACING_LEFT:
-                switch(target.imageId){
-                    case "rock_P":
-                    case "rock_S":
-                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
-                        dest.x--;
-                    case "rock_M":
-                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
-                        dest.x--;
-                    case "rock_L":
-                        if(dest.x-1<2 || this.gameboard[dest.x-1][dest.y] != null) break;
-                        dest.x--;
-                        break;
-                }
+                dir = new Vec2(-1, 0);
                 break;
             case Player_enums.FACING_RIGHT:
-                switch(target.imageId){
-                    case "rock_P":
-                    case "rock_S":
-                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
-                        dest.x++;
-                    case "rock_M":
-                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
-                        dest.x++;
-                    case "rock_L":
-                        if(dest.x+1>17 || this.gameboard[dest.x+1][dest.y] != null) break;
-                        dest.x++;
-                        break;
-                }
+                dir = new Vec2(1, 0);
                 break;
         }
-        target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-        this.gameboard[targetposX][targetposY] = null;
-        this.gameboard[dest.x][dest.y] = target;
+        switch(target.imageId){
+            case "rock_P":
+            case "rock_S":
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 ||this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+            case "rock_M":
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+            case "rock_L":
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                this.gameboard[targetposX][targetposY] = null;
+                this.gameboard[dest.x][dest.y] = target;
+                break;
+            case "whirlwind":
+                /*
+                this.player.tweens.add("fly", {
+                    startDelay: 0,
+                    duration: 500,
+                    effects: [
+                        {
+                            property: this.player.position,
+                            start: this.player.position,
+                            end: dest,
+                            ease: EaseFunctionType.IN_OUT_QUAD
+                        }
+                    ]
+                });*/
+                this.gameboard[targetposX][targetposY] = null;
+                target.destroy();
+                this.skillUsed[1] = false;
+                if(dest.x+dir.scaled(3).x >= 2 && dest.y+dir.scaled(3).y >= 2 && dest.x+dir.scaled(3).x <= 17 && dest.y+dir.scaled(3).y <= 17) {
+                    if (this.gameboard[dest.x+dir.scaled(3).x][dest.y+dir.scaled(3).y] == null) {
+                        //dest.add(dir.scaled(3));
+                        //this.player.tweens.play("fly");
+                        for(var i = 0; i<3; i++) {
+                            dest.add(dir);
+                            this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next": dest});
+                        }
+                        
+                    }
+                } else if(dest.x+dir.scaled(2).x >= 2 && dest.y+dir.scaled(2).y >= 2 && dest.x+dir.scaled(2).x <= 17 && dest.y+dir.scaled(2).y <= 17) {
+                    if (this.gameboard[dest.x+dir.scaled(2).x][dest.y+dir.scaled(2).y] == null) {
+                        //dest.add(dir.scaled(2));
+                        //this.player.tweens.play("fly");
+                        for(var i = 0; i<2; i++) {
+                            dest.add(dir);
+                            this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next": dest});
+                        }
+                    }
+                }
+                break;
+            case "bubble":
+                break;
+            case "ember":
+                break;
+            case "ice_cube":
+                break;
+        }
     }
 
 

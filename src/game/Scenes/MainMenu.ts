@@ -70,23 +70,25 @@ export default class MainMenu extends Scene {
         aboutHeader.textColor = Color.BLACK;
         aboutHeader.fontSize = 50;
 
-        const text1 = "You are a young god who just finished creating your first world. You feel tired";
-        const text2 = "after making the world so you decided to take a nap. The nap turns into a";
-        const text3 = "millennium long slumber. While you were asleep, your powers leaked out from";
-        const text4 = "your body into your world. They took the shape of violent spirits,";
-        const text5 = "creating all kinds of natural disasters throughout your world.";
-        const text6 = "CHEATS (Use on Main Menu/Level Select):";
-        const text7 = "Y - Unlock All Levels";
-        const text8 = "U - Unlock All Elemental Skills";
+        const text1 = "You are a young god who just finished creating your first";
+        const text2 = "world. You feel tired after making the world so you decided";
+        const text3 = "to take a nap. The nap turns into a millennium long slumber.";
+        const text4 = "While you were asleep, your powers leaked out from your";
+        const text5 = "body into your world. They took the shape of violent spirits,";
+        const text6 = "creating all kinds of natural disasters throughout your world."
+        const text7 = "CHEATS (Use on Main Menu/Level Select):";
+        const text8 = "Y - Unlock All Levels";
+        const text9 = "U - Unlock All Elemental Skills";
 
         const line1 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 150), text: text1});
         const line2 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 100), text: text2});
         const line3 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 50), text: text3});
         const line4 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y), text: text4});
         const line5 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 50), text: text5});
-        const line6 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x - 250, center.y + 150), text: text6});
-        const line7 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 250, center.y + 150), text: text7});
-        const line8 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 250, center.y + 200), text: text8});
+        const line6 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 100), text: text6});
+        const line7 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x - 100, center.y + 150), text: text7});
+        const line8 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 150, center.y + 200), text: text8});
+        const line9 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 200, center.y + 250), text: text9});
 
         line1.textColor = Color.BLACK;
         line2.textColor = Color.BLACK;
@@ -114,7 +116,7 @@ export default class MainMenu extends Scene {
         const ctext4 = "D - Move Right";
         const ctext5 = "1,2,3,4,5 - Switch to Element 1-5";
         const ctext6 = "J - Interact With Element";
-        const ctext7 = "K - Place Element";
+        const ctext7 = "K - Place/Remove Element";
         const ctext8 = "ESCAPE - Pause";
 
         const cline1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 150), text: ctext1});
