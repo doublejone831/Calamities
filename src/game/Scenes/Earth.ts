@@ -80,18 +80,30 @@ export default class Earth extends Scene {
 
         this.pauseGUI = this.addUILayer("pauseMenu");
         this.pauseGUI.setHidden(true);
-        let pauseText = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(5*16, 16), text: "PAUSED (Work In Progress)"});
+        let pauseText = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(3*16, 16), text: "GAME PAUSED"});
         pauseText.textColor = Color.WHITE;
 
-        const pauseMainMenuButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 19*16), text: "Main Menu"});
-        pauseMainMenuButton.size.set(200, 50);
-        pauseMainMenuButton.borderWidth = 2;
-        pauseMainMenuButton.borderColor = Color.BLACK;
-        pauseMainMenuButton.backgroundColor = new Color(0,255,213);
-        pauseMainMenuButton.textColor = Color.BLACK;
+        const pauseMainMenuLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 19*16), text: "Main Menu"});
+        pauseMainMenuLabel.size.set(200, 50);
+        pauseMainMenuLabel.borderWidth = 2;
+        pauseMainMenuLabel.borderColor = Color.BLACK;
+        pauseMainMenuLabel.backgroundColor = new Color(0,255,213);
+        pauseMainMenuLabel.textColor = Color.BLACK;
+
+        const pauseMainMenuButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 19*16), text: ""});
+        pauseMainMenuButton.backgroundColor = new Color(0,0,0,0);
+        pauseMainMenuButton.borderColor = pauseMainMenuButton.backgroundColor;
+        pauseMainMenuButton.size.set(200/2.5,50/2.5);
         pauseMainMenuButton.onClickEventId = "backToMenu";
 
-        const pauseRestartButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 17*16), text: "Restart Level"});
+        const pauseRestartLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 17*16), text: "Restart Level"});
+        pauseRestartLabel.size.set(200, 50);
+        pauseRestartLabel.borderWidth = 2;
+        pauseRestartLabel.borderColor = Color.BLACK;
+        pauseRestartLabel.backgroundColor = new Color(0,255,213);
+        pauseRestartLabel.textColor = Color.BLACK;
+
+        const pauseRestartButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 17*16), text: ""});
         pauseRestartButton.clone(pauseMainMenuButton, "restart", true);
 
         this.initializeGameboard();
