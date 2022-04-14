@@ -14,6 +14,7 @@ export default class MainMenu extends Scene {
     private about: Layer;
     private control: Layer;
     private credits: Layer;
+    static unlocked: Array<Boolean>;
 
     loadScene(){}
 
@@ -173,6 +174,8 @@ export default class MainMenu extends Scene {
         this.receiver.subscribe("menu");
         this.receiver.subscribe("control");
         this.receiver.subscribe("credits");
+
+        if (!MainMenu.unlocked) MainMenu.unlocked = new Array(9).fill(false);
     }
 
     updateScene(){

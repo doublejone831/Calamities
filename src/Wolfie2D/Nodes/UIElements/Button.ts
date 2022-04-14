@@ -25,7 +25,7 @@ export default class Button extends Label {
 		}
 	}
 
-	clone(orig: Button, onClickEventId: string) : void {
+	clone(orig: Button, onClickEventId: string, unlocked: Boolean) : void {
 		this.backgroundColor = orig.backgroundColor;
 		this.borderColor = orig.borderColor;
 		this.textColor = orig.textColor;
@@ -33,5 +33,9 @@ export default class Button extends Label {
 		this.borderWidth = orig.borderWidth;
 
 		this.onClickEventId = onClickEventId;
+
+		if (!unlocked) {
+			this.backgroundColor = new Color(orig.backgroundColor.r, orig.backgroundColor.g, orig.backgroundColor.b, 0.5);
+		}
 	}
 }

@@ -14,9 +14,14 @@ import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
 import { Player_enums } from "../Player/Player_enums";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
+import Button from "../../Wolfie2D/Nodes/UIElements/Button";
+import Receiver from "../../Wolfie2D/Events/Receiver";
+import MainMenu from "./MainMenu";
 
 export default class Earth extends Scene {
     static paused: Boolean;
+    static justPaused: Boolean;
+    static justResumed: Boolean;
     private walls: OrthogonalTilemap;
     private player: AnimatedSprite;
     protected gameboard : Array<Array<Sprite>>;
@@ -24,6 +29,7 @@ export default class Earth extends Scene {
     private skillUsed : Array<Boolean>;
     private elementGUI : AnimatedSprite;
     private pauseGUI: Layer;
+    private pauseReceiver: Receiver;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
@@ -77,11 +83,25 @@ export default class Earth extends Scene {
         let pauseText = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(5*16, 16), text: "PAUSED (Work In Progress)"});
         pauseText.textColor = Color.WHITE;
 
+        const pauseMainMenuButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 19*16), text: "Main Menu"});
+        pauseMainMenuButton.size.set(200, 50);
+        pauseMainMenuButton.borderWidth = 2;
+        pauseMainMenuButton.borderColor = Color.BLACK;
+        pauseMainMenuButton.backgroundColor = new Color(0,255,213);
+        pauseMainMenuButton.textColor = Color.BLACK;
+        pauseMainMenuButton.onClickEventId = "backToMenu";
+
+        const pauseRestartButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 17*16), text: "Restart Level"});
+        pauseRestartButton.clone(pauseMainMenuButton, "restart", true);
+
         this.initializeGameboard();
         
         this.initializePlayer();
 
         this.skillUsed = [false, false, false, false, false];
+        Earth.paused = false;
+        Earth.justPaused = false;
+        Earth.justResumed = false;
 
         // Zoom in to a reasonable level
         this.viewport.enableZoom();
@@ -96,13 +116,19 @@ export default class Earth extends Scene {
                                 CTCevent.CHANGE_ELEMENT
                                  // CTC TODO: subscribe to CTCevent.LEVEL_END event
                                 ]);
-        
+        this.pauseReceiver = new Receiver();
+        this.pauseReceiver.subscribe("backToMenu");
+        this.pauseReceiver.subscribe("restart");
        
     }
 
     updateScene(){
         if (!Earth.paused) {
             this.pauseGUI.setHidden(true);
+            if (Earth.justResumed) {
+                Earth.justResumed = false;
+                this.resumeAnimations();
+            }
             while(this.receiver.hasNextEvent()){
                 let event = this.receiver.getNextEvent();
 
@@ -252,8 +278,26 @@ export default class Earth extends Scene {
             }
         }
         else {
+            if (Earth.justPaused) {
+                Earth.justPaused = false;
+                this.pauseAnimations();
+            }
             this.pauseGUI.setHidden(false);
             this.receiver.ignoreEvents();
+            while(this.pauseReceiver.hasNextEvent()){
+                let event = this.pauseReceiver.getNextEvent();
+
+                switch(event.type){
+                    case "backToMenu":
+                        this.viewport.setZoomLevel(1);
+                        //MainMenu.unlocked[0] = true;        //unlock level test
+                        this.sceneManager.changeToScene(MainMenu, {});
+                        break;
+                    case "restart":
+                        this.sceneManager.changeToScene(Earth, {});
+                        break;
+                }
+            }
         }
     };
 
@@ -370,5 +414,29 @@ export default class Earth extends Scene {
         }
         //set portal 
         //this.gameboard[this.endposition.x][this.endposition.y] = 
+    }
+
+    pauseAnimations(): void {
+        this.player.animation.pause();
+        for (let i = 0; i < this.gameboard.length; i++) {
+            for (let j = 0; j < this.gameboard[i].length; j++) {
+                if (this.gameboard[i][j]) {
+                    let id = this.gameboard[i][j].imageId;
+                    if (id === "whirlwind" || id === "ember") (<AnimatedSprite>this.gameboard[i][j]).animation.pause();
+                }
+            }
+        }
+    }
+
+    resumeAnimations(): void {
+        this.player.animation.resume();
+        for (let i = 0; i < this.gameboard.length; i++) {
+            for (let j = 0; j < this.gameboard[i].length; j++) {
+                if (this.gameboard[i][j]) {
+                    let id = this.gameboard[i][j].imageId;
+                    if (id === "whirlwind" || id === "ember") (<AnimatedSprite>this.gameboard[i][j]).animation.resume();
+                }
+            }
+        }
     }
 }

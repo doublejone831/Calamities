@@ -35,49 +35,50 @@ export default class LevelSelection extends Scene {
         earth.onClickEventId = "play-earth";
 
         const earthB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y - 150), text: "Boss Stage"});
-        earthB.clone(earth, "play-earth-boss");
+        earthB.clone(earth, "play-earth-boss", MainMenu.unlocked[0]);
 
         /* WIND ROW */
         const windHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levels", {position: new Vec2(center.x - 225, center.y - 75), text: "WIND"});;
 
         const wind = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y - 75), text: "Puzzle Stage"});
-        wind.clone(earth, "play-wind");
+        wind.clone(earth, "play-wind", MainMenu.unlocked[1]);
 
         const windB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y - 75), text: "Boss Stage"});
-        windB.clone(earth, "play-wind-boss");
+        windB.clone(earth, "play-wind-boss", MainMenu.unlocked[2]);
 
         /* WATER ROW */
         const waterHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levels", {position: new Vec2(center.x - 225, center.y), text: "WATER"});;
 
         const water = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y), text: "Puzzle Stage"});
-        water.clone(earth, "play-water");
+        water.clone(earth, "play-water", MainMenu.unlocked[3]);
 
         const waterB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y), text: "Boss Stage"});
-        waterB.clone(earth, "play-water-boss");
+        waterB.clone(earth, "play-water-boss", MainMenu.unlocked[4]);
 
         /* FIRE ROW */
         const fireHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levels", {position: new Vec2(center.x - 225, center.y + 75), text: "FIRE"});;
 
         const fire = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 75), text: "Puzzle Stage"});
-        fire.clone(earth, "play-fire");
+        fire.clone(earth, "play-fire", MainMenu.unlocked[5]);
 
         const fireB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y + 75), text: "Boss Stage"});
-        fireB.clone(earth, "play-fire-boss");
+        fireB.clone(earth, "play-fire-boss", MainMenu.unlocked[6]);
 
         /* ICE ROW */
         const iceHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levels", {position: new Vec2(center.x - 225, center.y + 150), text: "ICE"});;
 
         const ice = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 150), text: "Puzzle Stage"});
-        ice.clone(earth, "play-ice");
+        ice.clone(earth, "play-ice", MainMenu.unlocked[7]);
 
         const iceB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y + 150), text: "Boss Stage"});
-        iceB.clone(earth, "play-ice-boss");
+        iceB.clone(earth, "play-ice-boss", MainMenu.unlocked[8]);
 
         /* BACK BUTTON */
         const back = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 300), text: "Back"});
-        back.clone(earth, "back");
+        back.clone(earth, "back", true);
 
         this.receiver.subscribe("play-earth");
+        this.receiver.subscribe("play-earth-boss");
         this.receiver.subscribe("back");
     }
 
@@ -97,8 +98,13 @@ export default class LevelSelection extends Scene {
             if(event.type === "play-earth"){
                 this.sceneManager.changeToScene(Earth, {});
             }
+            else if (event.type === "play-earth-boss") {
+                if (MainMenu.unlocked[0]) {
+                    console.log("PLAY EARTH BOSS LEVEL");
+                }
+            }
 
-            // CTC TODO: ADD THE OTHER LEVELS AND SUBSCRIBE TO THE EVENTS
+            // CTC TODO: ADD THE OTHER LEVELS AND SUBSCRIBE TO THE EVENTS, USE IF(MainMenu.unlocked[i]) TO VERIFY LEVEL IS UNLOCKED
 
             if(event.type === "back"){
                 this.sceneManager.changeToScene(MainMenu, {});
