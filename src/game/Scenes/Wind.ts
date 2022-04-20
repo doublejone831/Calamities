@@ -47,9 +47,12 @@ export default class Wind extends BaseStage {
         super.startScene();
         // Add in the tilemap
         this.add.tilemap("level");
+
         this.initializeGameboard();
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
-        this.player.position.set(3*16 + 8, 3*16 + 8);
+
+        this.initializePlayer();
+
+        this.elementGUI.animation.play("earth_equipped");
     }
 
     updateScene(deltaT: number): void{
@@ -83,7 +86,6 @@ export default class Wind extends BaseStage {
                                     this.skillUsed[0] = true;
                                     let place_rock = this.add.sprite("rock_P", "primary");
                                     place_rock.position.set(placeX*16+8, placeY*16+8);
-                                    place_rock.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
                                     place_rock.addAI(ElementController, {});
                                     this.gameboard[placeX][placeY] = place_rock;
                                     break;
@@ -94,7 +96,6 @@ export default class Wind extends BaseStage {
                                     let place_wind = this.add.animatedSprite("whirlwind", "primary");
                                     place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
                                     place_wind.animation.play("idle");
-                                    place_wind.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
                                     place_wind.addAI(ElementController, {});
                                     this.gameboard[placeX][placeY] = place_wind;
                                     break;
@@ -104,7 +105,6 @@ export default class Wind extends BaseStage {
                                     this.skillUsed[2] = true;
                                     let place_water = this.add.sprite("bubble", "primary");
                                     place_water.position.set(placeX*16+8, placeY*16+8);
-                                    place_water.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
                                     place_water.addAI(ElementController, {});
                                     this.gameboard[placeX][placeY] = place_water;
                                     break;
@@ -115,7 +115,6 @@ export default class Wind extends BaseStage {
                                     let place_fire = this.add.animatedSprite("ember", "primary");
                                     place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
                                     place_fire.animation.play("idle");
-                                    place_fire.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
                                     place_fire.addAI(ElementController, {});
                                     this.gameboard[placeX][placeY] = place_fire;
                                     break;
@@ -125,7 +124,6 @@ export default class Wind extends BaseStage {
                                     this.skillUsed[4] = true;
                                     let place_ice = this.add.sprite("ice_cube", "primary");
                                     place_ice.position.set(placeX*16+8, placeY*16+8);
-                                    place_ice.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
                                     place_ice.addAI(ElementController, {});
                                     this.gameboard[placeX][placeY] = place_ice;
                                     break;
@@ -204,11 +202,21 @@ export default class Wind extends BaseStage {
             let element = boardData.elements[i];
             let sprite = this.add.sprite(element.type, "primary");
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-            sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+           // sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
         }
         //set portal 
         //this.gameboard[this.endposition.x][this.endposition.y] = 
+    }
+
+    initializePlayer(): void {
+        this.player = this.add.animatedSprite("god", "primary");
+        this.player.animation.play("idle");
+        this.player.position.set(3*16+8, 3*16+8);
+      //  this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+        this.skillUsed = new Array(5).fill(false);
+        this.elementSelected = 1;
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
     }
 }

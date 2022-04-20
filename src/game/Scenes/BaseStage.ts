@@ -99,22 +99,18 @@ export default class BaseStage extends Scene {
                                 CTCevent.RESTART_STAGE,
                                 CTCevent.TOGGLE_PAUSE
         ]);
-       
-        // Initialize player
-        this.initializePlayer();
-        this.elementSelected = 0;
     }
 
     updateScene(deltaT: number): void{
         //pausing and resuming
+        if(BaseStage.paused) this.receiver.ignoreEvents();
         while(this.pauseReceiver.hasNextEvent()){
             let event = this.pauseReceiver.getNextEvent();
             switch(event.type){
                 case CTCevent.TOGGLE_PAUSE:
                     if(!BaseStage.paused) {
                         this.pauseGUI.setHidden(false);
-                        this.pauseAnimations();
-                        this.receiver.ignoreEvents();
+                        this.pauseAnimations(); 
                     } else {
                         this.pauseGUI.setHidden(true);
                         this.resumeAnimations();
@@ -288,11 +284,65 @@ export default class BaseStage extends Scene {
         }
     }
 
-    initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
-        this.player.animation.play("idle");
-        this.player.position.set(0, 0);
-        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-        this.skillUsed = new Array(5).fill(false);
+    place_element(placeX: number, placeY: number, type: number){
+        switch(type) {
+            case 1:
+                if (!(<PlayerController>this.player._ai).hasPower[0]) break;
+                if(this.skillUsed[0]) break;
+                this.skillUsed[0] = true;
+                let place_rock = this.add.sprite("rock_P", "primary");
+                place_rock.position.set(placeX*16+8, placeY*16+8);
+                place_rock.addAI(ElementController, {});
+                this.gameboard[placeX][placeY] = place_rock;
+                break;
+            case 2:
+                if (!(<PlayerController>this.player._ai).hasPower[1]) break;
+                if(this.skillUsed[1]) break;
+                this.skillUsed[1] = true;
+                let place_wind = this.add.animatedSprite("whirlwind", "primary");
+                place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
+                place_wind.animation.play("idle");
+                place_wind.addAI(ElementController, {});
+                this.gameboard[placeX][placeY] = place_wind;
+                break;
+            case 3:
+                if (!(<PlayerController>this.player._ai).hasPower[2]) break;
+                if(this.skillUsed[2]) break;
+                this.skillUsed[2] = true;
+                let place_water = this.add.sprite("bubble", "primary");
+                place_water.position.set(placeX*16+8, placeY*16+8);
+                place_water.addAI(ElementController, {});
+                this.gameboard[placeX][placeY] = place_water;
+                break;
+            case 4:
+                if (!(<PlayerController>this.player._ai).hasPower[3]) break;
+                if(this.skillUsed[3]) break;
+                this.skillUsed[3] = true;
+                let place_fire = this.add.animatedSprite("ember", "primary");
+                place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
+                place_fire.animation.play("idle");
+                place_fire.addAI(ElementController, {});
+                this.gameboard[placeX][placeY] = place_fire;
+                break;
+            case 5:
+                if (!(<PlayerController>this.player._ai).hasPower[4]) break;
+                if(this.skillUsed[4]) break;
+                this.skillUsed[4] = true;
+                let place_ice = this.add.sprite("ice_cube", "primary");
+                place_ice.position.set(placeX*16+8, placeY*16+8);
+                place_ice.addAI(ElementController, {});
+                this.gameboard[placeX][placeY] = place_ice;
+                break;
+        }
+    }
+
+    // position in pixels to position to row col
+    sprite_pos_to_board_pos(posX: number, posY: number){
+        return new Vec2((posX-8)/16, (posY-8)/16);
+    }
+
+    // position in row col to pixels
+    board_pos_to_sprite_pos(posX: number, posY: number){
+        return new Vec2(16*posX+8, 16*posY+8);
     }
 }

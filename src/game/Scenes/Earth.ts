@@ -44,9 +44,12 @@ export default class Earth extends BaseStage {
         super.startScene();
         // Add in the tilemap
         this.add.tilemap("level");
+
         this.initializeGameboard();
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
-        this.player.position.set(3*16 + 8, 3*16 + 8);
+
+        this.initializePlayer();
+
+        this.elementGUI.animation.play("none_equipped");
     }
 
     updateScene(deltaT: number): void{
@@ -71,62 +74,10 @@ export default class Earth extends BaseStage {
                 case CTCevent.PLACE_ELEMENT:
                     let placeX = event.data.get("positionX");
                     let placeY = event.data.get("positionY");
-                    if (!(placeX < 2 || placeX > 17 || placeY < 2 || placeY >17)) {
+                    let type = event.data.get("type");
+                    if (placeX>=2 && placeX<=17 && placeY>=2 && placeY<=17) {
                         if (this.gameboard[placeX][placeY] == null) {
-                            switch(event.data.get("type")) {
-                                case 1:
-                                    if (!(<PlayerController>this.player._ai).hasPower[0]) break;
-                                    if(this.skillUsed[0]) break;
-                                    this.skillUsed[0] = true;
-                                    let place_rock = this.add.sprite("rock_P", "primary");
-                                    place_rock.position.set(placeX*16+8, placeY*16+8);
-                                    place_rock.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_rock.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_rock;
-                                    break;
-                                case 2:
-                                    if (!(<PlayerController>this.player._ai).hasPower[1]) break;
-                                    if(this.skillUsed[1]) break;
-                                    this.skillUsed[1] = true;
-                                    let place_wind = this.add.animatedSprite("whirlwind", "primary");
-                                    place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
-                                    place_wind.animation.play("idle");
-                                    place_wind.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-                                    place_wind.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_wind;
-                                    break;
-                                case 3:
-                                    if (!(<PlayerController>this.player._ai).hasPower[2]) break;
-                                    if(this.skillUsed[2]) break;
-                                    this.skillUsed[2] = true;
-                                    let place_water = this.add.sprite("bubble", "primary");
-                                    place_water.position.set(placeX*16+8, placeY*16+8);
-                                    place_water.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_water.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_water;
-                                    break;
-                                case 4:
-                                    if (!(<PlayerController>this.player._ai).hasPower[3]) break;
-                                    if(this.skillUsed[3]) break;
-                                    this.skillUsed[3] = true;
-                                    let place_fire = this.add.animatedSprite("ember", "primary");
-                                    place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
-                                    place_fire.animation.play("idle");
-                                    place_fire.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-                                    place_fire.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_fire;
-                                    break;
-                                case 5:
-                                    if (!(<PlayerController>this.player._ai).hasPower[4]) break;
-                                    if(this.skillUsed[4]) break;
-                                    this.skillUsed[4] = true;
-                                    let place_ice = this.add.sprite("ice_cube", "primary");
-                                    place_ice.position.set(placeX*16+8, placeY*16+8);
-                                    place_ice.addPhysics(new AABB(Vec2.ZERO, new Vec2(8,8)));
-                                    place_ice.addAI(ElementController, {});
-                                    this.gameboard[placeX][placeY] = place_ice;
-                                    break;
-                            }
+                            this.place_element(placeX, placeY, type);
                         } else {
                             switch(event.data.get("type")){
                                 case 1:
@@ -203,11 +154,21 @@ export default class Earth extends BaseStage {
             let element = boardData.elements[i];
             let sprite = this.add.sprite(element.type, "primary");
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-            sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+          //  sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
         }
         //set portal 
         //this.gameboard[this.endposition.x][this.endposition.y] = 
+    }
+
+    initializePlayer(): void {
+        this.player = this.add.animatedSprite("god", "primary");
+        this.player.animation.play("idle");
+        this.player.position.set(3*16+8, 3*16+8);
+//        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+        this.skillUsed = new Array(5).fill(false);
+        this.elementSelected = 0;
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [false,false,false,false,false]});
     }
 }
