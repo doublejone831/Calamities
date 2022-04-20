@@ -24,7 +24,8 @@ export default class PlayerController extends StateMachineAI {
 
         this.facing_direction = Player_enums.FACING_DOWN;
 
-        this.hasPower = new Array(5).fill(true); // set to true for testing
+        this.hasPower = options.hasPower;
+
         this.receiver.subscribe([CTCevent.PLAYER_MOVE])
     }
 

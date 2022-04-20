@@ -71,7 +71,7 @@ export default class BaseStage extends Scene {
         pauseMainMenuButton.backgroundColor = new Color(0,0,0,0);
         pauseMainMenuButton.borderColor = pauseMainMenuButton.backgroundColor;
         pauseMainMenuButton.size.set(200/2.5,50/2.5);
-        pauseMainMenuButton.onClickEventId = "backToMenu";
+        pauseMainMenuButton.onClickEventId = "back_to_menu";
 
         const pauseRestartLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 17*16), text: "Restart Level"});
         pauseRestartLabel.size.set(200, 50);
@@ -122,6 +122,7 @@ export default class BaseStage extends Scene {
                     BaseStage.paused = !BaseStage.paused;
                     break;
                 case CTCevent.BACK_TO_MENU:
+                    console.log("BACK TO MENU");
                     if(BaseStage.paused) {
                         this.viewport.setZoomLevel(1);
                         //MainMenu.unlocked[0] = true;        //unlock level test
@@ -291,9 +292,7 @@ export default class BaseStage extends Scene {
         this.player = this.add.animatedSprite("god", "primary");
         this.player.animation.play("idle");
         this.player.position.set(0, 0);
-        // CTC TODO: remove this todo, just note that i did not include player sprite in the gameboard array because thats too much work to update it lol
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-        this.player.addAI(PlayerController, {tilemap: "Main"});
         this.skillUsed = new Array(5).fill(false);
     }
 }

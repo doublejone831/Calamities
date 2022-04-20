@@ -5,6 +5,7 @@ import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
 import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
+import PlayerController from "../Player/PlayerController";
 
 export default class Wind extends BaseStage {
     protected endposition : Vec2;
@@ -46,7 +47,8 @@ export default class Wind extends BaseStage {
         super.startScene();
         // Add in the tilemap
         this.add.tilemap("level");
-        this.initializeGameboard();  
+        this.initializeGameboard();
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
         this.player.position.set(3*16 + 8, 3*16 + 8);
     }
 
@@ -76,6 +78,7 @@ export default class Wind extends BaseStage {
                         if (this.gameboard[placeX][placeY] == null) {
                             switch(event.data.get("type")) {
                                 case 1:
+                                    if (!(<PlayerController>this.player._ai).hasPower[0]) break;
                                     if(this.skillUsed[0]) break;
                                     this.skillUsed[0] = true;
                                     let place_rock = this.add.sprite("rock_P", "primary");
@@ -85,6 +88,7 @@ export default class Wind extends BaseStage {
                                     this.gameboard[placeX][placeY] = place_rock;
                                     break;
                                 case 2:
+                                    if (!(<PlayerController>this.player._ai).hasPower[1]) break;
                                     if(this.skillUsed[1]) break;
                                     this.skillUsed[1] = true;
                                     let place_wind = this.add.animatedSprite("whirlwind", "primary");
@@ -95,6 +99,7 @@ export default class Wind extends BaseStage {
                                     this.gameboard[placeX][placeY] = place_wind;
                                     break;
                                 case 3:
+                                    if (!(<PlayerController>this.player._ai).hasPower[2]) break;
                                     if(this.skillUsed[2]) break;
                                     this.skillUsed[2] = true;
                                     let place_water = this.add.sprite("bubble", "primary");
@@ -104,6 +109,7 @@ export default class Wind extends BaseStage {
                                     this.gameboard[placeX][placeY] = place_water;
                                     break;
                                 case 4:
+                                    if (!(<PlayerController>this.player._ai).hasPower[3]) break;
                                     if(this.skillUsed[3]) break;
                                     this.skillUsed[3] = true;
                                     let place_fire = this.add.animatedSprite("ember", "primary");
@@ -114,6 +120,7 @@ export default class Wind extends BaseStage {
                                     this.gameboard[placeX][placeY] = place_fire;
                                     break;
                                 case 5:
+                                    if (!(<PlayerController>this.player._ai).hasPower[4]) break;
                                     if(this.skillUsed[4]) break;
                                     this.skillUsed[4] = true;
                                     let place_ice = this.add.sprite("ice_cube", "primary");
