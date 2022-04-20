@@ -5,5 +5,8 @@ export enum CTCevent{
     PLAYER_MOVE = "player_move",
     ELEMENT_BREAK = "element_destroy",
     END_LEVEL = "end_level",
-    CHANGE_ELEMENT = "change_element"
+    CHANGE_ELEMENT = "change_element",
+    RESTART_STAGE = "restart",
+    BACK_TO_MENU = "back_to_menu",
+    TOGGLE_PAUSE = "toggle_pause"
 }

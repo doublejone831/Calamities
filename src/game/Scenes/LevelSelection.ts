@@ -8,6 +8,7 @@ import Button from "../../Wolfie2d/Nodes/UIElements/Button";
 import MainMenu from "./MainMenu";
 import Input from "../../Wolfie2D/Input/Input";
 import Earth from "./Earth";
+import Wind from "./Wind";
 
 export default class LevelSelection extends Scene {
     private levels: Layer;
@@ -77,9 +78,11 @@ export default class LevelSelection extends Scene {
         const back = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 300), text: "Back"});
         back.clone(earth, "back", true);
 
-        this.receiver.subscribe("play-earth");
-        this.receiver.subscribe("play-earth-boss");
-        this.receiver.subscribe("back");
+        this.receiver.subscribe(["back",
+                                "play-earth",
+                                "play-earth-boss",
+                                "play-wind",
+                                "play-wind-boss"]);
     }
 
     updateScene(){
@@ -95,13 +98,17 @@ export default class LevelSelection extends Scene {
 
             console.log(event);
 
-            if(event.type === "play-earth"){
-                this.sceneManager.changeToScene(Earth, {});
-            }
-            else if (event.type === "play-earth-boss") {
-                if (MainMenu.unlocked[0]) {
+            switch(event.type) {
+                case "play-earth":
+                    this.sceneManager.changeToScene(Earth);
+                    break;
+                case "play-earth-boss":
                     console.log("PLAY EARTH BOSS LEVEL");
-                }
+                    break;
+                case "play-wind":
+                    this.sceneManager.changeToScene(Wind);
+                    console.log("Wind stage");
+                    break;
             }
 
             // CTC TODO: ADD THE OTHER LEVELS AND SUBSCRIBE TO THE EVENTS, USE IF(MainMenu.unlocked[i]) TO VERIFY LEVEL IS UNLOCKED

@@ -6,7 +6,7 @@ import ElementController from "../Element/ElementController";
 import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
 
-export default class Earth extends BaseStage {
+export default class Wind extends BaseStage {
     protected endposition : Vec2;
 
     loadScene(){
@@ -16,8 +16,8 @@ export default class Earth extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");
-        this.load.object("board", "game_assets/data/earth_board.json");
+        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to wind map
+        this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to wind board
         /*unlock all powers for testing
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");
@@ -34,6 +34,9 @@ export default class Earth extends BaseStage {
 
     unloadScene(): void {
         this.load.keepImage("rock_M");
+        this.load.keepImage("whirlwind");
+        this.load.keepImage("gust");
+        this.load.keepSpritesheet("airstream");
         this.load.keepSpritesheet("god");
         this.load.keepSpritesheet("element_equipped");
         this.load.unloadAllResources();
@@ -63,7 +66,7 @@ export default class Earth extends BaseStage {
                     var direction = event.data.get("direction");
                     var target = this.gameboard[targetposX][targetposY];
                     if(target != null) {
-                        this.pushRock(target, targetposX, targetposY, direction);
+                        this.activateElement(target, targetposX, targetposY, direction);
                     }
                     break;
                 case CTCevent.PLACE_ELEMENT:
@@ -172,23 +175,21 @@ export default class Earth extends BaseStage {
                     if(this.gameboard[next.x][next.y] == null || this.endposition == next){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
                         if(this.endposition == next){
-                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
+                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "wind_boss"});
                         }
+                    }
+                    break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementGUI.animation.play("earth_equipped");
+                            this.elementSelected = 1;
+                            break;
                     }
                     break;
             }    
         }
     };
-
-    // CTC TODO: if level-end portal is a sprite, then right here you could make this.portal (a Sprite field) and test this.player.position === this.portal.position to fire LEVEL_END event. In this case you could refer to the following to initialize the portal (add this code in its own function or maybe right at the end of initializePlayer function?):
-        /*
-        this.portal = this.add.sprite("portal", "primary"); **HAVE TO LOAD PORTAL AS IMAGE IN LOADSCENE FUNCTION
-        this.player.position.set(3*16 + 8, 3*16 + 8); **CHANGE THE 3s TO BE SOME OTHER TILE POSITION
-        this.portal.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-        this.portal.addAI(ElementController, {});
-
-        if the sprite is animated then you're on your own tbh lol, this should work for a non-animated sprite i hope
-        */
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
