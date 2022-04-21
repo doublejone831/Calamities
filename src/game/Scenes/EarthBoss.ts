@@ -18,7 +18,7 @@ export default class EarthBoss extends BaseStage {
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
-        this.load.object("board", "game_assets/data/earth_board.json");
+        this.load.object("board", "game_assets/data/earth_boss_board.json");
         this.load.image("portal", "game_assets/sprites/portal.png")
         /*unlock all powers for testing
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
