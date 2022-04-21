@@ -19,6 +19,7 @@ export default class Wind extends BaseStage {
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to wind map
         this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to wind board
+        this.load.image("portal", "game_assets/sprites/portal.png");
         /*unlock all powers for testing
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");

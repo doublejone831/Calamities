@@ -1,3 +1,3 @@
-export enum Boss_Enums {
+export enum Boss_enums {
     SKILL = "skill"
 }
