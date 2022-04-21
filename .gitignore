@@ -18,6 +18,6 @@ dist/*
 
 !package-lock.json
 !package.json
-!.firebase
+!.firebase/*
 !.firebasesrc
 !firebase.json
