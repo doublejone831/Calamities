@@ -17,6 +17,8 @@ import SplashScreen from "./game/Scenes/SplashScreen";
             {name: "right", keys: ["d"]},
             {name: "interact", keys: ["j"]},
             {name: "place", keys: ["k"]},
+            {name: "rotate_cc", keys: ["q"]},
+            {name: "rotate_c", keys: ["e"]},
             {name: "el1", keys: ["1"]},
             {name: "el2", keys: ["2"]},
             {name: "el3", keys: ["3"]},

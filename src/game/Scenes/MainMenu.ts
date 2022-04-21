@@ -79,7 +79,6 @@ export default class MainMenu extends Scene {
         const text6 = "creating all kinds of natural disasters throughout your world."
         const text7 = "CHEATS (Use on Main Menu/Level Select):";
         const text8 = "Y - Unlock All Levels";
-        const text9 = "U - Unlock All Elemental Skills";
 
         const line1 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 150), text: text1});
         const line2 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 100), text: text2});
@@ -89,11 +88,6 @@ export default class MainMenu extends Scene {
         const line6 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 100), text: text6});
         const line7 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x - 100, center.y + 150), text: text7});
         const line8 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 150, center.y + 200), text: text8});
-        const line9 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x + 200, center.y + 250), text: text9});
-
-        line1.textColor = Color.BLACK;
-        line2.textColor = Color.BLACK;
-        line3.textColor = Color.BLACK;
 
         const aboutBack = <Button>this.add.uiElement(UIElementType.BUTTON, "about", {position: new Vec2(center.x, center.y + 300), text: "Back"});
         aboutBack.size.set(200, 50);
@@ -111,14 +105,13 @@ export default class MainMenu extends Scene {
         controlHeader.textColor = Color.BLACK;
         controlHeader.fontSize = 50;
 
-        const ctext1 = "W - Move Up";
-        const ctext2 = "A - Move Left";
-        const ctext3 = "S - Move Down";
-        const ctext4 = "D - Move Right";
-        const ctext5 = "1,2,3,4,5 - Switch to Element 1-5";
-        const ctext6 = "J - Interact With Element";
-        const ctext7 = "K - Place/Remove Element";
-        const ctext8 = "ESCAPE - Pause";
+        const ctext1 = "W,A,S,D - Move Up, Left, Down, Right";
+        const ctext2 = "Q - Rotate Counterclockwise";
+        const ctext3 = "E - Rotate Clockwise";
+        const ctext4 = "1,2,3,4,5 - Switch to Element 1-5";
+        const ctext5 = "J - Interact With Element";
+        const ctext6 = "K - Place/Remove Element";
+        const ctext7 = "ESCAPE - Pause";
 
         const cline1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 150), text: ctext1});
         const cline2 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 100), text: ctext2});
@@ -127,7 +120,6 @@ export default class MainMenu extends Scene {
         const cline5 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 50), text: ctext5});
         const cline6 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 100), text: ctext6});
         const cline7 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 150), text: ctext7});
-        const cline8 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 200), text: ctext8});
 
         const controlBack = <Button>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(center.x, center.y + 300), text: "Back"});
         controlBack.size.set(200, 50);
@@ -183,9 +175,6 @@ export default class MainMenu extends Scene {
         if (Input.isKeyJustPressed("y")) {
             console.log("CHEAT: UNLOCK ALL LEVELS");
             MainMenu.unlocked.fill(true);
-        }
-        if (Input.isKeyJustPressed("u")) {
-            console.log("CHEAT: UNLOCK ALL ELEMENTAL SKILS");
         }
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();

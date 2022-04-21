@@ -3,7 +3,6 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import Input from "../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
-import { Player_enums } from "./Player_enums";
 import { CTCevent } from "../Scenes/CTCEvent";
 import BaseStage from "../Scenes/BaseStage";
 
@@ -12,7 +11,7 @@ export default class PlayerController extends StateMachineAI {
     tilemap: OrthogonalTilemap;
     selectedElement: number;
     //indicate which direction player facing
-    facing_direction: Player_enums;
+    facing_direction: number; //0=up, 1=left, 2=down, 3=right
     hasPower: Array<Boolean>;
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
@@ -22,7 +21,7 @@ export default class PlayerController extends StateMachineAI {
 
         this.selectedElement = 1;
 
-        this.facing_direction = Player_enums.FACING_DOWN;
+        this.facing_direction = 2; //start down
 
         this.hasPower = options.hasPower;
 
@@ -34,34 +33,41 @@ export default class PlayerController extends StateMachineAI {
             this.emitter.fireEvent(CTCevent.TOGGLE_PAUSE);
         }
         if(!BaseStage.paused) {
-            var next_position = this.nextposition();
             if (Input.isJustPressed("up")) {
-                if(this.facing_direction == Player_enums.FACING_UP){
-                    this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
-                }
-                this.facing_direction = Player_enums.FACING_UP;
-                this.owner.animation.play("face_up");
+                Input.disableInput();
+                this.facing_direction = 0;
+                var next_position = this.nextposition();
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+                this.owner.animation.play("face_0");
             }
             else if (Input.isJustPressed("left")) {
-                if(this.facing_direction == Player_enums.FACING_LEFT){
-                    this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
-                }
-                this.facing_direction = Player_enums.FACING_LEFT;
-                this.owner.animation.play("face_left");
+                Input.disableInput();
+                this.facing_direction = 1;
+                var next_position = this.nextposition();
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+                this.owner.animation.play("face_1");
             }
             else if (Input.isJustPressed("down")) {
-                if(this.facing_direction == Player_enums.FACING_DOWN){
-                    this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
-                }
-                this.facing_direction = Player_enums.FACING_DOWN;
-                this.owner.animation.play("face_down");
+                Input.disableInput();
+                this.facing_direction = 2;
+                var next_position = this.nextposition();
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+                this.owner.animation.play("face_2");
             }
             else if (Input.isJustPressed("right")) {
-                if(this.facing_direction == Player_enums.FACING_RIGHT){
-                    this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
-                }
-                this.facing_direction = Player_enums.FACING_RIGHT;
-                this.owner.animation.play("face_right");
+                Input.disableInput();
+                this.facing_direction = 3;
+                var next_position = this.nextposition();
+                this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
+                this.owner.animation.play("face_3");
+            }
+            else if (Input.isJustPressed("rotate_cc")) {
+                this.facing_direction = (this.facing_direction + 1) % 4;
+                this.owner.animation.play("face_" + this.facing_direction);
+            }
+            else if (Input.isJustPressed("rotate_c")) {
+                this.facing_direction = (this.facing_direction + 3) % 4;
+                this.owner.animation.play("face_" + this.facing_direction);
             }
             else if (Input.isJustPressed("interact")) {
                 this.interact();
@@ -98,23 +104,21 @@ export default class PlayerController extends StateMachineAI {
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
                         switch(this.facing_direction){
-                            case Player_enums.FACING_UP:
+                            case 0:
                                 this.owner.move(new Vec2(0, -16).scaled(scaling));
-                                this.owner.animation.play("walking_up");
                                 break;
-                            case Player_enums.FACING_DOWN:
-                                this.owner.move(new Vec2(0, 16).scaled(scaling));
-                                this.owner.animation.play("walking_down");
-                                break;
-                            case Player_enums.FACING_RIGHT:
-                                this.owner.move(new Vec2(16, 0).scaled(scaling));
-                                this.owner.animation.play("walking_right");
-                                break;
-                            case Player_enums.FACING_LEFT:
+                            case 1:
                                 this.owner.move(new Vec2(-16, 0).scaled(scaling));
-                                this.owner.animation.play("walking_left");
+                                break;
+                            case 2:
+                                this.owner.move(new Vec2(0, 16).scaled(scaling));
+                                break;
+                            case 3:
+                                this.owner.move(new Vec2(16, 0).scaled(scaling));
                                 break;
                         }
+                        this.owner.animation.play("walking_" + this.facing_direction);
+                        Input.enableInput();
                     break;
                 }
             }
@@ -125,16 +129,16 @@ export default class PlayerController extends StateMachineAI {
         var posX = this.owner.position.x;
         var posY = this.owner.position.y;
         switch(this.facing_direction){
-            case Player_enums.FACING_DOWN:
-                posY += 16;
-                break;
-            case Player_enums.FACING_UP:
+            case 0:
                 posY -= 16;
                 break;
-            case Player_enums.FACING_LEFT:
+            case 1:
                 posX -= 16;
                 break;
-            case Player_enums.FACING_RIGHT:
+            case 2:
+                posY += 16;
+                break;
+            case 3:
                 posX += 16;
                 break;
             }

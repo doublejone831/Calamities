@@ -3,7 +3,6 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
-import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import Earth from "./Earth";

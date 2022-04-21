@@ -3,10 +3,10 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
-import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import EarthBoss from "./EarthBoss";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Earth extends BaseStage {
     protected endposition : Vec2;
@@ -160,6 +160,9 @@ export default class Earth extends BaseStage {
                     }
                     if(this.gameboard[next.x][next.y] == null){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                    }
+                    else {
+                        Input.enableInput();
                     }
                     break;
             }    

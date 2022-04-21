@@ -11,7 +11,6 @@ import PlayerController from "../Player/PlayerController";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
-import { Player_enums } from "../Player/Player_enums";
 import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import MainMenu from "./MainMenu";
@@ -161,21 +160,21 @@ export default class BaseStage extends Scene {
         this.sceneManager.changeToScene(BaseStage, {});
     }
 
-    pushRock(target: Sprite, targetposX: number, targetposY: number, direction: Player_enums) : void {
+    pushRock(target: Sprite, targetposX: number, targetposY: number, direction: number) : void {
         var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
         var dir;
         switch(direction){
-            case Player_enums.FACING_UP:
+            case 0:
                 dir = new Vec2(0, -1);
                 break;
-            case Player_enums.FACING_DOWN:
-                dir = new Vec2(0, 1);
-                break;
-            case Player_enums.FACING_LEFT:
+            case 1:
                 dir = new Vec2(-1, 0);
                 break;
-            case Player_enums.FACING_RIGHT:
+            case 2:
+                dir = new Vec2(0, 1);
+                break;
+            case 3:
                 dir = new Vec2(1, 0);
                 break;
         }
@@ -207,22 +206,22 @@ export default class BaseStage extends Scene {
         }
     }
 
-    activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Player_enums) : void {
+    activateElement(target: Sprite, targetposX: number, targetposY: number, direction: number) : void {
         var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
         var dir;
         var scaling = 1;
         switch(direction){
-            case Player_enums.FACING_UP:
+            case 0:
                 dir = new Vec2(0, -1);
                 break;
-            case Player_enums.FACING_DOWN:
-                dir = new Vec2(0, 1);
-                break;
-            case Player_enums.FACING_LEFT:
+            case 1:
                 dir = new Vec2(-1, 0);
                 break;
-            case Player_enums.FACING_RIGHT:
+            case 2:
+                dir = new Vec2(0, 1);
+                break;
+            case 3:
                 dir = new Vec2(1, 0);
                 break;
         }

@@ -98,9 +98,8 @@ export default class LevelSelection extends Scene {
         // CTC TODO: ADD THE CHEATS
         if (Input.isKeyJustPressed("y")) {
             console.log("CHEAT: UNLOCK ALL LEVELS");
-        }
-        if (Input.isKeyJustPressed("u")) {
-            console.log("CHEAT: UNLOCK ALL ELEMENTAL SKILS");
+            MainMenu.unlocked.fill(true);
+            this.sceneManager.changeToScene(LevelSelection);
         }
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
