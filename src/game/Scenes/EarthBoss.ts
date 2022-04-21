@@ -46,9 +46,6 @@ export default class EarthBoss extends BaseStage {
         // Add in the tilemap
         this.add.tilemap("level");
 
-        this.endposition.x = 16;
-        this.endposition.y = 15;
-
         this.initializeGameboard();
 
         this.initializePlayer();
@@ -158,11 +155,8 @@ export default class EarthBoss extends BaseStage {
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
+                    if(this.gameboard[next.x][next.y] == null || this.endposition.equals(next)){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                        if(this.endposition.x === next.x && this.endposition.y === next.y){
-                            this.sceneManager.changeToScene(Earth, {});
-                        }
                     }
                     break;
             }    

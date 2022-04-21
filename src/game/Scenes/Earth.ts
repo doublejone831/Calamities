@@ -6,6 +6,7 @@ import ElementController from "../Element/ElementController";
 import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
+import EarthBoss from "./EarthBoss";
 
 export default class Earth extends BaseStage {
     protected endposition : Vec2;
@@ -154,11 +155,11 @@ export default class Earth extends BaseStage {
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
+                    if(this.endposition.equals(next)){
+                        this.sceneManager.changeToScene(EarthBoss, {});
+                    }
+                    if(this.gameboard[next.x][next.y] == null){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                        if(this.endposition == next){
-                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "earth_boss"});
-                        }
                     }
                     break;
             }    
@@ -184,6 +185,9 @@ export default class Earth extends BaseStage {
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
+            if(element.type === "portal") {
+                this.endposition = new Vec2(element.position[0], element.position[1]);
+            }
         }
         //set portal 
         //this.gameboard[this.endposition.x][this.endposition.y] = 

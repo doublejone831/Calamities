@@ -1,0 +1,25 @@
+{
+	"numElements": 5,
+	"elements": [
+		{
+			"position": [4, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [14, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [10, 10],
+			"type": "rock_S"
+		}
+	]
+}
