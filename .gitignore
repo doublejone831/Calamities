@@ -16,5 +16,8 @@ dist/*
 ### IF YOU ARE MAKING A PROJECT, YOU MAY WANT TO UNCOMMENT THIS LINE ###
 # !dist/assets/
 
-package-lock.json
-package.json
+!package-lock.json
+!package.json
+!.firebase
+!.firebasesrc
+!firebase.json
