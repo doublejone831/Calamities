@@ -19,6 +19,7 @@ export default class Earth extends BaseStage {
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
         this.load.object("board", "game_assets/data/earth_board.json");
+        this.load.image("portal", "game_assets/sprites/portal.png")
         /*unlock all powers for testing
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");
@@ -176,11 +177,11 @@ export default class Earth extends BaseStage {
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
+
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
             let sprite = this.add.sprite(element.type, "primary");
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-          //  sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
         }
@@ -196,5 +197,9 @@ export default class Earth extends BaseStage {
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 0;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [false,false,false,false,false]});
+    }
+
+    restartStage() {
+        this.sceneManager.changeToScene(Earth, {});
     }
 }
