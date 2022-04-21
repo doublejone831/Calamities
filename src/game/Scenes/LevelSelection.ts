@@ -9,6 +9,9 @@ import MainMenu from "./MainMenu";
 import Input from "../../Wolfie2D/Input/Input";
 import Earth from "./Earth";
 import Wind from "./Wind";
+import Water from "./Water";
+import Fire from "./Fire";
+import Ice from "./Ice";
 
 export default class LevelSelection extends Scene {
     private levels: Layer;
@@ -82,7 +85,13 @@ export default class LevelSelection extends Scene {
                                 "play-earth",
                                 "play-earth-boss",
                                 "play-wind",
-                                "play-wind-boss"]);
+                                "play-wind-boss",
+                                "play-fire",
+                                "play-fire-boss",
+                                "play-water",
+                                "play-water-boss",
+                                "play-ice",
+                                "play-ice-boss"]);
     }
 
     updateScene(){
@@ -108,6 +117,28 @@ export default class LevelSelection extends Scene {
                 case "play-wind":
                     this.sceneManager.changeToScene(Wind);
                     console.log("Wind stage");
+                    break;
+                case "play-wind-boss":
+                    console.log("play wind boss");
+                    break;
+                case "play-water":
+                    this.sceneManager.changeToScene(Water);
+                    break;
+                case "play-water-boss":
+                    console.log("PLAY WAter BOSS LEVEL");
+                    break;
+                case "play-fire":
+                    this.sceneManager.changeToScene(Fire);
+                    console.log("play fire stage");
+                    break;
+                case "play-fire-boss":
+                    console.log("play fire boss");
+                    break;
+                case "play-ice":
+                    this.sceneManager.changeToScene(Ice);
+                    break;
+                case "play-ice-boss":
+                    console.log("PLAY ICE BOSS LEVEL");
                     break;
             }
 

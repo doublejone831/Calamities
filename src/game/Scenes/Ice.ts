@@ -7,7 +7,7 @@ import { Player_enums } from "../Player/Player_enums";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 
-export default class Wind extends BaseStage {
+export default class Ice extends BaseStage {
     protected endposition : Vec2;
 
     loadScene(){
@@ -17,9 +17,8 @@ export default class Wind extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to wind map
-        this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to wind board
-        /*unlock all powers for testing
+        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to water map
+        this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to water board
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
@@ -30,7 +29,7 @@ export default class Wind extends BaseStage {
         this.load.image("ignite", "game_assets/sprites/ignite.png");
         this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
         this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
-        this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");*/
+        this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
     }
 
     unloadScene(): void {
@@ -126,16 +125,6 @@ export default class Wind extends BaseStage {
                                     }
                                     break;
                             }
-                            
-                        }
-                    }
-                    break;
-                case CTCevent.PLAYER_MOVE_REQUEST:
-                    var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                        if(this.endposition == next){
-                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "wind_boss"});
                         }
                     }
                     break;
@@ -161,6 +150,15 @@ export default class Wind extends BaseStage {
                             this.elementSelected = 5;
                             this.elementGUI.animation.play("ice_equipped");
                             break;
+                    }
+                    break;
+                case CTCevent.PLAYER_MOVE_REQUEST:
+                    var next = event.data.get("next");
+                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        if(this.endposition == next){
+                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "wind_boss"});
+                        }
                     }
                     break;
                 case CTCevent.CHANGE_ELEMENT:
@@ -196,6 +194,6 @@ export default class Wind extends BaseStage {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
     }
 }

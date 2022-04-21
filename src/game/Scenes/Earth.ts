@@ -76,6 +76,8 @@ export default class Earth extends BaseStage {
                     let placeY = event.data.get("positionY");
                     let type = event.data.get("type");
                     if (placeX>=2 && placeX<=17 && placeY>=2 && placeY<=17) {
+                        let player_controller = (<PlayerController>this.player._ai);
+                        player_controller.cast_animation();
                         if (this.gameboard[placeX][placeY] == null) {
                             this.place_element(placeX, placeY, type);
                         } else {
@@ -123,6 +125,30 @@ export default class Earth extends BaseStage {
                             }
                             
                         }
+                    }
+                    break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementSelected = 1;
+                            this.elementGUI.animation.play("earth_equipped");
+                            break;
+                        case 2:
+                            this.elementSelected = 2;
+                            this.elementGUI.animation.play("wind_equipped");
+                            break;
+                        case 3:
+                            this.elementSelected = 3;
+                            this.elementGUI.animation.play("water_equipped");
+                            break;
+                        case 4:
+                            this.elementSelected = 4;
+                            this.elementGUI.animation.play("fire_equipped");
+                            break;
+                        case 5:
+                            this.elementSelected = 5;
+                            this.elementGUI.animation.play("ice_equipped");
+                            break;
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:

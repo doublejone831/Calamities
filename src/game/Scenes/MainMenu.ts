@@ -176,13 +176,13 @@ export default class MainMenu extends Scene {
         this.receiver.subscribe("credits");
 
         if (!MainMenu.unlocked) MainMenu.unlocked = new Array(9).fill(false);
-        MainMenu.unlocked[1] = true;
     }
 
     updateScene(){
         // CTC TODO: ADD THE CHEATS
         if (Input.isKeyJustPressed("y")) {
             console.log("CHEAT: UNLOCK ALL LEVELS");
+            MainMenu.unlocked.fill(true);
         }
         if (Input.isKeyJustPressed("u")) {
             console.log("CHEAT: UNLOCK ALL ELEMENTAL SKILS");

@@ -226,6 +226,8 @@ export default class BaseStage extends Scene {
                 dir = new Vec2(1, 0);
                 break;
         }
+        let player_controller = (<PlayerController>this.player._ai);
+        player_controller.cast_animation();
         switch(target.imageId){
             case "rock_P":
             case "rock_S":
@@ -285,9 +287,10 @@ export default class BaseStage extends Scene {
     }
 
     place_element(placeX: number, placeY: number, type: number){
+        let player_controller = (<PlayerController>this.player._ai);
         switch(type) {
             case 1:
-                if (!(<PlayerController>this.player._ai).hasPower[0]) break;
+                if (!player_controller.hasPower[0]) break;
                 if(this.skillUsed[0]) break;
                 this.skillUsed[0] = true;
                 let place_rock = this.add.sprite("rock_P", "primary");
@@ -296,7 +299,7 @@ export default class BaseStage extends Scene {
                 this.gameboard[placeX][placeY] = place_rock;
                 break;
             case 2:
-                if (!(<PlayerController>this.player._ai).hasPower[1]) break;
+                if (!player_controller.hasPower[1]) break;
                 if(this.skillUsed[1]) break;
                 this.skillUsed[1] = true;
                 let place_wind = this.add.animatedSprite("whirlwind", "primary");
@@ -306,7 +309,7 @@ export default class BaseStage extends Scene {
                 this.gameboard[placeX][placeY] = place_wind;
                 break;
             case 3:
-                if (!(<PlayerController>this.player._ai).hasPower[2]) break;
+                if (!player_controller.hasPower[2]) break;
                 if(this.skillUsed[2]) break;
                 this.skillUsed[2] = true;
                 let place_water = this.add.sprite("bubble", "primary");
@@ -315,7 +318,7 @@ export default class BaseStage extends Scene {
                 this.gameboard[placeX][placeY] = place_water;
                 break;
             case 4:
-                if (!(<PlayerController>this.player._ai).hasPower[3]) break;
+                if (!player_controller.hasPower[3]) break;
                 if(this.skillUsed[3]) break;
                 this.skillUsed[3] = true;
                 let place_fire = this.add.animatedSprite("ember", "primary");
@@ -325,7 +328,7 @@ export default class BaseStage extends Scene {
                 this.gameboard[placeX][placeY] = place_fire;
                 break;
             case 5:
-                if (!(<PlayerController>this.player._ai).hasPower[4]) break;
+                if (!player_controller.hasPower[4]) break;
                 if(this.skillUsed[4]) break;
                 this.skillUsed[4] = true;
                 let place_ice = this.add.sprite("ice_cube", "primary");

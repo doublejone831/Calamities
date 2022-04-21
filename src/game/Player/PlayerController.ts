@@ -20,7 +20,7 @@ export default class PlayerController extends StateMachineAI {
 
         this.tilemap = this.owner.getScene().getTilemap(options.tilemap) as OrthogonalTilemap;
 
-        this.selectedElement = 0;
+        this.selectedElement = 1;
 
         this.facing_direction = Player_enums.FACING_DOWN;
 
@@ -64,11 +64,9 @@ export default class PlayerController extends StateMachineAI {
                 this.owner.animation.play("face_right");
             }
             else if (Input.isJustPressed("interact")) {
-                this.owner.animation.play("casting_" + this.facing_direction);
                 this.interact();
             }
             else if (Input.isJustPressed("place")) {
-                this.owner.animation.play("casting_" + this.facing_direction);
                 this.placing_element();
                 
             }
@@ -164,4 +162,7 @@ export default class PlayerController extends StateMachineAI {
         this.emitter.fireEvent(CTCevent.PLACE_ELEMENT, {"positionX": next.x, "positionY": next.y, "type": this.selectedElement});
     }
 
+    cast_animation(){
+        this.owner.animation.play("casting_" + this.facing_direction);
+    }
 }
