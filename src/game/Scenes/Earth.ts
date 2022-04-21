@@ -166,7 +166,7 @@ export default class Earth extends BaseStage {
         this.player = this.add.animatedSprite("god", "primary");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
-//        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
+        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 0;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [false,false,false,false,false]});
