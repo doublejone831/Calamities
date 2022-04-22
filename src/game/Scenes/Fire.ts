@@ -5,6 +5,7 @@ import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Fire extends BaseStage {
     protected endposition : Vec2;
@@ -154,12 +155,16 @@ export default class Fire extends BaseStage {
                 }
                 break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
+                    if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition == next){
+                    if(this.endposition.equals(next)){
+                        //this.sceneManager.changeToScene(FireBoss, {});
+                    }
+                    if(this.gameboard[next.x][next.y] == null){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                        if(this.endposition == next){
-                            this.emitter.fireEvent(CTCevent.END_LEVEL, {"nextlevel" : "wind_boss"});
-                        }
+                    }
+                    else {
+                        Input.enableInput();
                     }
                     break;
                 case CTCevent.CHANGE_ELEMENT:
@@ -183,6 +188,9 @@ export default class Fire extends BaseStage {
            // sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
             sprite.addAI(ElementController, {});
             this.gameboard[element.position[0]][element.position[1]] = sprite;
+            if(element.type === "portal") {
+                this.endposition = new Vec2(element.position[0], element.position[1]);
+            }
         }
         //set portal 
         //this.gameboard[this.endposition.x][this.endposition.y] = 
