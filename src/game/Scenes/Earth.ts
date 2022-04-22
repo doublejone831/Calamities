@@ -154,6 +154,7 @@ export default class Earth extends BaseStage {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
+                    if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
                     if(this.endposition.equals(next)){
                         this.sceneManager.changeToScene(EarthBoss, {});
