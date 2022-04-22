@@ -19,6 +19,7 @@ export default class BaseStage extends Scene {
     // Pausing
     static paused: Boolean;
     private pauseGUI: Layer;
+    private pauseMenuControls: Layer;
     private pauseReceiver: Receiver;
     // Map
     private walls: OrthogonalTilemap;
@@ -59,6 +60,34 @@ export default class BaseStage extends Scene {
         let pauseText = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(3*16, 16), text: "GAME PAUSED"});
         pauseText.textColor = Color.WHITE;
 
+        const pauseControlsLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 15*16), text: "Controls"});
+        pauseControlsLabel.size.set(200, 50);
+        pauseControlsLabel.borderWidth = 2;
+        pauseControlsLabel.borderColor = Color.BLACK;
+        pauseControlsLabel.backgroundColor = new Color(0,255,213);
+        pauseControlsLabel.textColor = Color.BLACK;
+
+        const pauseControlsButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 15*16), text: ""});
+        pauseControlsButton.backgroundColor = new Color(0,0,0,0);
+        pauseControlsButton.borderColor = pauseControlsButton.backgroundColor;
+        pauseControlsButton.size.set(200/2.5,50/2.5);
+        pauseControlsButton.onClickEventId = "controls_popup";
+
+        this.pauseMenuControls = this.addUILayer("pauseMenuControls");
+        this.pauseMenuControls.setHidden(true);
+
+        const pauseControlsBackground = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(7*16, 10*16), text: ""});
+        pauseControlsBackground.backgroundColor = new Color(214,179,179,1);
+        pauseControlsBackground.size.set(500,650);
+
+        const pauseControlsL1 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y - 110), text: "Controls"});
+        const pauseControlsL2 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y - 60), text: "W,A,S,D - Move Player"});
+        const pauseControlsL3 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y - 30), text: "Q,E - Rotate Player"});
+        const pauseControlsL4 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y), text: "1,2,3,4,5 - Switch Element"});
+        const pauseControlsL5 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y + 30), text: "J - Interact With Element"});
+        const pauseControlsL6 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y + 60), text: "K - Place/Remove Element"});
+        const pauseControlsL7 = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenuControls", {position: new Vec2(pauseControlsBackground.position.x, pauseControlsBackground.position.y + 90), text: "ESC - Unpause"});
+
         const pauseMainMenuLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 19*16), text: "Main Menu"});
         pauseMainMenuLabel.size.set(200, 50);
         pauseMainMenuLabel.borderWidth = 2;
@@ -67,10 +96,7 @@ export default class BaseStage extends Scene {
         pauseMainMenuLabel.textColor = Color.BLACK;
 
         const pauseMainMenuButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 19*16), text: ""});
-        pauseMainMenuButton.backgroundColor = new Color(0,0,0,0);
-        pauseMainMenuButton.borderColor = pauseMainMenuButton.backgroundColor;
-        pauseMainMenuButton.size.set(200/2.5,50/2.5);
-        pauseMainMenuButton.onClickEventId = "back_to_menu";
+        pauseMainMenuButton.clone(pauseControlsButton, "back_to_menu", true);
 
         const pauseRestartLabel = <Label>this.add.uiElement(UIElementType.LABEL, "pauseMenu", {position: new Vec2(17*16, 17*16), text: "Restart Level"});
         pauseRestartLabel.size.set(200, 50);
@@ -80,7 +106,7 @@ export default class BaseStage extends Scene {
         pauseRestartLabel.textColor = Color.BLACK;
 
         const pauseRestartButton = <Button>this.add.uiElement(UIElementType.BUTTON, "pauseMenu", {position: new Vec2(17*16, 17*16), text: ""});
-        pauseRestartButton.clone(pauseMainMenuButton, "restart", true);
+        pauseRestartButton.clone(pauseControlsButton, "restart", true);
 
         BaseStage.paused = false;
 
@@ -94,6 +120,7 @@ export default class BaseStage extends Scene {
                                 ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
+                                CTCevent.CONTROLS_POPUP,
                                 CTCevent.BACK_TO_MENU,
                                 CTCevent.RESTART_STAGE,
                                 CTCevent.TOGGLE_PAUSE
@@ -112,6 +139,7 @@ export default class BaseStage extends Scene {
                         this.pauseAnimations(); 
                     } else {
                         this.pauseGUI.setHidden(true);
+                        this.pauseMenuControls.setHidden(true);
                         this.resumeAnimations();
                     }
                     BaseStage.paused = !BaseStage.paused;
@@ -126,6 +154,11 @@ export default class BaseStage extends Scene {
                     break;
                 case CTCevent.RESTART_STAGE:
                     if(BaseStage.paused) this.restartStage();
+                    break;
+                case CTCevent.CONTROLS_POPUP:
+                    if(BaseStage.paused) {
+                        this.pauseMenuControls.setHidden(!this.pauseMenuControls.isHidden());
+                    }
                     break;
             }
         }

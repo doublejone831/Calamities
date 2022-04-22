@@ -7,6 +7,7 @@ export enum CTCevent{
     END_LEVEL = "end_level",
     CHANGE_ELEMENT = "change_element",
     RESTART_STAGE = "restart",
+    CONTROLS_POPUP = "controls_popup",
     BACK_TO_MENU = "back_to_menu",
     TOGGLE_PAUSE = "toggle_pause"
 }
