@@ -1,0 +1,41 @@
+{
+	"numElements": 9,
+	"elements": [
+		{
+			"position": [4, 4],
+			"type": "rock_L"
+		},
+		{
+			"position":[5, 4],
+			"type": "rock_M"
+		},
+		{
+			"position": [6, 4],
+			"type": "rock_S"
+		},
+		{
+			"position": [7, 4],
+			"type": "gust"
+		},
+		{
+			"position": [8, 4],
+			"type": "shallow_water"
+		},
+        {
+			"position": [9, 4],
+			"type": "deep_water"
+		},
+        {
+			"position": [10, 4],
+			"type": "flames"
+		},
+        {
+			"position": [12, 4],
+			"type": "airstream"
+		},
+		{
+			"position": [16, 4],
+			"type": "portal"
+		}
+	]
+}

@@ -240,7 +240,6 @@ export default class BaseStage extends Scene {
     }
 
     activateElement(target: Sprite, targetposX: number, targetposY: number, direction: number) : void {
-        var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
         var dir;
         var scaling = 1;
@@ -279,31 +278,9 @@ export default class BaseStage extends Scene {
                 }
                 break;
             case "whirlwind":
-                /*
-                this.player.tweens.add("fly", {
-                    startDelay: 0,
-                    duration: 500,
-                    effects: [
-                        {
-                            property: this.player.position,
-                            start: this.player.position,
-                            end: dest,
-                            ease: EaseFunctionType.IN_OUT_QUAD
-                        }
-                    ]
-                });*/
                 if(this.elementSelected != 2) break;
                 this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
-                scaling = 3;
-                dest.add(dir.scaled(2));
-                for(var i = 0; i<2; i++){
-                    if(dest.x>=2 && dest.y>=2 && dest.x<=17 && dest.y<=17 && this.gameboard[dest.x][dest.y] == null) break;    
-                    dest.sub(dir);
-                    scaling--;
-                    
-                }
-                this.player.position.set(dest.x*16+8, dest.y*16+8);
                 this.skillUsed[1] = false;
                 break;
             case "bubble":
@@ -327,7 +304,6 @@ export default class BaseStage extends Scene {
                 this.skillUsed[0] = true;
                 let place_rock = this.add.sprite("rock_P", "primary");
                 place_rock.position.set(placeX*16+8, placeY*16+8);
-                place_rock.addAI(ElementController, {});
                 this.gameboard[placeX][placeY] = place_rock;
                 break;
             case 2:
@@ -337,7 +313,6 @@ export default class BaseStage extends Scene {
                 let place_wind = this.add.animatedSprite("whirlwind", "primary");
                 place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
                 place_wind.animation.play("idle");
-                place_wind.addAI(ElementController, {});
                 this.gameboard[placeX][placeY] = place_wind;
                 break;
             case 3:
@@ -346,7 +321,6 @@ export default class BaseStage extends Scene {
                 this.skillUsed[2] = true;
                 let place_water = this.add.sprite("bubble", "primary");
                 place_water.position.set(placeX*16+8, placeY*16+8);
-                place_water.addAI(ElementController, {});
                 this.gameboard[placeX][placeY] = place_water;
                 break;
             case 4:
@@ -356,7 +330,6 @@ export default class BaseStage extends Scene {
                 let place_fire = this.add.animatedSprite("ember", "primary");
                 place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
                 place_fire.animation.play("idle");
-                place_fire.addAI(ElementController, {});
                 this.gameboard[placeX][placeY] = place_fire;
                 break;
             case 5:
@@ -365,10 +338,31 @@ export default class BaseStage extends Scene {
                 this.skillUsed[4] = true;
                 let place_ice = this.add.sprite("ice_cube", "primary");
                 place_ice.position.set(placeX*16+8, placeY*16+8);
-                place_ice.addAI(ElementController, {});
                 this.gameboard[placeX][placeY] = place_ice;
                 break;
         }
+    }
+
+    whirlwind_fly(posX: number, posY: number){
+        let wind = this.gameboard[posX][posY];
+        wind.destroy();
+        this.gameboard[posX][posY] = null;
+        this.skillUsed[1] = false;
+    }
+
+    bubble_shield(posX: number, posY: number){
+        let bubble = this.gameboard[posX][posY];
+        bubble.destroy();
+        this.gameboard[posX][posY] = null;
+        (<PlayerController>this.player._ai).gainShield(true);
+        this.skillUsed[2] = false;
+    }
+
+    ember_extinguish(posX: number, posY: number){
+        let ember = this.gameboard[posX][posY];
+        ember.destroy();
+        this.gameboard[posX][posY] = null;
+        this.skillUsed[3] = false;
     }
 
     // position in pixels to position to row col

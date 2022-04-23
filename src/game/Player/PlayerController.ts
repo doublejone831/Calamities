@@ -13,6 +13,7 @@ export default class PlayerController extends StateMachineAI {
     //indicate which direction player facing
     facing_direction: number; //0=up, 1=left, 2=down, 3=right
     hasPower: Array<Boolean>;
+    hasShield: boolean;
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
@@ -25,7 +26,9 @@ export default class PlayerController extends StateMachineAI {
 
         this.hasPower = options.hasPower;
 
-        this.receiver.subscribe([CTCevent.PLAYER_MOVE])
+        this.hasShield = false;
+
+        this.receiver.subscribe([CTCevent.PLAYER_MOVE, CTCevent.FLY])
     }
 
     update(deltaT: number): void {
@@ -97,29 +100,37 @@ export default class PlayerController extends StateMachineAI {
                 this.emitter.fireEvent(CTCevent.CHANGE_ELEMENT, {"el" : this.selectedElement});
             }
             
-            // CTC TODO: if the level-end portal is a tile, use this.tilemap field here to fire the LEVEL_END event (should be similar to HW5 testing if switch is below player)
             while(this.receiver.hasNextEvent()){
                 let event = this.receiver.getNextEvent();
-                let scaling = event.data.get("scaling");
+                var dir;
+                switch(this.facing_direction) {
+                    case 0:
+                        dir = new Vec2(0, -1);
+                        break;
+                    case 1:
+                        dir = new Vec2(-1, 0);
+                        break;
+                    case 2:
+                        dir = new Vec2(0, 1);
+                        break;
+                    case 3:
+                        dir = new Vec2(1, 0);
+                        break;
+                }
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
-                        switch(this.facing_direction){
-                            case 0:
-                                this.owner.move(new Vec2(0, -16).scaled(scaling));
-                                break;
-                            case 1:
-                                this.owner.move(new Vec2(-16, 0).scaled(scaling));
-                                break;
-                            case 2:
-                                this.owner.move(new Vec2(0, 16).scaled(scaling));
-                                break;
-                            case 3:
-                                this.owner.move(new Vec2(16, 0).scaled(scaling));
-                                break;
-                        }
+                        let scaling = event.data.get("scaling");
+                        this.owner.move(dir.scaled(16*scaling));
                         this.owner.animation.play("walking_" + this.facing_direction);
                         Input.enableInput();
-                    break;
+                        break;
+                    case CTCevent.FLY:
+                        let next = this.nextposition();
+                        for(var i = 0; i<3; i++) {
+                            next.add(dir.scaled(i));
+                            this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next": next});
+                        }
+                        break;
                 }
             }
         }
@@ -145,6 +156,10 @@ export default class PlayerController extends StateMachineAI {
             // not absolute coordinant => Index of gameboard
             var next_position = this.sprite_pos_to_board_pos(posX, posY);
             return next_position;
+    }
+
+    gainShield(shield: boolean){
+        this.hasShield = shield;
     }
 
     // position in pixels to position to row col

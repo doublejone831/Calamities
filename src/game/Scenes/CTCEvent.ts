@@ -9,5 +9,6 @@ export enum CTCevent{
     RESTART_STAGE = "restart",
     CONTROLS_POPUP = "controls_popup",
     BACK_TO_MENU = "back_to_menu",
-    TOGGLE_PAUSE = "toggle_pause"
+    TOGGLE_PAUSE = "toggle_pause",
+    FLY = "fly",
 }

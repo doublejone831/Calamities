@@ -6,6 +6,7 @@ import ElementController from "../Element/ElementController";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import Input from "../../Wolfie2D/Input/Input";
+import MainMenu from "./MainMenu";
 
 export default class Ice extends BaseStage {
     protected endposition : Vec2;
@@ -17,14 +18,15 @@ export default class Ice extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to water map
-        this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to water board
+        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to ice map
+        this.load.object("board", "game_assets/data/test_board.json");// TODO: switch to ice board
         this.load.image("portal", "game_assets/sprites/portal.png");
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
+        this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
         this.load.image("flames", "game_assets/sprites/flames.png");
         this.load.image("ignite", "game_assets/sprites/ignite.png");
@@ -61,7 +63,6 @@ export default class Ice extends BaseStage {
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
-                // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
                 case CTCevent.INTERACT_ELEMENT:
                     console.log("interact happened");
                     console.log(event.data.get("positionX"));
@@ -157,13 +158,34 @@ export default class Ice extends BaseStage {
                     if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
                     if(this.endposition.equals(next)){
-                        //this.sceneManager.changeToScene(IceBoss, {});
+                        this.sceneManager.changeToScene(MainMenu, {});
                     }
-                    if(this.gameboard[next.x][next.y] == null){
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                    }
-                    else {
-                        Input.enableInput();
+                    if(this.gameboard[next.x][next.y]){
+                        switch(this.gameboard[next.x][next.y].imageId){
+                            case "rock_P":
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "ice_cube":
+                                Input.enableInput();
+                                break;
+                            case "whirlwind":
+                                this.whirlwind_fly(next.x, next.y);
+                                this.emitter.fireEvent(CTCevent.FLY);  
+                                break;
+                            case "bubble":
+                                this.bubble_shield(next.x, next.y);
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                                break;
+                            case "ember":
+                                this.ember_extinguish(next.x, next.y);
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                                break;
+                            default:
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        }
+                    } else {
+                       this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
                     }
                     break;
                 case CTCevent.CHANGE_ELEMENT:
@@ -182,17 +204,20 @@ export default class Ice extends BaseStage {
         let boardData = this.load.getObject("board");
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
-            let sprite = this.add.sprite(element.type, "primary");
+            var sprite;
+            if(element.type === "airstream") {
+                sprite = this.add.animatedSprite(element.type, "primary");
+                sprite.animation.play("stream");
+            } else {
+                sprite = this.add.sprite(element.type, "primary");
+            }
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-           // sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-            sprite.addAI(ElementController, {});
+            sprite.addAI(ElementController, {}); // useless?
             this.gameboard[element.position[0]][element.position[1]] = sprite;
             if(element.type === "portal") {
                 this.endposition = new Vec2(element.position[0], element.position[1]);
             }
         }
-        //set portal 
-        //this.gameboard[this.endposition.x][this.endposition.y] = 
     }
 
     initializePlayer(): void {

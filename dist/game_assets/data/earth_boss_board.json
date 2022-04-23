@@ -1,5 +1,5 @@
 {
-	"numElements": 5,
+	"numElements": 6,
 	"elements": [
 		{
 			"position": [4, 4],
@@ -18,8 +18,12 @@
 			"type": "rock_M"
 		},
 		{
-			"position": [10, 10],
+			"position": [6, 7],
 			"type": "rock_S"
+		},
+		{
+			"position": [16, 16],
+			"type": "portal"
 		}
 	]
 }
