@@ -13,6 +13,7 @@ export default class PlayerController extends StateMachineAI {
     //indicate which direction player facing
     facing_direction: number; //0=up, 1=left, 2=down, 3=right
     hasPower: Array<Boolean>;
+    inFlight: number;
     hasShield: boolean;
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
@@ -25,7 +26,7 @@ export default class PlayerController extends StateMachineAI {
         this.facing_direction = 2; //start down
 
         this.hasPower = options.hasPower;
-
+        this.inFlight = 0;
         this.hasShield = false;
 
         this.receiver.subscribe([CTCevent.PLAYER_MOVE, CTCevent.FLY])
@@ -101,61 +102,41 @@ export default class PlayerController extends StateMachineAI {
             }
             
             while(this.receiver.hasNextEvent()){
-                let event = this.receiver.getNextEvent();
+                let event = this.receiver.getNextEvent();  
                 var dir;
-                switch(this.facing_direction) {
-                    case 0:
-                        dir = new Vec2(0, -1);
-                        break;
-                    case 1:
-                        dir = new Vec2(-1, 0);
-                        break;
-                    case 2:
-                        dir = new Vec2(0, 1);
-                        break;
-                    case 3:
-                        dir = new Vec2(1, 0);
-                        break;
-                }
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
                         let scaling = event.data.get("scaling");
-                        this.owner.move(dir.scaled(16*scaling));
+                        dir = this.dirUnitVector(16);
+                        this.owner.move(dir.scaled(scaling));
                         this.owner.animation.play("walking_" + this.facing_direction);
                         Input.enableInput();
-                        break;
+                        break;/*
                     case CTCevent.FLY:
-                        let next = this.nextposition();
-                        for(var i = 0; i<3; i++) {
-                            next.add(dir.scaled(i));
-                            this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next": next});
+                        let clear = event.data.get("clear");
+                        dir = this.dirUnitVector();
+                        if(clear){
+                            this.owner.move(dir.scaled(16));
                         }
-                        break;
+                        this.inFlight--;
+                        if(this.inFlight>0) {
+                            this.emitter.fireEvent(CTCevent.FLYING, {"dir": dir.scaled(this.inFlight)});
+                        }
+                        break;*/
                 }
             }
         }
 	}
 
     nextposition(){
-        var posX = this.owner.position.x;
-        var posY = this.owner.position.y;
-        switch(this.facing_direction){
-            case 0:
-                posY -= 16;
-                break;
-            case 1:
-                posX -= 16;
-                break;
-            case 2:
-                posY += 16;
-                break;
-            case 3:
-                posX += 16;
-                break;
-            }
-            // not absolute coordinant => Index of gameboard
-            var next_position = this.sprite_pos_to_board_pos(posX, posY);
-            return next_position;
+        // not absolute coordinant => Index of gameboard
+        let playerPos = new Vec2(this.owner.position.x, this.owner.position.y);
+        var next_position = playerPos.add(this.dirUnitVector(16));
+        return this.sprite_pos_to_board_pos(next_position.x, next_position.y);
+    }
+
+    takeFlight(){
+        this.inFlight = 3;
     }
 
     gainShield(shield: boolean){
@@ -170,6 +151,31 @@ export default class PlayerController extends StateMachineAI {
     // position in row col to pixels
     board_pos_to_sprite_pos(posX: number, posY: number){
         return new Vec2(16*posX+8, 16*posY+8);
+    }
+
+    dirUnitVector(scaling: number = null){
+        var dir;
+        var scale;
+        if(scaling !== null) {
+            scale = scaling;
+        } else {
+            scale = 1;
+        }
+        switch(this.facing_direction) {
+            case 0:
+                dir = new Vec2(0, -1);
+                break;
+            case 1:
+                dir = new Vec2(-1, 0);
+                break;
+            case 2:
+                dir = new Vec2(0, 1);
+                break;
+            case 3:
+                dir = new Vec2(1, 0);
+                break;
+        }
+        return dir.scaled(scale);
     }
 
     interact(){

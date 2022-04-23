@@ -1,5 +1,5 @@
 {
-	"numElements": 9,
+	"numElements": 10,
 	"elements": [
 		{
 			"position": [4, 4],
@@ -32,6 +32,10 @@
         {
 			"position": [12, 4],
 			"type": "airstream"
+		},
+		{
+			"position": [13,4],
+			"type": "wave"
 		},
 		{
 			"position": [16, 4],

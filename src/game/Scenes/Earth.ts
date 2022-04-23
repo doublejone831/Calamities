@@ -129,7 +129,7 @@ export default class Earth extends BaseStage {
                         }
                     }
                     break;
-                case CTCevent.CHANGE_ELEMENT:
+         /*       case CTCevent.CHANGE_ELEMENT:
                     switch(event.data.get("el")){
                         case 1:
                             this.elementSelected = 1;
@@ -141,7 +141,7 @@ export default class Earth extends BaseStage {
                             break;
                         case 3:
                             this.elementSelected = 3;
-                            this.elementGUI.animation.play("water_equipped");
+                            this    .elementGUI.animation.play("water_equipped");
                             break;
                         case 4:
                             this.elementSelected = 4;
@@ -152,7 +152,7 @@ export default class Earth extends BaseStage {
                             this.elementGUI.animation.play("ice_equipped");
                             break;
                     }
-                    break;
+                    break*/
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");

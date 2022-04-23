@@ -29,6 +29,7 @@ export default class BaseStage extends Scene {
     player: AnimatedSprite;
     skillUsed: Array<boolean>;
     elementSelected: number;
+    inAir: boolean;
     // GUI
     elementGUI: AnimatedSprite;
     // Viewport
@@ -260,11 +261,33 @@ export default class BaseStage extends Scene {
         let player_controller = (<PlayerController>this.player._ai);
         player_controller.cast_animation();
         switch(target.imageId){
-            case "rock_P":
             case "rock_S":
+                if(this.elementSelected!=1) break;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 ||this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                this.gameboard[targetposX][targetposY] = null;
+                this.gameboard[dest.x][dest.y] = target;
+                targetposX = dest.x;
+                targetposY = dest.y;
             case "rock_M":
+                if(this.elementSelected!=1) break;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                this.gameboard[targetposX][targetposY] = null;
+                this.gameboard[dest.x][dest.y] = target;
+                targetposX = dest.x;
+                targetposY = dest.y;
             case "rock_L":
-                if(this.elementSelected == 0) this.pushRock(target, targetposX, targetposY, direction);
+                if(this.elementSelected!=1) break;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
+                dest.add(dir);
+                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                this.gameboard[targetposX][targetposY] = null;
+                this.gameboard[dest.x][dest.y] = target;
+                break;
+            case "rock_P":
                 if(this.elementSelected != 1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
                 while(this.gameboard[dest.x+dir.x][dest.y+dir.y] == null) {
@@ -348,6 +371,9 @@ export default class BaseStage extends Scene {
         wind.destroy();
         this.gameboard[posX][posY] = null;
         this.skillUsed[1] = false;
+        this.inAir = true;
+        (<PlayerController>this.player._ai).takeFlight();
+    //    this.emitter.fireEvent(CTCevent.FLY, {"clear": false});
     }
 
     bubble_shield(posX: number, posY: number){

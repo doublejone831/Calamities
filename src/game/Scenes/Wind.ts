@@ -17,8 +17,8 @@ export default class Wind extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to wind map
-        this.load.object("board", "game_assets/data/earth_board.json");// TODO: switch to wind board
+        this.load.tilemap("level", "game_assets/tilemaps/wind.json");// TODO: switch to wind map
+        this.load.object("board", "game_assets/data/wind_board.json");// TODO: switch to wind board
         this.load.image("portal", "game_assets/sprites/portal.png");
         /*unlock all powers for testing
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
@@ -62,7 +62,6 @@ export default class Wind extends BaseStage {
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
-                // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
                 case CTCevent.INTERACT_ELEMENT:
                     console.log("interact happened");
                     console.log(event.data.get("positionX"));
@@ -135,7 +134,7 @@ export default class Wind extends BaseStage {
                     if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
                     if(this.endposition.equals(next)){
-                        //this.sceneManager.changeToScene(WindBoss, {});
+                        this.sceneManager.changeToScene(Wind, {});
                     }
                     if(this.gameboard[next.x][next.y] == null){
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
@@ -178,23 +177,51 @@ export default class Wind extends BaseStage {
                     break;
             }    
         }
+        if(!this.inAir) {
+            let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+            let pRow = playerPosInBoard.x;
+            let pCol = playerPosInBoard.y;
+            if(this.gameboard[pRow][pCol]){
+                switch(this.gameboard[pRow][pCol].imageId){
+                    case "rock_P":
+                    case "rock_S":
+                    case "rock_M":
+                    case "rock_L":
+                    case "ice_cube":
+                        Input.enableInput();
+                        break;
+                    case "whirlwind":
+                        this.whirlwind_fly(pRow, pCol);
+                        break;
+                    case "bubble":
+                        this.bubble_shield(next.x, next.y);
+                        break;
+                    case "ember":
+                        this.ember_extinguish(next.x, next.y);
+                        break;
+                }
+            }
+        }
     };
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
-            let sprite = this.add.sprite(element.type, "primary");
+            var sprite;
+            if(element.type === "airstream") {
+                sprite = this.add.animatedSprite(element.type, "primary");
+                sprite.animation.play("stream");
+            } else {
+                sprite = this.add.sprite(element.type, "primary");
+            }
             sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-           // sprite.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
-            sprite.addAI(ElementController, {});
+            sprite.addAI(ElementController, {}); // useless?
             this.gameboard[element.position[0]][element.position[1]] = sprite;
             if(element.type === "portal") {
                 this.endposition = new Vec2(element.position[0], element.position[1]);
             }
         }
-        //set portal 
-        //this.gameboard[this.endposition.x][this.endposition.y] = 
     }
 
     initializePlayer(): void {
@@ -204,6 +231,7 @@ export default class Wind extends BaseStage {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
+        this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
     }
 }

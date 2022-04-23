@@ -18,13 +18,14 @@ export default class Ice extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");// TODO: switch to ice map
+        this.load.tilemap("level", "game_assets/tilemaps/ice.json");// TODO: switch to ice map
         this.load.object("board", "game_assets/data/test_board.json");// TODO: switch to ice board
         this.load.image("portal", "game_assets/sprites/portal.png");
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("gust", "game_assets/sprites/gust.png");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
+        this.load.image("wave", "game_assets/sprites/wave.png");
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
@@ -158,34 +159,12 @@ export default class Ice extends BaseStage {
                     if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
                     if(this.endposition.equals(next)){
-                        this.sceneManager.changeToScene(MainMenu, {});
+                        this.sceneManager.changeToScene(Ice, {});
                     }
-                    if(this.gameboard[next.x][next.y]){
-                        switch(this.gameboard[next.x][next.y].imageId){
-                            case "rock_P":
-                            case "rock_S":
-                            case "rock_M":
-                            case "rock_L":
-                            case "ice_cube":
-                                Input.enableInput();
-                                break;
-                            case "whirlwind":
-                                this.whirlwind_fly(next.x, next.y);
-                                this.emitter.fireEvent(CTCevent.FLY);  
-                                break;
-                            case "bubble":
-                                this.bubble_shield(next.x, next.y);
-                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                                break;
-                            case "ember":
-                                this.ember_extinguish(next.x, next.y);
-                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                                break;
-                            default:
-                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
-                        }
+                    if(this.gameboard[next.x][next.y] == null){
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
                     } else {
-                       this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        Input.enableInput();
                     }
                     break;
                 case CTCevent.CHANGE_ELEMENT:
@@ -196,7 +175,42 @@ export default class Ice extends BaseStage {
                             break;
                     }
                     break;
+                case CTCevent.FLYING:
+                    let moveVec = event.data.get("dir");
+                    let playerBoardVec = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+                    let nextVec = playerBoardVec.add(moveVec);
+                    let nextVec2 = nextVec.add(moveVec);
+                    let nextBox = this.gameboard[nextVec.x][nextVec.y];
+                    let nextBox2 = this.gameboard[nextVec2.x][nextVec2.y];
+                    if(nextBox2 == null){
+                        this.emitter.fireEvent(CTCevent.FLY, {"clear": true});
+                    }
             }    
+        }
+        if(!this.inAir) {
+            let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+            let pRow = playerPosInBoard.x;
+            let pCol = playerPosInBoard.y;
+            if(this.gameboard[pRow][pCol]){
+                switch(this.gameboard[pRow][pCol].imageId){
+                    case "rock_P":
+                    case "rock_S":
+                    case "rock_M":
+                    case "rock_L":
+                    case "ice_cube":
+                        Input.enableInput();
+                        break;
+                    case "whirlwind":
+                        this.whirlwind_fly(pRow, pCol);
+                        break;
+                    case "bubble":
+                        this.bubble_shield(next.x, next.y);
+                        break;
+                    case "ember":
+                        this.ember_extinguish(next.x, next.y);
+                        break;
+                }
+            }
         }
     };
 
@@ -227,6 +241,7 @@ export default class Ice extends BaseStage {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
+        this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
     }
 }
