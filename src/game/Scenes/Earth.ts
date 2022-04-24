@@ -9,7 +9,6 @@ import EarthBoss from "./EarthBoss";
 import Input from "../../Wolfie2D/Input/Input";
 
 export default class Earth extends BaseStage {
-    protected endposition : Vec2;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");

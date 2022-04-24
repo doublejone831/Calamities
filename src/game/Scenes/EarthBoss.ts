@@ -1,13 +1,18 @@
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
 import ElementController from "../Element/ElementController";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
-import Earth from "./Earth";
+import Input from "../../Wolfie2D/Input/Input";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import BossController from "../Boss/BossController";
+
 export default class EarthBoss extends BaseStage {
-    protected endposition : Vec2;
+    private boss: AnimatedSprite;
+    protected pos1: Vec2;
+    protected pos2: Vec2;
+    protected pos3: Vec2;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");
@@ -15,28 +20,20 @@ export default class EarthBoss extends BaseStage {
         this.load.image("rock_L", "game_assets/sprites/rock_L.png");
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
+        this.load.spritesheet("boss", "game_assets/spritesheets/boss_earth.json");
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
-        this.load.tilemap("level", "game_assets/tilemaps/earth.json");
+        this.load.tilemap("level", "game_assets/tilemaps/ice.json");
         this.load.object("board", "game_assets/data/earth_boss_board.json");
-        this.load.image("portal", "game_assets/sprites/portal.png")
-        /*unlock all powers for testing
-        this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
-        this.load.image("gust", "game_assets/sprites/gust.png");
-        this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
-        this.load.image("bubble", "game_assets/sprites/bubble.png");
-        this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
-        this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
-        this.load.image("flames", "game_assets/sprites/flames.png");
-        this.load.image("ignite", "game_assets/sprites/ignite.png");
-        this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
-        this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
-        this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");*/
+        this.load.image("portal", "game_assets/sprites/portal.png");
     }
 
     unloadScene(): void {
+        this.load.keepImage("rock_S");
         this.load.keepImage("rock_M");
+        this.load.keepImage("rock_L");
         this.load.keepSpritesheet("god");
         this.load.keepSpritesheet("element_equipped");
+        this.load.keepImage("portal");
         this.load.unloadAllResources();
     }
 
@@ -49,27 +46,26 @@ export default class EarthBoss extends BaseStage {
 
         this.initializePlayer();
 
+        this.initializeBoss();
+
         this.elementGUI.animation.play("none_equipped");
 
     }
 
     updateScene(deltaT: number): void{
         super.updateScene(deltaT);
+        let player_controller = (<PlayerController>this.player._ai);
+        let dirVec = player_controller.dirUnitVector();
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
-                // CTC TODO: interacting and placing (if placing then have to account for the walls so you cant place there)
                 case CTCevent.INTERACT_ELEMENT:
-                    console.log("interact happened");
-                    console.log(event.data.get("positionX"));
-                    console.log(event.data.get("positionY"));
                     var targetposX = event.data.get("positionX");
                     var targetposY = event.data.get("positionY");
-                    var direction = event.data.get("direction");
                     var target = this.gameboard[targetposX][targetposY];
                     if(target != null) {
-                        this.pushRock(target, targetposX, targetposY, direction);
+                        this.activateElement(target, targetposX, targetposY, dirVec);
                     }
                     break;
                 case CTCevent.PLACE_ELEMENT:
@@ -124,7 +120,6 @@ export default class EarthBoss extends BaseStage {
                                     }
                                     break;
                             }
-                            
                         }
                     }
                     break;
@@ -153,9 +148,30 @@ export default class EarthBoss extends BaseStage {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
+                    if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
-                    if(this.gameboard[next.x][next.y] == null || this.endposition.equals(next)){
+                    if(this.gameboard[next.x][next.y]){
+                        switch(this.gameboard[next.x][next.y].imageId) {
+                            case "rock_P":
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "ice_cube":
+                                Input.enableInput();
+                                break;
+                            default:
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        }
+                    } else {
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                    }
+                    break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementGUI.animation.play("earth_equipped");
+                            this.elementSelected = 1;
+                            break;
                     }
                     break;
             }    
@@ -182,6 +198,17 @@ export default class EarthBoss extends BaseStage {
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 0;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [false,false,false,false,false]});
+    }
+
+    initializeBoss(): void {
+        this.boss = this.add.animatedSprite("boss", "primary");
+        this.boss.animation.play("idle");
+        this.boss.position.set(10*16, 14*16);
+        this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
+        this.boss.addAI(BossController, {type: "earth"});
+        this.pos1 = new Vec2(10*16, 14*16);
+        this.pos2 = new Vec2(5*16, 5*16);
+        this.pos3 = new Vec2(14*16, 14*16);
     }
 
     restartStage() {

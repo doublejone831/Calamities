@@ -12,6 +12,7 @@ import Wind from "./Wind";
 import Water from "./Water";
 import Fire from "./Fire";
 import Ice from "./Ice";
+import EarthBoss from "./EarthBoss";
 
 export default class LevelSelection extends Scene {
     private levels: Layer;
@@ -111,33 +112,33 @@ export default class LevelSelection extends Scene {
                     this.sceneManager.changeToScene(Earth);
                     break;
                 case "play-earth-boss":
-                    console.log("PLAY EARTH BOSS LEVEL");
+                    this.sceneManager.changeToScene(EarthBoss);
                     break;
                 case "play-wind":
                     this.sceneManager.changeToScene(Wind);
                     console.log("Wind stage");
                     break;
                 case "play-wind-boss":
-                    console.log("play wind boss");
+                    this.sceneManager.changeToScene(EarthBoss);
                     break;
                 case "play-water":
                     this.sceneManager.changeToScene(Water);
                     break;
                 case "play-water-boss":
-                    console.log("PLAY WAter BOSS LEVEL");
+                    this.sceneManager.changeToScene(EarthBoss);
                     break;
                 case "play-fire":
                     this.sceneManager.changeToScene(Fire);
                     console.log("play fire stage");
                     break;
                 case "play-fire-boss":
-                    console.log("play fire boss");
+                    this.sceneManager.changeToScene(EarthBoss);
                     break;
                 case "play-ice":
                     this.sceneManager.changeToScene(Ice);
                     break;
                 case "play-ice-boss":
-                    console.log("PLAY ICE BOSS LEVEL");
+                    this.sceneManager.changeToScene(EarthBoss);
                     break;
             }
 

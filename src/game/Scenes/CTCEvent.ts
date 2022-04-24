@@ -11,5 +11,5 @@ export enum CTCevent{
     BACK_TO_MENU = "back_to_menu",
     TOGGLE_PAUSE = "toggle_pause",
     FLY = "fly",
-    FLYING = "flying",
+    BOSS_SKILL = "boss_skill",
 }

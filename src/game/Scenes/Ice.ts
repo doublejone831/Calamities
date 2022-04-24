@@ -9,7 +9,6 @@ import Input from "../../Wolfie2D/Input/Input";
 import MainMenu from "./MainMenu";
 
 export default class Ice extends BaseStage {
-    protected endposition : Vec2;
 
     loadScene(){
         this.load.image("rock_S", "game_assets/sprites/rock_S.png");

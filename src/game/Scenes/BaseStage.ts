@@ -25,7 +25,7 @@ export default class BaseStage extends Scene {
     // Map
     private walls: OrthogonalTilemap;
     protected gameboard: Array<Array<Sprite>>;
-    protected endposition: Vec2;
+    endposition: Vec2;
     // Player
     player: AnimatedSprite;
     skillUsed: Array<boolean>;

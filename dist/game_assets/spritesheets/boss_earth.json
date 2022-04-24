@@ -11,6 +11,24 @@
 	"rows": 6,
 	"animations": [
 		{
+			"name": "idle",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				},
+				{
+					"index": 1,
+					"duration": 10
+				},
+				{
+					"index": 0,
+					"duration": 10
+				}
+			]
+		},
+		{
 			"name": "skill",
 			"repeat": false,
 			"frames": [
