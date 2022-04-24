@@ -191,7 +191,7 @@ export default class Wind extends BaseStage {
                         Input.enableInput();
                         break;
                     case "whirlwind":
-                        this.whirlwind_fly(pRow, pCol);
+                        //this.whirlwind_fly(pRow, pCol);
                         break;
                     case "bubble":
                         this.bubble_shield(next.x, next.y);

@@ -14,6 +14,7 @@ import ElementController from "../Element/ElementController";
 import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import MainMenu from "./MainMenu";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -30,6 +31,7 @@ export default class BaseStage extends Scene {
     skillUsed: Array<boolean>;
     elementSelected: number;
     inAir: boolean;
+    savedNum: number;
     // GUI
     elementGUI: AnimatedSprite;
     // Viewport
@@ -117,7 +119,6 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT
-                                 // CTC TODO: subscribe to CTCevent.LEVEL_END event
                                 ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
@@ -240,24 +241,10 @@ export default class BaseStage extends Scene {
         }
     }
 
-    activateElement(target: Sprite, targetposX: number, targetposY: number, direction: number) : void {
+    activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Vec2) : void {
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
-        var dir;
+        var dir = direction;
         var scaling = 1;
-        switch(direction){
-            case 0:
-                dir = new Vec2(0, -1);
-                break;
-            case 1:
-                dir = new Vec2(-1, 0);
-                break;
-            case 2:
-                dir = new Vec2(0, 1);
-                break;
-            case 3:
-                dir = new Vec2(1, 0);
-                break;
-        }
         let player_controller = (<PlayerController>this.player._ai);
         player_controller.cast_animation();
         switch(target.imageId){
@@ -366,14 +353,31 @@ export default class BaseStage extends Scene {
         }
     }
 
-    whirlwind_fly(posX: number, posY: number){
+    whirlwind_fly(posX: number, posY: number, dirVec: Vec2){
         let wind = this.gameboard[posX][posY];
         wind.destroy();
         this.gameboard[posX][posY] = null;
         this.skillUsed[1] = false;
         this.inAir = true;
-        (<PlayerController>this.player._ai).takeFlight();
-    //    this.emitter.fireEvent(CTCevent.FLY, {"clear": false});
+        Input.disableInput();
+        var jumps = 0;
+        for(var i = 1; i<3; i++) {
+            if(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y]){
+                switch(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y].imageId){
+                    case "rock_P":
+                    case "rock_S":
+                    case "rock_M":
+                    case "rock_L":
+                    case "ice_cube":
+                        break;
+                    default:
+                        jumps = i;
+                }
+            } else {
+                jumps = i;
+            }
+        }
+        return jumps;
     }
 
     bubble_shield(posX: number, posY: number){

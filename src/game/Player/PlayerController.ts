@@ -111,22 +111,18 @@ export default class PlayerController extends StateMachineAI {
                         this.owner.move(dir.scaled(scaling));
                         this.owner.animation.play("walking_" + this.facing_direction);
                         Input.enableInput();
-                        break;/*
+                        break;
                     case CTCevent.FLY:
-                        let clear = event.data.get("clear");
-                        dir = this.dirUnitVector();
-                        if(clear){
-                            this.owner.move(dir.scaled(16));
-                        }
-                        this.inFlight--;
-                        if(this.inFlight>0) {
-                            this.emitter.fireEvent(CTCevent.FLYING, {"dir": dir.scaled(this.inFlight)});
-                        }
-                        break;*/
+                        this.owner.position.add(this.dirUnitVector(16));
+                        break;
                 }
             }
         }
 	}
+
+    getDirection(){
+        return this.facing_direction;
+    }
 
     nextposition(){
         // not absolute coordinant => Index of gameboard

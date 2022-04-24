@@ -60,20 +60,18 @@ export default class Ice extends BaseStage {
 
     updateScene(deltaT: number): void{
         super.updateScene(deltaT);
+        let player_controller = (<PlayerController>this.player._ai);
+        let dirVec = player_controller.dirUnitVector();
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
             switch(event.type){
                 case CTCevent.INTERACT_ELEMENT:
-                    console.log("interact happened");
-                    console.log(event.data.get("positionX"));
-                    console.log(event.data.get("positionY"));
                     var targetposX = event.data.get("positionX");
                     var targetposY = event.data.get("positionY");
-                    var direction = event.data.get("direction");
                     var target = this.gameboard[targetposX][targetposY];
                     if(target != null) {
-                        this.activateElement(target, targetposX, targetposY, direction);
+                        this.activateElement(target, targetposX, targetposY, dirVec);
                     }
                     break;
                 case CTCevent.PLACE_ELEMENT:
@@ -158,13 +156,20 @@ export default class Ice extends BaseStage {
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
-                    if(this.endposition.equals(next)){
-                        this.sceneManager.changeToScene(Ice, {});
-                    }
-                    if(this.gameboard[next.x][next.y] == null){
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                    if(this.gameboard[next.x][next.y]){
+                        switch(this.gameboard[next.x][next.y].imageId) {
+                            case "rock_P":
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "ice_cube":
+                                Input.enableInput();
+                                break;
+                            default:
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        }
                     } else {
-                        Input.enableInput();
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
                     }
                     break;
                 case CTCevent.CHANGE_ELEMENT:
@@ -175,16 +180,6 @@ export default class Ice extends BaseStage {
                             break;
                     }
                     break;
-                case CTCevent.FLYING:
-                    let moveVec = event.data.get("dir");
-                    let playerBoardVec = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
-                    let nextVec = playerBoardVec.add(moveVec);
-                    let nextVec2 = nextVec.add(moveVec);
-                    let nextBox = this.gameboard[nextVec.x][nextVec.y];
-                    let nextBox2 = this.gameboard[nextVec2.x][nextVec2.y];
-                    if(nextBox2 == null){
-                        this.emitter.fireEvent(CTCevent.FLY, {"clear": true});
-                    }
             }    
         }
         if(!this.inAir) {
@@ -201,15 +196,27 @@ export default class Ice extends BaseStage {
                         Input.enableInput();
                         break;
                     case "whirlwind":
-                        this.whirlwind_fly(pRow, pCol);
+                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
                         break;
                     case "bubble":
-                        this.bubble_shield(next.x, next.y);
+                        this.bubble_shield(pRow, pCol);
                         break;
                     case "ember":
-                        this.ember_extinguish(next.x, next.y);
+                        this.ember_extinguish(pRow, pCol);
                         break;
+                    case "portal":
+                        if(this.endposition.equals(playerPosInBoard)){
+                            this.sceneManager.changeToScene(Ice, {});
+                        }
                 }
+            }
+        } else {
+            if(this.savedNum>0) {
+                this.emitter.fireEvent(CTCevent.FLY);
+                this.savedNum--;
+            } else {
+                this.inAir = false;
+                Input.enableInput();
             }
         }
     };
