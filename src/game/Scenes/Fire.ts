@@ -23,6 +23,7 @@ export default class Fire extends BaseStage {
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.tilemap("level", "game_assets/tilemaps/fire.json");
         this.load.object("board", "game_assets/data/fire_board.json");
         this.load.image("portal", "game_assets/sprites/portal.png");

@@ -17,6 +17,7 @@ export default class Wind extends BaseStage {
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.tilemap("level", "game_assets/tilemaps/wind.json");
         this.load.object("board", "game_assets/data/wind_board.json");
         this.load.image("portal", "game_assets/sprites/portal.png");

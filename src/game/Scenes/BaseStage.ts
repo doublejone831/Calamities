@@ -31,6 +31,7 @@ export default class BaseStage extends Scene {
     skillUsed: Array<boolean>;
     elementSelected: number;
     inAir: boolean = false;
+    block: Sprite;
     savedNum: number;
     // GUI
     elementGUI: AnimatedSprite;
@@ -46,9 +47,19 @@ export default class BaseStage extends Scene {
         this.viewport.setZoomLevel(2.5);
 
         // Initialize an empty gamebaord
+        this.block = new Sprite("block");
         this.gameboard = new Array(this.num_col);
         for (var i = 0; i < this.num_col; i++) {
-            this.gameboard[i] = new Array(this.num_row).fill(null);
+            if(i<2 || i>17){
+                this.gameboard[i] = new Array(this.num_row).fill(this.block);
+            } else {
+                let arr = new Array(this.num_row).fill(null, 1, 18);
+                arr[0] = this.block;
+                arr[1] = this.block;
+                arr[18] = this.block;
+                arr[19] = this.block;
+                this.gameboard[i] = arr;
+            }
         }
 
         // Create primary layer
@@ -165,6 +176,35 @@ export default class BaseStage extends Scene {
         }
         let player_controller = (<PlayerController>this.player._ai);
         let dirVec = player_controller.dirUnitVector();
+        let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+        let pRow = playerPosInBoard.x;
+        let pCol = playerPosInBoard.y;
+        if(!this.inAir) {
+            if(this.gameboard[pRow][pCol]){
+                switch(this.gameboard[pRow][pCol].imageId){
+                    case "whirlwind":
+                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
+                        break;
+                    case "bubble":
+                        this.bubble_shield(pRow, pCol);
+                        break;
+                    case "ember":
+                        this.ember_extinguish(pRow, pCol);
+                        break;
+                }
+            }
+            if(this.endposition.equals(playerPosInBoard)){
+                this.nextStage();
+            }
+        } else {
+            if(this.savedNum>0) {
+                this.emitter.fireEvent(CTCevent.FLY);
+                this.savedNum--;
+            } else {
+                this.inAir = false;
+                Input.enableInput();
+            }
+        }
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
@@ -266,6 +306,8 @@ export default class BaseStage extends Scene {
                             case "rock_M":
                             case "rock_L":
                             case "ice_cube":
+                            case "block":
+                            case "boss_block":
                                 Input.enableInput();
                                 break;
                             default:
@@ -284,43 +326,6 @@ export default class BaseStage extends Scene {
                     }
                     break;
             }    
-        }
-        if(!this.inAir) {
-            let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
-            let pRow = playerPosInBoard.x;
-            let pCol = playerPosInBoard.y;
-            if(this.gameboard[pRow][pCol]){
-                switch(this.gameboard[pRow][pCol].imageId){
-                    case "rock_P":
-                    case "rock_S":
-                    case "rock_M":
-                    case "rock_L":
-                    case "ice_cube":
-                        Input.enableInput();
-                        break;
-                    case "whirlwind":
-                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
-                        break;
-                    case "bubble":
-                        this.bubble_shield(pRow, pCol);
-                        break;
-                    case "ember":
-                        this.ember_extinguish(pRow, pCol);
-                        break;
-                    case "portal":
-                        if(this.endposition.equals(playerPosInBoard)){
-                            this.nextStage();
-                        }
-                }
-            }
-        } else {
-            if(this.savedNum>0) {
-                this.emitter.fireEvent(CTCevent.FLY);
-                this.savedNum--;
-            } else {
-                this.inAir = false;
-                Input.enableInput();
-            }
         }
     }
 
@@ -494,6 +499,8 @@ export default class BaseStage extends Scene {
                     case "rock_M":
                     case "rock_L":
                     case "ice_cube":
+                    case "block":
+                    case "boss_block":
                         break;
                     default:
                         jumps = i;

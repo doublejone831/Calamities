@@ -16,7 +16,7 @@ export default class BossController extends StateMachineAI {
 
     update(deltaT: number): void {
         if(this.thresholdReached){
-
+            this.teleport();
         }
     }
 

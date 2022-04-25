@@ -7,6 +7,7 @@ import BossController from "../Boss/BossController";
 import Fire from "./Fire";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 
 export default class WaterBoss extends BaseStage {
     private boss: AnimatedSprite;
@@ -28,9 +29,12 @@ export default class WaterBoss extends BaseStage {
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_water.json");
+        this.load.image("boss_block", "game_assets/sprites/all_purpose_block.png");
         // map
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.tilemap("level", "game_assets/tilemaps/water.json");
         this.load.object("board", "game_assets/data/water_boss_board.json");
         this.load.image("portal", "game_assets/sprites/portal.png");
@@ -114,6 +118,12 @@ export default class WaterBoss extends BaseStage {
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
         this.boss.position.set(this.pos1.x, this.pos1.y);
+        let boardPos = this.pos1.scaled(1/16);
+        this.block = new Sprite("boss_block");
+        this.gameboard[boardPos.x][boardPos.y] = this.block;
+        this.gameboard[boardPos.x-1][boardPos.y] = this.block;
+        this.gameboard[boardPos.x][boardPos.y-1] = this.block;
+        this.gameboard[boardPos.x-1][boardPos.y-1] = this.block;
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "water"});
     }

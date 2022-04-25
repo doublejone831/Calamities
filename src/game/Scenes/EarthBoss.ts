@@ -7,12 +7,13 @@ import BossController from "../Boss/BossController";
 import Wind from "./Wind";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 
 export default class EarthBoss extends BaseStage {
     private boss: AnimatedSprite;
-    protected pos1: Vec2;
-    protected pos2: Vec2;
-    protected pos3: Vec2;
+    protected pos1: Vec2; // 3 positions the boss can be
+    protected pos2: Vec2; // teleports to next position
+    protected pos3: Vec2; // if player is at next position, teleport to next next position
     protected bossReceiver: Receiver;
 
     loadScene(){
@@ -25,7 +26,9 @@ export default class EarthBoss extends BaseStage {
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_earth.json");
+        this.load.image("boss_block", "game_assets/sprites/all_purpose_block.png");
         // map
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
         this.load.object("board", "game_assets/data/earth_boss_board.json");
         this.load.image("portal", "game_assets/sprites/portal.png");
@@ -72,6 +75,7 @@ export default class EarthBoss extends BaseStage {
                     break;
             }
         }
+
     };
 
     initializeGameboard(): void {
@@ -103,6 +107,12 @@ export default class EarthBoss extends BaseStage {
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
         this.boss.position.set(this.pos1.x, this.pos1.y);
+        let boardPos = this.pos1.scaled(1/16);
+        this.block = new Sprite("boss_block");
+        this.gameboard[boardPos.x][boardPos.y] = this.block;
+        this.gameboard[boardPos.x-1][boardPos.y] = this.block;
+        this.gameboard[boardPos.x][boardPos.y-1] = this.block;
+        this.gameboard[boardPos.x-1][boardPos.y-1] = this.block;
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "earth"});
     }
