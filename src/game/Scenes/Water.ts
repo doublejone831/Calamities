@@ -2,6 +2,7 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
+import WaterBoss from "./WaterBoss";
 
 export default class Water extends BaseStage {
 
@@ -74,5 +75,13 @@ export default class Water extends BaseStage {
         this.elementSelected = 1;
         this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,false,false,false]});
+    }
+
+    restartStage(): void{
+        this.sceneManager.changeToScene(Water, {});
+    }
+
+    nextStage(): void {
+        this.sceneManager.changeToScene(WaterBoss, {});
     }
 }

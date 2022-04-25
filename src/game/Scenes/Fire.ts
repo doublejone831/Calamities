@@ -1,11 +1,8 @@
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
-import { CTCevent } from "./CTCEvent";
-import ElementController from "../Element/ElementController";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
-import Input from "../../Wolfie2D/Input/Input";
+import FireBoss from "./FireBoss";
 
 export default class Fire extends BaseStage {
 
@@ -87,5 +84,13 @@ export default class Fire extends BaseStage {
         this.elementSelected = 1;
         this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,false,false]});
+    }
+
+    restartStage(): void{
+        this.sceneManager.changeToScene(Fire, {});
+    }
+
+    nextStage(): void {
+        this.sceneManager.changeToScene(FireBoss, {});
     }
 }
