@@ -1,7 +1,5 @@
 import StateMachineAI from "../../Wolfie2D/AI/StateMachineAI";
-import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 
 export default class BossController extends StateMachineAI {
     protected owner: AnimatedSprite;

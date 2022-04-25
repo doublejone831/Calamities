@@ -30,7 +30,7 @@ export default class BaseStage extends Scene {
     player: AnimatedSprite;
     skillUsed: Array<boolean>;
     elementSelected: number;
-    inAir: boolean;
+    inAir: boolean = false;
     savedNum: number;
     // GUI
     elementGUI: AnimatedSprite;
@@ -122,11 +122,10 @@ export default class BaseStage extends Scene {
                                 ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
-                                CTCevent.CONTROLS_POPUP,
-                                CTCevent.BACK_TO_MENU,
-                                CTCevent.RESTART_STAGE,
-                                CTCevent.TOGGLE_PAUSE
-        ]);
+                                    CTCevent.CONTROLS_POPUP,
+                                    CTCevent.BACK_TO_MENU,
+                                    CTCevent.RESTART_STAGE,
+                                    CTCevent.TOGGLE_PAUSE ]);
     }
 
     updateScene(deltaT: number): void{
@@ -164,6 +163,165 @@ export default class BaseStage extends Scene {
                     break;
             }
         }
+        let player_controller = (<PlayerController>this.player._ai);
+        let dirVec = player_controller.dirUnitVector();
+        while(this.receiver.hasNextEvent()){
+            let event = this.receiver.getNextEvent();
+
+            switch(event.type){
+                case CTCevent.INTERACT_ELEMENT:
+                    var targetposX = event.data.get("positionX");
+                    var targetposY = event.data.get("positionY");
+                    var target = this.gameboard[targetposX][targetposY];
+                    if(target != null) {
+                        this.activateElement(target, targetposX, targetposY, dirVec);
+                    }
+                    break;
+                case CTCevent.PLACE_ELEMENT:
+                    let placeX = event.data.get("positionX");
+                    let placeY = event.data.get("positionY");
+                    let type = event.data.get("type");
+                    if (placeX>=2 && placeX<=17 && placeY>=2 && placeY<=17) {
+                        let player_controller = (<PlayerController>this.player._ai);
+                        player_controller.cast_animation();
+                        if (this.gameboard[placeX][placeY] == null) {
+                            this.place_element(placeX, placeY, type);
+                        } else {
+                            switch(event.data.get("type")){
+                                case 1:
+                                    if(this.gameboard[placeX][placeY].imageId == "rock_P") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[0] = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if(this.gameboard[placeX][placeY].imageId== "whirlwind") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[1] = false;
+                                    }
+                                    break;
+                                case 3:
+                                    if(this.gameboard[placeX][placeY].imageId == "bubble") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[2] = false;
+                                    }
+                                    break;
+                                case 4:
+                                    if(this.gameboard[placeX][placeY].imageId == "ember") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[3] = false;
+                                    }
+                                    break;
+                                case 5:
+                                    if(this.gameboard[placeX][placeY].imageId == "ice_cube") {
+                                        let sprite = this.gameboard[placeX][placeY];
+                                        sprite.destroy();
+                                        this.gameboard[placeX][placeY] = null;
+                                        this.skillUsed[4] = false;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementSelected = 1;
+                            this.elementGUI.animation.play("earth_equipped");
+                            break;
+                        case 2:
+                            this.elementSelected = 2;
+                            this.elementGUI.animation.play("wind_equipped");
+                            break;
+                        case 3:
+                            this.elementSelected = 3;
+                            this.elementGUI.animation.play("water_equipped");
+                            break;
+                        case 4:
+                            this.elementSelected = 4;
+                            this.elementGUI.animation.play("fire_equipped");
+                            break;
+                        case 5:
+                            this.elementSelected = 5;
+                            this.elementGUI.animation.play("ice_equipped");
+                            break;
+                    }
+                    break;
+                case CTCevent.PLAYER_MOVE_REQUEST:
+                    if (BaseStage.paused) Input.enableInput();
+                    var next = event.data.get("next");
+                    if(this.gameboard[next.x][next.y]){
+                        switch(this.gameboard[next.x][next.y].imageId) {
+                            case "rock_P":
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "ice_cube":
+                                Input.enableInput();
+                                break;
+                            default:
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        }
+                    } else {
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                    }
+                    break;
+                case CTCevent.CHANGE_ELEMENT:
+                    switch(event.data.get("el")){
+                        case 1:
+                            this.elementGUI.animation.play("earth_equipped");
+                            this.elementSelected = 1;
+                            break;
+                    }
+                    break;
+            }    
+        }
+        if(!this.inAir) {
+            let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+            let pRow = playerPosInBoard.x;
+            let pCol = playerPosInBoard.y;
+            if(this.gameboard[pRow][pCol]){
+                switch(this.gameboard[pRow][pCol].imageId){
+                    case "rock_P":
+                    case "rock_S":
+                    case "rock_M":
+                    case "rock_L":
+                    case "ice_cube":
+                        Input.enableInput();
+                        break;
+                    case "whirlwind":
+                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
+                        break;
+                    case "bubble":
+                        this.bubble_shield(pRow, pCol);
+                        break;
+                    case "ember":
+                        this.ember_extinguish(pRow, pCol);
+                        break;
+                    case "portal":
+                        if(this.endposition.equals(playerPosInBoard)){
+                            this.nextStage();
+                        }
+                }
+            }
+        } else {
+            if(this.savedNum>0) {
+                this.emitter.fireEvent(CTCevent.FLY);
+                this.savedNum--;
+            } else {
+                this.inAir = false;
+                Input.enableInput();
+            }
+        }
     }
 
     pauseAnimations(): void {
@@ -190,66 +348,24 @@ export default class BaseStage extends Scene {
         }
     }
     
-    restartStage() {
-        // Change BaseStage to appropiate stage
+    restartStage(): void {
+        // Replace BaseStage to appropiate stage
         this.sceneManager.changeToScene(BaseStage, {});
     }
 
-    pushRock(target: Sprite, targetposX: number, targetposY: number, direction: number) : void {
-        var Vel = new Vec2(0,0); // velocity of sprite (if we make moving rock soothly.)
-        var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
-        var dir;
-        switch(direction){
-            case 0:
-                dir = new Vec2(0, -1);
-                break;
-            case 1:
-                dir = new Vec2(-1, 0);
-                break;
-            case 2:
-                dir = new Vec2(0, 1);
-                break;
-            case 3:
-                dir = new Vec2(1, 0);
-                break;
-        }
-        switch(target.imageId){
-            case "rock_P":
-            case "rock_S":
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 ||this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
-                targetposX = dest.x;
-                targetposY = dest.y;
-            case "rock_M":
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
-                targetposX = dest.x;
-                targetposY = dest.y;
-            case "rock_L":
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
-                break;
-        }
+    nextStage(): void {
+        // Replace BaseStage to appropiate stage
+        this.sceneManager.changeToScene(BaseStage, {});
     }
 
     activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Vec2) : void {
         var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
         var dir = direction;
-        var scaling = 1;
         let player_controller = (<PlayerController>this.player._ai);
         player_controller.cast_animation();
         switch(target.imageId){
             case "rock_S":
-                if(this.elementSelected!=1) break;
+                if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 ||this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
                 dest.add(dir);
                 target.position.set(dest.x*16 + 8, dest.y*16 + 8);
@@ -258,7 +374,7 @@ export default class BaseStage extends Scene {
                 targetposX = dest.x;
                 targetposY = dest.y;
             case "rock_M":
-                if(this.elementSelected!=1) break;
+                if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
                 dest.add(dir);
                 target.position.set(dest.x*16 + 8, dest.y*16 + 8);
@@ -267,7 +383,7 @@ export default class BaseStage extends Scene {
                 targetposX = dest.x;
                 targetposY = dest.y;
             case "rock_L":
-                if(this.elementSelected!=1) break;
+                if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
                 dest.add(dir);
                 target.position.set(dest.x*16 + 8, dest.y*16 + 8);
@@ -295,17 +411,26 @@ export default class BaseStage extends Scene {
                 break;
             case "bubble":
                 if(this.elementSelected != 3) break;
+                this.gameboard[targetposX][targetposY] = null;
+                target.destroy();
+                this.skillUsed[1] = false;
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
+                this.gameboard[targetposX][targetposY] = null;
+                target.destroy();
+                this.skillUsed[1] = false;
                 break;
             case "ice_cube":
                 if(this.elementSelected != 5) break;
+                this.gameboard[targetposX][targetposY] = null;
+                target.destroy();
+                this.skillUsed[1] = false;
                 break;
         }
     }
 
-    place_element(placeX: number, placeY: number, type: number){
+    place_element(placeX: number, placeY: number, type: number): void {
         let player_controller = (<PlayerController>this.player._ai);
         switch(type) {
             case 1:
