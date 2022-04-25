@@ -3,6 +3,7 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import EarthBoss from "./EarthBoss";
+import MainMenu from "./MainMenu";
 
 export default class Earth extends BaseStage {
 
@@ -71,6 +72,7 @@ export default class Earth extends BaseStage {
     }
 
     nextStage(): void {
+        MainMenu.unlocked[0] = true;
         this.sceneManager.changeToScene(EarthBoss, {});
     }
 }
