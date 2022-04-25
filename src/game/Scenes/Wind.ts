@@ -2,6 +2,7 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
+import WindBoss from "./WindBoss";
 
 export default class Wind extends BaseStage {
 
@@ -71,5 +72,13 @@ export default class Wind extends BaseStage {
         this.elementSelected = 1;
         this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,false,false,false,false]});
+    }
+
+    restartStage(): void{
+        this.sceneManager.changeToScene(Wind, {});
+    }
+
+    nextStage(): void {
+        this.sceneManager.changeToScene(WindBoss, {});
     }
 }

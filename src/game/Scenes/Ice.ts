@@ -1,8 +1,8 @@
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import ElementController from "../Element/ElementController";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
+import IceBoss from "./IceBoss";
 
 export default class Ice extends BaseStage {
 
@@ -88,5 +88,13 @@ export default class Ice extends BaseStage {
         this.elementSelected = 1;
         this.inAir = false;
         this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
+    }
+
+    restartStage(): void{
+        this.sceneManager.changeToScene(Ice, {});
+    }
+
+    nextStage(): void {
+        this.sceneManager.changeToScene(IceBoss, {});
     }
 }
