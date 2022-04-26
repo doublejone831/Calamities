@@ -159,6 +159,7 @@ export default class BaseStage extends Scene {
                     break;
                 case CTCevent.BACK_TO_MENU:
                     console.log("BACK TO MENU");
+                    this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
                     if(BaseStage.paused) {
                         this.viewport.setZoomLevel(1);
                         //MainMenu.unlocked[0] = true;        //unlock level test
