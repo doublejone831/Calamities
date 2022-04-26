@@ -40,6 +40,7 @@ export default class BaseStage extends Scene {
     private viewportSize: number = 320;
     private num_col: number = 20;
     private num_row: number = 20;
+    boss: AnimatedSprite = null;
 
     startScene(){
         // Set the viewport
@@ -333,6 +334,7 @@ export default class BaseStage extends Scene {
 
     pauseAnimations(): void {
         this.player.animation.pause();
+        if (this.boss) this.boss.animation.pause();
         for (let i = 2; i < this.gameboard.length-2; i++) {
             for (let j = 2; j < this.gameboard[i].length-2; j++) {
                 if (this.gameboard[i][j]) {
@@ -345,6 +347,7 @@ export default class BaseStage extends Scene {
 
     resumeAnimations(): void {
         this.player.animation.resume();
+        if (this.boss) this.boss.animation.resume();
         for (let i = 2; i < this.gameboard.length-2; i++) {
             for (let j = 2; j < this.gameboard[i].length-2; j++) {
                 if (this.gameboard[i][j]) {

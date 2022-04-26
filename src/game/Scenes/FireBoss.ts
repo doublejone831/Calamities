@@ -10,7 +10,6 @@ import { CTCevent } from "./CTCEvent";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 
 export default class FireBoss extends BaseStage {
-    private boss: AnimatedSprite;
     protected pos1: Vec2;
     protected pos2: Vec2;
     protected pos3: Vec2;

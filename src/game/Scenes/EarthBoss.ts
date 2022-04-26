@@ -12,7 +12,6 @@ import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import MainMenu from "./MainMenu";
 
 export default class EarthBoss extends BaseStage {
-    private boss: AnimatedSprite;
     protected pos1: Vec2; // 3 positions the boss can be
     protected pos2: Vec2; // teleports to next position
     protected pos3: Vec2; // if player is at next position, teleport to next next position

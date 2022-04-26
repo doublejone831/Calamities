@@ -13,7 +13,6 @@ import SplashScreen from "./SplashScreen";
 import Gameover from "./Gameover";
 
 export default class IceBoss extends BaseStage {
-    private boss: AnimatedSprite;
     protected pos1: Vec2;
     protected pos2: Vec2;
     protected pos3: Vec2;
