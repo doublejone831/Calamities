@@ -116,31 +116,49 @@ export default class LevelSelection extends Scene {
                     this.sceneManager.changeToScene(Earth);
                     break;
                 case "play-earth-boss":
-                    this.sceneManager.changeToScene(EarthBoss);
+                    if (MainMenu.unlocked[0]) {
+                        this.sceneManager.changeToScene(EarthBoss);
+                    }
                     break;
                 case "play-wind":
-                    this.sceneManager.changeToScene(Wind);
+                    if (MainMenu.unlocked[1]) {
+                        this.sceneManager.changeToScene(Wind);
+                    }
                     break;
                 case "play-wind-boss":
-                    this.sceneManager.changeToScene(WindBoss);
+                    if (MainMenu.unlocked[2]) {
+                        this.sceneManager.changeToScene(WindBoss);
+                    }
                     break;
                 case "play-water":
-                    this.sceneManager.changeToScene(Water);
+                    if (MainMenu.unlocked[3]) {
+                        this.sceneManager.changeToScene(Water);
+                    }
                     break;
                 case "play-water-boss":
-                    this.sceneManager.changeToScene(WaterBoss);
+                    if (MainMenu.unlocked[4]) {
+                        this.sceneManager.changeToScene(WaterBoss);
+                    }
                     break;
                 case "play-fire":
-                    this.sceneManager.changeToScene(Fire);
+                    if (MainMenu.unlocked[5]) {
+                        this.sceneManager.changeToScene(Fire);
+                    }
                     break;
                 case "play-fire-boss":
-                    this.sceneManager.changeToScene(FireBoss);
+                    if (MainMenu.unlocked[6]) {
+                        this.sceneManager.changeToScene(FireBoss);
+                    }
                     break;
                 case "play-ice":
-                    this.sceneManager.changeToScene(Ice);
+                    if (MainMenu.unlocked[7]) {
+                        this.sceneManager.changeToScene(Ice);
+                    }
                     break;
                 case "play-ice-boss":
-                    this.sceneManager.changeToScene(IceBoss);
+                    if (MainMenu.unlocked[8]) {
+                        this.sceneManager.changeToScene(IceBoss);
+                    }
                     break;
             }
 
