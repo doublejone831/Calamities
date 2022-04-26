@@ -1,0 +1,308 @@
+{
+	"name": "boss_water",
+	"spriteSheetImage": "boss_water.png",
+	"spriteWidth": 32,
+	"spriteHeight": 32,
+	"leftBuffer": 0,
+	"rightBuffer": 0,
+	"topBuffer": 0,
+	"bottomBuffer": 0,
+	"columns": 8,
+	"rows": 6,
+	"animations": [
+		{
+			"name": "idle",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				},
+				{
+					"index": 1,
+					"duration": 10
+				},
+				{
+					"index": 0,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "skill",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				},
+				{
+					"index": 1,
+					"duration": 10
+				},
+                {
+					"index": 2,
+					"duration": 10
+				},
+				{
+					"index": 3,
+					"duration": 10
+				},
+                {
+					"index": 4,
+					"duration": 10
+				},
+				{
+					"index": 5,
+					"duration": 10
+				},
+                {
+					"index": 6,
+					"duration": 10
+				},
+				{
+					"index": 7,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "attack_right",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 8,
+					"duration": 10
+				},
+				{
+					"index": 9,
+					"duration": 10
+				},
+                {
+					"index": 10,
+					"duration": 10
+				},
+				{
+					"index": 11,
+					"duration": 10
+				},
+                {
+					"index": 12,
+					"duration": 10
+				},
+				{
+					"index": 13,
+					"duration": 10
+				},
+                {
+					"index": 14,
+					"duration": 10
+				},
+				{
+					"index": 15,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "attack_left",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 16,
+					"duration": 10
+				},
+				{
+					"index": 17,
+					"duration": 10
+				},
+                {
+					"index": 18,
+					"duration": 10
+				},
+				{
+					"index": 19,
+					"duration": 10
+				},
+                {
+					"index": 20,
+					"duration": 10
+				},
+				{
+					"index": 21,
+					"duration": 10
+				},
+                {
+					"index": 22,
+					"duration": 10
+				},
+				{
+					"index": 23,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "teleport",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 24,
+					"duration": 10
+				},
+				{
+					"index": 25,
+					"duration": 10
+				},
+                {
+					"index": 26,
+					"duration": 10
+				},
+				{
+					"index": 27,
+					"duration": 10
+				},
+                {
+					"index": 28,
+					"duration": 10
+				},
+				{
+					"index": 29,
+					"duration": 10
+				},
+                {
+					"index": 30,
+					"duration": 10
+				},
+				{
+					"index": 31,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "appear",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 31,
+					"duration": 10
+				},
+				{
+					"index": 30,
+					"duration": 10
+				},
+                {
+					"index": 29,
+					"duration": 10
+				},
+				{
+					"index": 28,
+					"duration": 10
+				},
+                {
+					"index": 27,
+					"duration": 10
+				},
+				{
+					"index": 26,
+					"duration": 10
+				},
+                {
+					"index": 25,
+					"duration": 10
+				},
+				{
+					"index": 24,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "damaged",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 32,
+					"duration": 8
+				},
+				{
+					"index": 33,
+					"duration": 8
+				},
+                {
+					"index": 34,
+					"duration": 8
+				},
+				{
+					"index": 35,
+					"duration": 8
+				},
+                {
+					"index": 36,
+					"duration": 8
+				},
+				{
+					"index": 37,
+					"duration": 8
+				},
+                {
+					"index": 38,
+					"duration": 8
+				},
+				{
+					"index": 39,
+					"duration": 8
+				}
+			]
+		},
+		{
+			"name": "dying",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 40,
+					"duration": 10
+				},
+				{
+					"index": 41,
+					"duration": 10
+				},
+                {
+					"index": 42,
+					"duration": 10
+				},
+				{
+					"index": 43,
+					"duration": 10
+				},
+                {
+					"index": 44,
+					"duration": 10
+				},
+				{
+					"index": 45,
+					"duration": 10
+				},
+                {
+					"index": 46,
+					"duration": 10
+				},
+				{
+					"index": 47,
+					"duration": 10
+				}
+			]
+		},
+		{
+			"name": "dead",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 47,
+					"duration": 10
+				}
+			]
+		}
+	]
+}
