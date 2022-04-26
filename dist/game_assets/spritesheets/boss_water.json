@@ -11,6 +11,24 @@
 	"rows": 6,
 	"animations": [
 		{
+			"name": "idle",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 10
+				},
+				{
+					"index": 1,
+					"duration": 10
+				},
+				{
+					"index": 0,
+					"duration": 10
+				}
+			]
+		},
+		{
 			"name": "skill",
 			"repeat": false,
 			"frames": [
@@ -206,35 +224,35 @@
 			"frames": [
 				{
 					"index": 32,
-					"duration": 10
+					"duration": 8
 				},
 				{
 					"index": 33,
-					"duration": 10
+					"duration": 8
 				},
                 {
 					"index": 34,
-					"duration": 10
+					"duration": 8
 				},
 				{
 					"index": 35,
-					"duration": 10
+					"duration": 8
 				},
                 {
 					"index": 36,
-					"duration": 10
+					"duration": 8
 				},
 				{
 					"index": 37,
-					"duration": 10
+					"duration": 8
 				},
                 {
 					"index": 38,
-					"duration": 10
+					"duration": 8
 				},
 				{
 					"index": 39,
-					"duration": 10
+					"duration": 8
 				}
 			]
 		},

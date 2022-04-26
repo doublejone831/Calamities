@@ -19,7 +19,11 @@ export default class MainMenu extends Scene {
     loadScene(){}
 
     startScene(){
+        this.viewport.setCenter(400, 410);
         const center = this.viewport.getCenter();
+        this.viewport.setBounds(0, 0, 0, 0);
+        this.viewport.enableZoom();
+        this.viewport.setZoomLevel(1);
 
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");

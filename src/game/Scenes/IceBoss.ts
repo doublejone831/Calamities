@@ -8,6 +8,9 @@ import MainMenu from "./MainMenu";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import LevelSelection from "./LevelSelection";
+import SplashScreen from "./SplashScreen";
+import Gameover from "./Gameover";
 
 export default class IceBoss extends BaseStage {
     private boss: AnimatedSprite;
@@ -71,7 +74,8 @@ export default class IceBoss extends BaseStage {
         this.bossReceiver.subscribe([
                                     CTCevent.BOSS_SKILL,
                                     CTCevent.BOSS_TELEPORT,
-                                    CTCevent.BOSS_ATTACK, ]);
+                                    CTCevent.BOSS_ATTACK,
+                                    CTCevent.BOSS_DEAD ]);
 
     }
 
@@ -85,6 +89,14 @@ export default class IceBoss extends BaseStage {
                 case CTCevent.BOSS_TELEPORT:
                     break;
                 case CTCevent.BOSS_ATTACK:
+                    break;
+                case CTCevent.BOSS_DEAD:
+                    this.boss.removePhysics();
+                    let pos = event.data.get("pos");
+                    this.boss_dead(pos.x/16, pos.y/16);
+                    this.endposition = new Vec2(pos.x/16, pos.y/16-1);
+                    let exit = this.add.sprite("portal", "primary");
+                    exit.position.set(this.endposition.x*16+8, this.endposition.y*16+8);
                     break;
             }
         }
@@ -120,17 +132,14 @@ export default class IceBoss extends BaseStage {
 
     initializeBoss(): void {
         this.boss = this.add.animatedSprite("boss", "primary");
-        this.boss.animation.play("skill");
+        this.boss.animation.play("idle");
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
         this.boss.position.set(this.pos1.x, this.pos1.y);
         let boardPos = this.pos1.scaled(1/16);
         this.block = new Sprite("boss_block");
-        this.gameboard[boardPos.x][boardPos.y] = this.block;
-        this.gameboard[boardPos.x-1][boardPos.y] = this.block;
-        this.gameboard[boardPos.x][boardPos.y-1] = this.block;
-        this.gameboard[boardPos.x-1][boardPos.y-1] = this.block;
+        this.boss_dead(boardPos.x, boardPos.y, this.block);
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "ice"});
     }

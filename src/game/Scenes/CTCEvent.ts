@@ -14,4 +14,6 @@ export enum CTCevent{
     BOSS_SKILL = "boss_skill",
     BOSS_TELEPORT = "boss_teleport",
     BOSS_ATTACK = "boss_attack",
+    BOSS_DAMAGED = "boss_damaged",
+    BOSS_DEAD = "boss_dead",
 }

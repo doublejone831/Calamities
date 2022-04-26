@@ -371,29 +371,64 @@ export default class BaseStage extends Scene {
         switch(target.imageId){
             case "rock_S":
                 if(this.elementSelected>1) break;
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 ||this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
-                targetposX = dest.x;
-                targetposY = dest.y;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
+                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
+                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    } else {
+                        break;
+                    }
+                } else {
+                    dest.add(dir);
+                    target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                    this.gameboard[targetposX][targetposY] = null;
+                    this.gameboard[dest.x][dest.y] = target;
+                    targetposX = dest.x;
+                    targetposY = dest.y;
+                }
             case "rock_M":
                 if(this.elementSelected>1) break;
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
-                targetposX = dest.x;
-                targetposY = dest.y;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
+                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
+                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    } else {
+                        break;
+                    }
+                } else {
+                    dest.add(dir);
+                    target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                    this.gameboard[targetposX][targetposY] = null;
+                    this.gameboard[dest.x][dest.y] = target;
+                    targetposX = dest.x;
+                    targetposY = dest.y;
+                }
             case "rock_L":
                 if(this.elementSelected>1) break;
-                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17 || this.gameboard[dest.x+dir.x][dest.y+dir.y] != null) break;
-                dest.add(dir);
-                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                this.gameboard[targetposX][targetposY] = null;
-                this.gameboard[dest.x][dest.y] = target;
+                if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
+                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
+                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    } else {
+                        break;
+                    }
+                } else {
+                    dest.add(dir);
+                    target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                    this.gameboard[targetposX][targetposY] = null;
+                    this.gameboard[dest.x][dest.y] = target;
+                    targetposX = dest.x;
+                    targetposY = dest.y;
+                }
                 break;
             case "rock_P":
                 if(this.elementSelected != 1) break;
@@ -406,6 +441,11 @@ export default class BaseStage extends Scene {
                     targetposX = dest.x;
                     targetposY = dest.y;
                     if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                }
+                if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
+                    this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                    this.gameboard[targetposX][targetposY] = null;
+                    target.destroy();
                 }
                 break;
             case "whirlwind":
@@ -525,6 +565,13 @@ export default class BaseStage extends Scene {
         ember.destroy();
         this.gameboard[posX][posY] = null;
         this.skillUsed[3] = false;
+    }
+
+    boss_dead(row: number, col: number, dead: Sprite = null) {
+        this.gameboard[row][col] = dead;
+        this.gameboard[row-1][col] = dead;
+        this.gameboard[row][col-1] = dead;
+        this.gameboard[row-1][col-1] = dead;
     }
 
     // position in pixels to position to row col
