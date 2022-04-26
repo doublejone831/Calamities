@@ -6,6 +6,7 @@ import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { CTCevent } from "../Scenes/CTCEvent";
 import BaseStage from "../Scenes/BaseStage";
 
+
 export default class PlayerController extends StateMachineAI {
     protected owner: AnimatedSprite;
     tilemap: OrthogonalTilemap;

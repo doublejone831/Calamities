@@ -15,6 +15,7 @@ import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import MainMenu from "./MainMenu";
 import Input from "../../Wolfie2D/Input/Input";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -61,6 +62,11 @@ export default class BaseStage extends Scene {
                 this.gameboard[i] = arr;
             }
         }
+        //load sound source
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("fire", "game_assets/sound/fire.wav");
+        
 
         // Create primary layer
         this.addLayer("primary", 10);
@@ -372,6 +378,7 @@ export default class BaseStage extends Scene {
             case "rock_S":
                 if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
                     if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
@@ -392,6 +399,7 @@ export default class BaseStage extends Scene {
             case "rock_M":
                 if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
                     if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
@@ -412,6 +420,7 @@ export default class BaseStage extends Scene {
             case "rock_L":
                 if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
                     if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
@@ -433,6 +442,7 @@ export default class BaseStage extends Scene {
             case "rock_P":
                 if(this.elementSelected != 1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 while(this.gameboard[dest.x+dir.x][dest.y+dir.y] == null) {
                     dest.add(dir);
                     target.position.set(dest.x*16 + 8, dest.y*16 + 8);
@@ -450,6 +460,7 @@ export default class BaseStage extends Scene {
                 break;
             case "whirlwind":
                 if(this.elementSelected != 2) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "wind"} );
                 this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
                 this.skillUsed[1] = false;
@@ -462,6 +473,7 @@ export default class BaseStage extends Scene {
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                 this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
                 this.skillUsed[1] = false;

@@ -4,6 +4,7 @@ import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import EarthBoss from "./EarthBoss";
 import MainMenu from "./MainMenu";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Earth extends BaseStage {
 
@@ -21,6 +22,8 @@ export default class Earth extends BaseStage {
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
     }
 
     unloadScene(): void {
@@ -37,6 +40,7 @@ export default class Earth extends BaseStage {
         this.initializePlayer();
 
         this.elementGUI.animation.play("none_equipped");
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
