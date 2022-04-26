@@ -1,0 +1,29 @@
+{
+	"numElements": 6,
+	"elements": [
+		{
+			"position": [4, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [14, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [6, 7],
+			"type": "rock_S"
+		},
+		{
+			"position": [16, 16],
+			"type": "portal"
+		}
+	]
+}
