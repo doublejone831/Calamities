@@ -35,8 +35,9 @@ export default class EarthBoss extends BaseStage {
         this.load.image("portal", "game_assets/sprites/portal.png");
         //gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
+        this.load.image("lock", "game_assets/sprites/lock.png");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
-
+        // audio
         this.load.audio("level_music", "game_assets/sound/song.mp3");
         this.load.audio("rock", "game_assets/sound/rock.wav");
     }
@@ -57,6 +58,13 @@ export default class EarthBoss extends BaseStage {
         this.initializeBoss();
 
         this.elementGUI.animation.play("none_equipped");
+        // Create lock layer
+        this.addLayer("lock", 20);
+        for(var i = 1; i<6; i++) {
+            let lock = this.add.sprite("lock", "lock");
+            lock.position.set(i*16+6, 19*16);
+        }
+        
         this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
 
         this.bossReceiver = new Receiver();

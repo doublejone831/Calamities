@@ -29,6 +29,7 @@ export default class Fire extends BaseStage {
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
+        this.load.image("lock", "game_assets/sprites/lock.png");
     }
 
     unloadScene(): void {
@@ -51,6 +52,12 @@ export default class Fire extends BaseStage {
         this.initializePlayer();
 
         this.elementGUI.animation.play("earth_equipped");
+        // Create lock layer
+        this.addLayer("lock", 20);
+        for(var i = 4; i<6; i++) {
+            let lock = this.add.sprite("lock", "lock");
+            lock.position.set(i*16+6, 19*16);
+        }
     }
 
     updateScene(deltaT: number): void{

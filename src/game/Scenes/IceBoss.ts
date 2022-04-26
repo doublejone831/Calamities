@@ -49,6 +49,7 @@ export default class IceBoss extends BaseStage {
         this.load.image("portal", "game_assets/sprites/portal.png");
         //gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
+        this.load.image("lock", "game_assets/sprites/lock.png");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
     }
 
@@ -68,6 +69,10 @@ export default class IceBoss extends BaseStage {
         this.initializeBoss();
 
         this.elementGUI.animation.play("earth_equipped");
+        // Create lock layer
+        this.addLayer("lock", 20);
+        let lock = this.add.sprite("lock", "lock");
+        lock.position.set(5*16+6, 19*16);
 
         this.bossReceiver = new Receiver();
         this.bossReceiver.subscribe([
@@ -126,7 +131,7 @@ export default class IceBoss extends BaseStage {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,false]});
     }
 
     initializeBoss(): void {

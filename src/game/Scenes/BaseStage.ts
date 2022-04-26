@@ -68,7 +68,7 @@ export default class BaseStage extends Scene {
         this.addLayer("primary", 10);
         this.elementGUI = this.add.animatedSprite("element_equipped", "primary");
         this.elementGUI.animation.play("none_equipped");
-        this.elementGUI.position.set(3*16+4, 19*16);
+        this.elementGUI.position.set(3*16+6, 19*16);
 
         // Add pause gui
         this.pauseGUI = this.addUILayer("pauseMenu");

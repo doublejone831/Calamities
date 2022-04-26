@@ -33,6 +33,7 @@ export default class Ice extends BaseStage {
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
+        this.load.image("lock", "game_assets/sprites/lock.png");
     }
 
     unloadScene(): void {
@@ -55,6 +56,10 @@ export default class Ice extends BaseStage {
         this.initializePlayer();
 
         this.elementGUI.animation.play("earth_equipped");
+        // Create lock layer
+        this.addLayer("lock", 20);
+        let lock = this.add.sprite("lock", "lock");
+        lock.position.set(5*16+6, 19*16);
     }
 
     updateScene(deltaT: number): void{
@@ -88,7 +93,7 @@ export default class Ice extends BaseStage {
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
         this.inAir = false;
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,false]});
     }
 
     restartStage(): void{
