@@ -24,6 +24,7 @@ export default class Earth extends BaseStage {
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
 
         this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
     }
 
     unloadScene(): void {
@@ -72,11 +73,13 @@ export default class Earth extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Earth, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[0] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(EarthBoss, {});
     }
 }

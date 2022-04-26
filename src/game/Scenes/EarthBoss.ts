@@ -8,6 +8,8 @@ import Wind from "./Wind";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import MainMenu from "./MainMenu";
 
 export default class EarthBoss extends BaseStage {
     private boss: AnimatedSprite;
@@ -35,6 +37,9 @@ export default class EarthBoss extends BaseStage {
         //gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
     }
 
     unloadScene(): void {
@@ -53,6 +58,7 @@ export default class EarthBoss extends BaseStage {
         this.initializeBoss();
 
         this.elementGUI.animation.play("none_equipped");
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
 
         this.bossReceiver = new Receiver();
         this.bossReceiver.subscribe([
@@ -123,10 +129,13 @@ export default class EarthBoss extends BaseStage {
     }
 
     restartStage(): void {
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(EarthBoss, {});
     }
 
     nextStage(): void {
+        MainMenu.unlocked[1] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Wind, {});
     }
 }

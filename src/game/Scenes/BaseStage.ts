@@ -62,11 +62,6 @@ export default class BaseStage extends Scene {
                 this.gameboard[i] = arr;
             }
         }
-        //load sound source
-        this.load.audio("rock", "game_assets/sound/rock.wav");
-        this.load.audio("wind", "game_assets/sound/wind.wav");
-        this.load.audio("fire", "game_assets/sound/fire.wav");
-        
 
         // Create primary layer
         this.addLayer("primary", 10);
@@ -361,6 +356,7 @@ export default class BaseStage extends Scene {
     
     restartStage(): void {
         // Replace BaseStage to appropiate stage
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(BaseStage, {});
     }
 
@@ -460,7 +456,6 @@ export default class BaseStage extends Scene {
                 break;
             case "whirlwind":
                 if(this.elementSelected != 2) break;
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "wind"} );
                 this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
                 this.skillUsed[1] = false;
@@ -473,7 +468,6 @@ export default class BaseStage extends Scene {
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                 this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
                 this.skillUsed[1] = false;
