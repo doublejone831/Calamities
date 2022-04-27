@@ -17,8 +17,8 @@ export default class Earth extends BaseStage {
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.object("board", "game_assets/data/earth_board.json");
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");

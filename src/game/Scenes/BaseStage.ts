@@ -6,7 +6,6 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
-import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import PlayerController from "../Player/PlayerController";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
@@ -34,6 +33,7 @@ export default class BaseStage extends Scene {
     inAir: boolean = false;
     block: Sprite;
     savedNum: number;
+    player_shield: Sprite = null;
     // GUI
     elementGUI: AnimatedSprite;
     // Viewport
@@ -182,10 +182,12 @@ export default class BaseStage extends Scene {
         let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
         let pRow = playerPosInBoard.x;
         let pCol = playerPosInBoard.y;
+        if(this.player_shield) this.player_shield.position.set(pRow*16+8, pCol*16+8);
         if(!this.inAir) {
             if(this.gameboard[pRow][pCol]){
                 switch(this.gameboard[pRow][pCol].imageId){
                     case "whirlwind":
+                        if(this.player_shield != null) this.player_shield = null;
                         this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
                         break;
                     case "bubble":
@@ -567,7 +569,8 @@ export default class BaseStage extends Scene {
         bubble.destroy();
         this.gameboard[posX][posY] = null;
         (<PlayerController>this.player._ai).gainShield(true);
-        this.skillUsed[2] = false;
+        this.player_shield = new Sprite("shield");
+        this.player_shield.position.set(posX*16+8, posY*16+8);
     }
 
     ember_extinguish(posX: number, posY: number){

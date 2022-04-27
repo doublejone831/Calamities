@@ -22,10 +22,11 @@ export default class Fire extends BaseStage {
         this.load.image("flames", "game_assets/sprites/flames.png");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
+        this.load.image("shield", "game_assets/sprites/shield.png");
         // map
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.tilemap("level", "game_assets/tilemaps/fire.json");
         this.load.object("board", "game_assets/data/fire_board.json");
+        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
@@ -33,12 +34,6 @@ export default class Fire extends BaseStage {
     }
 
     unloadScene(): void {
-        this.load.keepImage("rock_M");
-        this.load.keepImage("whirlwind");
-        this.load.keepImage("gust");
-        this.load.keepSpritesheet("airstream");
-        this.load.keepSpritesheet("god");
-        this.load.keepSpritesheet("element_equipped");
         this.load.unloadAllResources();
     }
 
