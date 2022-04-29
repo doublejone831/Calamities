@@ -15,7 +15,7 @@ export default class WindBoss extends BaseBoss {
         this.load.image("rock_M", "game_assets/sprites/rock_M.png");
         this.load.image("rock_L", "game_assets/sprites/rock_L.png");
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
-        this.load.image("gust", "game_assets/sprites/gust.png");
+        this.load.spritesheet("tornado", "game_assets/spritesheets/tornado.json");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");

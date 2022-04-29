@@ -1,29 +1,63 @@
 {
-	"numElements": 6,
+	"numElements": 11,
 	"elements": [
-		{
-			"position": [4, 4],
-			"type": "rock_L"
-		},
-		{
-			"position": [14, 4],
-			"type": "rock_L"
-		},
-		{
-			"position": [4, 14],
-			"type": "rock_M"
-		},
-		{
-			"position": [14, 14],
-			"type": "rock_M"
-		},
-		{
-			"position": [6, 7],
-			"type": "rock_S"
-		},
 		{
 			"position": [16, 16],
 			"type": "portal"
+		},
+		{
+			"position": [4, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 9],
+			"type": "rock_M"
+		},
+		{
+			"position": [5, 7],
+			"type": "rock_S"
+		},
+		{
+			"position": [7, 5],
+			"type": "hole"
+		},
+		{
+			"start": [11, 10],
+			"end": [11, 12],
+			"type": "tornado"
+		},
+		{
+			"start": [9, 15],
+			"end": [17, 15],
+			"type": "tornado"
+		},
+		{
+			"start": [4, 5],
+			"end": [10, 5],
+			"size": 7,
+			"type": "airstream",
+			"direction": "right"
+		},
+		{
+			"start": [14, 8],
+			"end": [6, 8],
+			"size": 9,
+			"type": "airstream",
+			"direction": "left"
+		},
+		{
+			"start": [8, 17],
+			"end": [8, 2],
+			"size": 16,
+			"type": "airstream",
+			"direction": "up"
+		},
+		{
+			"start": [16, 4],
+			"end": [16, 5],
+			"size": 2,
+			"type": "airstream",
+			"direction": "down"
 		}
 	]
 }

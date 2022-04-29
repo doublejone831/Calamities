@@ -9,7 +9,6 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import PlayerController from "../Player/PlayerController";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "./CTCEvent";
-import ElementController from "../Element/ElementController";
 import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import MainMenu from "./MainMenu";
@@ -131,8 +130,8 @@ export default class BaseStage extends Scene {
                                 CTCevent.INTERACT_ELEMENT, 
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
-                                CTCevent.CHANGE_ELEMENT
-                                ]);
+                                CTCevent.CHANGE_ELEMENT,
+                                CTCevent.WHIRLWIND_MOVE, ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -142,8 +141,20 @@ export default class BaseStage extends Scene {
     }
 
     updateScene(deltaT: number): void{
-        //pausing and resuming
-        if(BaseStage.paused) this.receiver.ignoreEvents();
+        // pausing and resuming
+        this.check_paused();
+        if(BaseStage.paused) return;
+        // player info per frame
+        let player_controller = (<PlayerController>this.player._ai);
+        let dirVec = player_controller.dirUnitVector();
+        let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
+        // listen to events
+        this.check_events(dirVec);
+        // player step on anything
+        this.check_current_tile(playerPosInBoard, dirVec);
+    }
+
+    check_paused(){
         while(this.pauseReceiver.hasNextEvent()){
             let event = this.pauseReceiver.getNextEvent();
             switch(event.type){
@@ -161,55 +172,68 @@ export default class BaseStage extends Scene {
                 case CTCevent.BACK_TO_MENU:
                     console.log("BACK TO MENU");
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
-                    if(BaseStage.paused) {
-                        this.viewport.setZoomLevel(1);
-                        //MainMenu.unlocked[0] = true;        //unlock level test
-                        this.sceneManager.changeToScene(MainMenu, {});
-                    }
+                    this.viewport.setZoomLevel(1);
+                    this.sceneManager.changeToScene(MainMenu, {});                    
                     break;
                 case CTCevent.RESTART_STAGE:
                     if(BaseStage.paused) this.restartStage();
                     break;
                 case CTCevent.CONTROLS_POPUP:
-                    if(BaseStage.paused) {
-                        this.pauseMenuControls.setHidden(!this.pauseMenuControls.isHidden());
-                    }
+                    this.pauseMenuControls.setHidden(!this.pauseMenuControls.isHidden());
                     break;
             }
         }
-        let player_controller = (<PlayerController>this.player._ai);
-        let dirVec = player_controller.dirUnitVector();
-        let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
-        let pRow = playerPosInBoard.x;
-        let pCol = playerPosInBoard.y;
-        if(this.player_shield) this.player_shield.position.set(pRow*16+8, pCol*16+8);
-        if(!this.inAir) {
-            if(this.gameboard[pRow][pCol]){
-                switch(this.gameboard[pRow][pCol].imageId){
-                    case "whirlwind":
-                        if(this.player_shield != null) this.player_shield = null;
-                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
-                        break;
-                    case "bubble":
-                        this.bubble_shield(pRow, pCol);
-                        break;
-                    case "ember":
-                        this.ember_extinguish(pRow, pCol);
-                        break;
+    }
+
+    pauseAnimations(): void {
+        this.player.animation.pause();
+        if (this.boss) this.boss.animation.pause();
+        for (let i = 2; i < this.gameboard.length-2; i++) {
+            for (let j = 2; j < this.gameboard[i].length-2; j++) {
+                if (this.gameboard[i][j]) {
+                    switch(this.gameboard[i][j].imageId){
+                        case "tornado":
+                        case "airstream":
+                        case "whirlwind":
+                        case "ember":
+                            (<AnimatedSprite>this.gameboard[i][j]).animation.pause();
+                    }
                 }
             }
-            if(this.endposition.equals(playerPosInBoard)){
-                this.nextStage();
-            }
-        } else {
-            if(this.savedNum>0) {
-                this.emitter.fireEvent(CTCevent.FLY);
-                this.savedNum--;
-            } else {
-                this.inAir = false;
-                Input.enableInput();
+        }
+    }
+
+    resumeAnimations(): void {
+        this.player.animation.resume();
+        if (this.boss) this.boss.animation.resume();
+        for (let i = 2; i < this.gameboard.length-2; i++) {
+            for (let j = 2; j < this.gameboard[i].length-2; j++) {
+                if (this.gameboard[i][j]) {
+                    switch(this.gameboard[i][j].imageId){
+                        case "tornado":
+                        case "airstream":
+                        case "whirlwind":
+                        case "ember":
+                            (<AnimatedSprite>this.gameboard[i][j]).animation.resume();
+                    }
+                }
             }
         }
+    }
+    
+    restartStage(): void {
+        // Replace BaseStage to appropiate stage in child class
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        this.sceneManager.changeToScene(BaseStage, {});
+    }
+
+    nextStage(): void {
+        // Replace BaseStage to appropiate stage in child class
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        this.sceneManager.changeToScene(BaseStage, {});
+    }
+
+    check_events(dirVec: Vec2){
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
@@ -302,7 +326,6 @@ export default class BaseStage extends Scene {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
-                    if (BaseStage.paused) Input.enableInput();
                     var next = event.data.get("next");
                     if(this.gameboard[next.x][next.y]){
                         switch(this.gameboard[next.x][next.y].imageId) {
@@ -322,57 +345,20 @@ export default class BaseStage extends Scene {
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
                     }
                     break;
-                case CTCevent.CHANGE_ELEMENT:
-                    switch(event.data.get("el")){
-                        case 1:
-                            this.elementGUI.animation.play("earth_equipped");
-                            this.elementSelected = 1;
-                            break;
-                    }
+                case CTCevent.WHIRLWIND_MOVE:
+                    let whirlwind = event.data.get("sprite");
+                    let old_pos = event.data.get("old");
+                    let new_pos = event.data.get("new");
+                    this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16] = whirlwind;
+                    this.gameboard[(old_pos.x-8)/16][(old_pos.y-8)/16] = null;
+                    let adf = this.gameboard;
                     break;
             }    
         }
     }
 
-    pauseAnimations(): void {
-        this.player.animation.pause();
-        if (this.boss) this.boss.animation.pause();
-        for (let i = 2; i < this.gameboard.length-2; i++) {
-            for (let j = 2; j < this.gameboard[i].length-2; j++) {
-                if (this.gameboard[i][j]) {
-                    let id = this.gameboard[i][j].imageId;
-                    if (id === "whirlwind" || id === "ember") (<AnimatedSprite>this.gameboard[i][j]).animation.pause();
-                }
-            }
-        }
-    }
-
-    resumeAnimations(): void {
-        this.player.animation.resume();
-        if (this.boss) this.boss.animation.resume();
-        for (let i = 2; i < this.gameboard.length-2; i++) {
-            for (let j = 2; j < this.gameboard[i].length-2; j++) {
-                if (this.gameboard[i][j]) {
-                    let id = this.gameboard[i][j].imageId;
-                    if (id === "whirlwind" || id === "ember") (<AnimatedSprite>this.gameboard[i][j]).animation.resume();
-                }
-            }
-        }
-    }
-    
-    restartStage(): void {
-        // Replace BaseStage to appropiate stage
-        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
-        this.sceneManager.changeToScene(BaseStage, {});
-    }
-
-    nextStage(): void {
-        // Replace BaseStage to appropiate stage
-        this.sceneManager.changeToScene(BaseStage, {});
-    }
-
     activateElement(target: Sprite, targetposX: number, targetposY: number, direction: Vec2) : void {
-        var dest = new Vec2(targetposX, targetposY); //destination that rock will go. (Index)
+        var dest = new Vec2(targetposX, targetposY);
         var dir = direction;
         let player_controller = (<PlayerController>this.player._ai);
         player_controller.cast_animation();
@@ -384,6 +370,10 @@ export default class BaseStage extends Scene {
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
                     if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
                         this.gameboard[targetposX][targetposY] = null;
                         target.destroy();
                         break;
@@ -408,6 +398,10 @@ export default class BaseStage extends Scene {
                         this.gameboard[targetposX][targetposY] = null;
                         target.destroy();
                         break;
+                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
                     } else {
                         break;
                     }
@@ -426,6 +420,10 @@ export default class BaseStage extends Scene {
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
                     if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
                         this.gameboard[targetposX][targetposY] = null;
                         target.destroy();
                         break;
@@ -456,6 +454,9 @@ export default class BaseStage extends Scene {
                 }
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
                     this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                    this.gameboard[targetposX][targetposY] = null;
+                    target.destroy();
+                } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
                     this.gameboard[targetposX][targetposY] = null;
                     target.destroy();
                 }
@@ -535,11 +536,67 @@ export default class BaseStage extends Scene {
         }
     }
 
+    check_current_tile(pos: Vec2, dirVec: Vec2){
+        let pRow = pos.x;
+        let pCol = pos.y;
+        if(!this.inAir) {
+            if(this.gameboard[pRow][pCol]){
+                switch(this.gameboard[pRow][pCol].imageId){
+                    case "tornado":
+                    case "whirlwind":
+                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
+                        break;
+                    case "airstream":
+                        switch(this.gameboard[pRow][pCol].rotation){
+                            case 0:
+                                dirVec = new Vec2(1, 0);
+                                break;
+                            case Math.PI:
+                                dirVec = new Vec2(-1, 0);
+                                break;
+                            case Math.PI/2:
+                                dirVec = new Vec2(0, -1);
+                                break;
+                            case 3*Math.PI/2:
+                                dirVec = new Vec2(0, 1);
+                                break;
+                        }
+                        let nextX = pRow+dirVec.x;
+                        let nextY = pCol+dirVec.y;
+                        if(this.gameboard[nextX][nextY]) {
+                            if(this.gameboard[nextX][nextY].imageId == "airstream") {
+                                Input.disableInput();
+                                this.player.position.set(nextX*16+8, nextY*16+8);
+                            } else {
+                                Input.enableInput();
+                            }
+                        }
+                        break;
+                    case "bubble":
+                        this.bubble_shield(pRow, pCol);
+                        break;
+                    case "ember":
+                        this.ember_extinguish(pRow, pCol);
+                        break;
+                    case "hole":
+                        this.restartStage();
+                }
+            }
+            if(this.endposition.equals(pos)){
+                this.nextStage();
+            }
+        } else {
+            if(this.savedNum>0) {
+                this.emitter.fireEvent(CTCevent.FLY);
+                this.savedNum--;
+            } else {
+                this.inAir = false;
+                Input.enableInput();
+            }
+        }
+    }
+
     whirlwind_fly(posX: number, posY: number, dirVec: Vec2){
-        let wind = this.gameboard[posX][posY];
-        wind.destroy();
-        this.gameboard[posX][posY] = null;
-        this.skillUsed[1] = false;
         this.inAir = true;
         Input.disableInput();
         var jumps = 0;
@@ -559,6 +616,22 @@ export default class BaseStage extends Scene {
                 }
             } else {
                 jumps = i;
+            }
+        }
+        return jumps;
+    }
+
+    airstream_fly(posX: number, posY: number, dir: Vec2) {
+        this.inAir = true;
+        Input.disableInput();
+        var jumps = 0;
+        while(this.gameboard[posX+dir.x][posY+dir.y]) {
+            if(this.gameboard[posX+dir.x][posY+dir.y].imageId == "airstream"){
+                jumps++;
+                posX += dir.x;
+                posY += dir.y;
+            } else {
+                return jumps;
             }
         }
         return jumps;

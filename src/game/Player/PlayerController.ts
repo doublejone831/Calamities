@@ -125,6 +125,10 @@ export default class PlayerController extends StateMachineAI {
         return this.facing_direction;
     }
 
+    changeDirection(dir: number){
+        this.facing_direction = dir;
+    }
+
     nextposition(){
         // not absolute coordinant => Index of gameboard
         let playerPos = new Vec2(this.owner.position.x, this.owner.position.y);

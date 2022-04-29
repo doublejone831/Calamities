@@ -14,7 +14,7 @@ export default class IceBoss extends BaseBoss {
         this.load.image("rock_M", "game_assets/sprites/rock_M.png");
         this.load.image("rock_L", "game_assets/sprites/rock_L.png");
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
-        this.load.image("gust", "game_assets/sprites/gust.png");
+        this.load.spritesheet("tornado", "game_assets/spritesheets/tornado.json");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
@@ -27,6 +27,7 @@ export default class IceBoss extends BaseBoss {
         this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
         this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
         // player
+        this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.image("shield", "game_assets/sprites/shield.png");
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_ice.json");
@@ -93,6 +94,7 @@ export default class IceBoss extends BaseBoss {
     }
 
     nextStage(): void {
+        this.viewport.setZoomLevel(1);
         this.sceneManager.changeToScene(MainMenu, {});
     }
 }
