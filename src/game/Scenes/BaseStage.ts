@@ -4,7 +4,6 @@ import Layer from "../../Wolfie2D/Scene/Layer";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
-import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import PlayerController from "../Player/PlayerController";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
@@ -22,8 +21,8 @@ export default class BaseStage extends Scene {
     private pauseMenuControls: Layer;
     private pauseReceiver: Receiver;
     // Map
-    private walls: OrthogonalTilemap;
     protected gameboard: Array<Array<Sprite>>;
+    protected overlap: Array<Array<Sprite>>;
     endposition: Vec2;
     // Player
     player: AnimatedSprite;
@@ -32,6 +31,7 @@ export default class BaseStage extends Scene {
     inAir: boolean = false;
     block: Sprite;
     savedNum: number;
+    savedVec: Vec2;
     player_shield: Sprite = null;
     // GUI
     elementGUI: AnimatedSprite;
@@ -50,6 +50,7 @@ export default class BaseStage extends Scene {
         // Initialize an empty gamebaord
         this.block = new Sprite("block");
         this.gameboard = new Array(this.num_col);
+        this.overlap = new Array(this.num_col);
         for (var i = 0; i < this.num_col; i++) {
             if(i<2 || i>17){
                 this.gameboard[i] = new Array(this.num_row).fill(this.block);
@@ -61,11 +62,14 @@ export default class BaseStage extends Scene {
                 arr[19] = this.block;
                 this.gameboard[i] = arr;
             }
+            this.overlap[i] = new Array(this.num_row).fill(null);
         }
 
         // Create primary layer
         this.addLayer("primary", 10);
-        this.elementGUI = this.add.animatedSprite("element_equipped", "primary");
+        // Create second layer
+        this.addLayer("sky", 15);
+        this.elementGUI = this.add.animatedSprite("element_equipped", "sky");
         this.elementGUI.animation.play("none_equipped");
         this.elementGUI.position.set(3*16+6, 19*16);
 
@@ -124,6 +128,7 @@ export default class BaseStage extends Scene {
         pauseRestartButton.clone(pauseControlsButton, "restart", true);
 
         BaseStage.paused = false;
+        this.savedVec = null;
 
         // Receivers
         this.receiver.subscribe([
@@ -131,7 +136,8 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
-                                CTCevent.WHIRLWIND_MOVE, ]);
+                                CTCevent.WHIRLWIND_MOVE,
+                                CTCevent.AIRSTREAM_EXTEND_REQUEST ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -199,6 +205,7 @@ export default class BaseStage extends Scene {
                             (<AnimatedSprite>this.gameboard[i][j]).animation.pause();
                     }
                 }
+                if (this.overlap[i][j]) (<AnimatedSprite>this.overlap[i][j]).animation.pause();
             }
         }
     }
@@ -217,6 +224,7 @@ export default class BaseStage extends Scene {
                             (<AnimatedSprite>this.gameboard[i][j]).animation.resume();
                     }
                 }
+                if (this.overlap[i][j]) (<AnimatedSprite>this.overlap[i][j]).animation.resume();
             }
         }
     }
@@ -349,10 +357,55 @@ export default class BaseStage extends Scene {
                     let whirlwind = event.data.get("sprite");
                     let old_pos = event.data.get("old");
                     let new_pos = event.data.get("new");
+                    if(this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16]) {
+                        this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16].destroy();
+                    }
                     this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16] = whirlwind;
                     this.gameboard[(old_pos.x-8)/16][(old_pos.y-8)/16] = null;
-                    let adf = this.gameboard;
                     break;
+                case CTCevent.AIRSTREAM_EXTEND_REQUEST:
+                    let airstream = event.data.get("sprite");
+                    let next_pos = event.data.get("next_pos");
+                    let blocked = event.data.get("blocked");
+                    if(blocked) {
+                        if(this.overlap[next_pos.x][next_pos.y]) {
+                            let remove = this.overlap[next_pos.x][next_pos.y];
+                            remove.destroy();
+                            this.overlap[next_pos.x][next_pos.y] = null;
+                        }
+                        if(this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16]) {
+                            let remove = this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16];
+                            remove.destroy();
+                            this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16] = null;
+                        }
+                    } else {
+                        if(this.gameboard[next_pos.x][next_pos.y]) {
+                            switch(this.gameboard[next_pos.x][next_pos.y].imageId) {
+                                case "hole":
+                                case "shallow_water":
+                                case "deep_water":
+                                    // does not block airstream
+                                    if(this.overlap[next_pos.x][next_pos.y] == null) {
+                                        let stream = this.add.animatedSprite("airstream", "sky");
+                                        stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                                        stream.rotation = airstream.rotation;
+                                        stream.animation.play("stream");
+                                        this.overlap[next_pos.x][next_pos.y] = stream;
+                                    }
+                                    break;
+                                default:
+                                    this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id});
+                            }
+                        } else if(this.overlap[next_pos.x][next_pos.y] == null) {
+                            let stream = this.add.animatedSprite("airstream", "sky");
+                            stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                            stream.rotation = airstream.rotation;
+                            stream.animation.play("stream");
+                            this.overlap[next_pos.x][next_pos.y] = stream;
+                        }
+                    }
+                    airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id});
             }    
         }
     }
@@ -546,32 +599,6 @@ export default class BaseStage extends Scene {
                     case "whirlwind":
                         this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
                         break;
-                    case "airstream":
-                        switch(this.gameboard[pRow][pCol].rotation){
-                            case 0:
-                                dirVec = new Vec2(1, 0);
-                                break;
-                            case Math.PI:
-                                dirVec = new Vec2(-1, 0);
-                                break;
-                            case Math.PI/2:
-                                dirVec = new Vec2(0, -1);
-                                break;
-                            case 3*Math.PI/2:
-                                dirVec = new Vec2(0, 1);
-                                break;
-                        }
-                        let nextX = pRow+dirVec.x;
-                        let nextY = pCol+dirVec.y;
-                        if(this.gameboard[nextX][nextY]) {
-                            if(this.gameboard[nextX][nextY].imageId == "airstream") {
-                                Input.disableInput();
-                                this.player.position.set(nextX*16+8, nextY*16+8);
-                            } else {
-                                Input.enableInput();
-                            }
-                        }
-                        break;
                     case "bubble":
                         this.bubble_shield(pRow, pCol);
                         break;
@@ -579,8 +606,13 @@ export default class BaseStage extends Scene {
                         this.ember_extinguish(pRow, pCol);
                         break;
                     case "hole":
+                        Input.enableInput();
                         this.restartStage();
                 }
+            }
+            if(this.overlap[pRow][pCol]) {
+                this.inAir = true;
+                this.airstream_fly(pRow, pCol);
             }
             if(this.endposition.equals(pos)){
                 this.nextStage();
@@ -589,6 +621,8 @@ export default class BaseStage extends Scene {
             if(this.savedNum>0) {
                 this.emitter.fireEvent(CTCevent.FLY);
                 this.savedNum--;
+            } else if(this.savedVec != null){
+                this.airstream_fly(pRow, pCol);
             } else {
                 this.inAir = false;
                 Input.enableInput();
@@ -621,20 +655,32 @@ export default class BaseStage extends Scene {
         return jumps;
     }
 
-    airstream_fly(posX: number, posY: number, dir: Vec2) {
-        this.inAir = true;
+    airstream_fly(posX: number, posY: number) {
         Input.disableInput();
-        var jumps = 0;
-        while(this.gameboard[posX+dir.x][posY+dir.y]) {
-            if(this.gameboard[posX+dir.x][posY+dir.y].imageId == "airstream"){
-                jumps++;
-                posX += dir.x;
-                posY += dir.y;
-            } else {
-                return jumps;
+        if(this.savedVec == null) {
+            switch(this.overlap[posX][posY].rotation){
+                case 0:
+                    this.savedVec = new Vec2(1, 0);
+                    break;
+                case Math.PI:
+                    this.savedVec = new Vec2(-1, 0);
+                    break;
+                case Math.PI/2:
+                    this.savedVec = new Vec2(0, -1);
+                    break;
+                case 3*Math.PI/2:
+                    this.savedVec = new Vec2(0, 1);
+                    break;
             }
         }
-        return jumps;
+        let nextX = posX+this.savedVec.x;
+        let nextY = posY+this.savedVec.y;
+        if(this.overlap[nextX][nextY]) {
+            this.player.position.set(nextX*16+8, nextY*16+8);
+        } else {
+            this.savedVec = null;
+            Input.enableInput();
+        }
     }
 
     bubble_shield(posX: number, posY: number){

@@ -1,5 +1,6 @@
 import StateMachineAI from "../../Wolfie2D/AI/StateMachineAI";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "../Scenes/CTCEvent";
 import { Element } from "./Element_Enum";
@@ -8,16 +9,21 @@ export default class ElementController extends StateMachineAI {
     protected type : Element;
     protected start : Vec2;
     protected end : Vec2;
+    protected size: number;
     protected reverse: boolean;
+    protected blocked: boolean;
     protected dir: Vec2;
     protected frames: number;
+    protected paused: boolean;
 
     initializeAI(owner: Sprite, options: Record<string, any>){
         this.owner = owner;
         this.type = options.type;
         this.start = options.start.scaled(16).add(new Vec2(8, 8));
         this.end = options.end.scaled(16).add(new Vec2(8, 8));
+        this.size = options.size;
         this.reverse = true;
+        this.blocked = false;
         if(this.start.x-this.end.x > 0) {
             this.dir = new Vec2(-1, 0);
         } else if(this.start.x-this.end.x < 0) {
@@ -30,20 +36,66 @@ export default class ElementController extends StateMachineAI {
             }
         }
         this.frames = 0;
+        this.paused = false;
+
+        this.receiver.subscribe([
+                                CTCevent.TOGGLE_PAUSE,
+                                CTCevent.AIRSTREAM_BLOCKED,
+                                CTCevent.AIRSTREAM_EXTEND ])
     }
 
     update(deltaT: number): void {
-        if(this.frames%30 == 0) {
-            if(this.owner.position.equals(this.start) || this.owner.position.equals(this.end)) this.reverse = !this.reverse;
-            let old_pos = new Vec2(this.owner.position.x, this.owner.position.y);
-            if(this.reverse) {    
-                let new_pos = this.owner.position.add(this.dir.scaled(-16));
-                this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
-            } else {
-                let new_pos = this.owner.position.add(this.dir.scaled(16));
-                this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
+        while(this.receiver.hasNextEvent()) {
+            let event = this.receiver.getNextEvent();
+            switch(event.type) {
+                case CTCevent.TOGGLE_PAUSE:
+                    this.paused = !this.paused;
+                    break;
+                case CTCevent.AIRSTREAM_BLOCKED:
+                    if(event.data.get("id") === this.owner.id) this.blocked = true;
+                    break;
+                case CTCevent.AIRSTREAM_EXTEND:
+                    if(event.data.get("id") === this.owner.id) this.extend_airstream();
             }
         }
+        switch(this.type){
+            case Element.TORNADO:
+                this.move_tornado();
+                break;
+        }
         this.frames++;
+    }
+
+    move_tornado(){
+        if(this.paused) {
+            (<AnimatedSprite>this.owner).animation.pause();
+        } else {
+            (<AnimatedSprite>this.owner).animation.resume();
+            if(this.frames%30 == 0) {
+                if(this.owner.position.equals(this.start) || this.owner.position.equals(this.end)) this.reverse = !this.reverse;
+                let old_pos = new Vec2(this.owner.position.x, this.owner.position.y);
+                if(this.reverse) {    
+                    let new_pos = this.owner.position.add(this.dir.scaled(-16));
+                    this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
+                } else {
+                    let new_pos = this.owner.position.add(this.dir.scaled(16));
+                    this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
+                }
+            }
+        }
+    }
+
+    extend_airstream(){
+        if(!this.paused) {
+            if(this.owner.position.equals(this.end)) {
+            this.owner.position.set(this.start.x, this.start.y);
+            this.blocked = false;
+            let start = new Vec2((this.start.x-8)/16, (this.start.y-8)/16);
+            this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": start, "sprite": this.owner, "blocked": this.blocked});
+            } else {
+                let next_pos = new Vec2((this.owner.position.x-8)/16, (this.owner.position.y-8)/16).add(this.dir);
+                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": next_pos, "sprite": this.owner, "blocked": this.blocked});
+            }
+        }
     }
 }

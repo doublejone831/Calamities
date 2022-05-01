@@ -5,9 +5,9 @@ import PlayerController from "../Player/PlayerController";
 import WindBoss from "./WindBoss";
 import ElementController from "../Element/ElementController";
 import { Element } from "../Element/Element_Enum";
+import { CTCevent } from "./CTCEvent";
 
 export default class Wind extends BaseStage {
-    airstreams: Array<Array<Vec2>>;
 
     loadScene(){
         // elements
@@ -53,81 +53,84 @@ export default class Wind extends BaseStage {
     }
 
     updateScene(deltaT: number): void{
-        for(var i = 0; i<this.airstreams.length; i++){
-            for(var j = 0; j<this.airstreams[i].length; j++){
-                let pos = this.airstreams[i][j];
-                this.gameboard[pos.x][pos.y];
-            }
-        }
         super.updateScene(deltaT);
     };
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
-        this.airstreams = new Array(4).fill(null);
-        let counter = 0;
-        this.addLayer("sky", 15);
+        var start;
+        var end;
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
             var sprite;
+            var controller;
             switch(element.type) {
                 case "tornado":
                     sprite = this.add.animatedSprite(element.type, "primary");
                     sprite.position.set(element.start[0]*16+8, element.start[1]*16+8);
                     sprite.animation.play("idle");
-                    let start = new Vec2(element.start[0], element.start[1]);
-                    let end = new Vec2(element.end[0], element.end[1]);
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
                     sprite.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
                 case "airstream":
-                    let x_start = element.start[0];
-                    let y_start = element.start[1];
-                    let x_end = element.end[0];
-                    let y_end = element.end[1];
-                    this.airstreams[counter] = new Array(element.size).fill(null);
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
                     switch(element.direction){
                         case "right":
-                            for(let i = x_start; i<= x_end; i++) {
-                                sprite = this.add.animatedSprite(element.type, "primary");
-                                sprite.position.set(i*16+8, y_start*16+8);
-                                sprite.animation.play("stream");
-                                this.gameboard[i][y_start] = sprite;
-                                this.airstreams[counter][i-x_start] = new Vec2(i, y_start);
-                            }
+                            sprite = this.add.animatedSprite(element.type, "sky");
+                            sprite.position.set(start.x*16+8, start.y*16+8);
+                            sprite.rotation = 0;
+                            sprite.animation.play("stream");
+                            this.overlap[start.x][start.y] = sprite;
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 0;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "left":
-                            for(let i = x_end; i<= x_start; i++) {
-                                sprite = this.add.animatedSprite(element.type, "primary");
-                                sprite.position.set(i*16+8, y_start*16+8);
-                                sprite.animation.play("stream");
-                                sprite.rotation = Math.PI;
-                                this.gameboard[i][y_start] = sprite;
-                                this.airstreams[counter][x_start-i] = new Vec2(i, y_start);
-                            }
+                            sprite = this.add.animatedSprite(element.type, "sky");
+                            sprite.position.set(start.x*16+8, start.y*16+8);
+                            sprite.rotation = Math.PI;
+                            sprite.animation.play("stream");
+                            this.overlap[start.x][start.y] = sprite;
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "down":
-                            for(let i = y_start; i<= y_end; i++) {
-                                sprite = this.add.animatedSprite(element.type, "primary");
-                                sprite.position.set(x_start*16+8, i*16+8);
-                                sprite.animation.play("stream");
-                                sprite.rotation = 3*Math.PI/2;
-                                this.gameboard[x_start][i] = sprite;
-                                this.airstreams[counter][i-y_start] = new Vec2(x_start, i);
-                            }
+                            sprite = this.add.animatedSprite(element.type, "sky");
+                            sprite.position.set(start.x*16+8, start.y*16+8);
+                            sprite.rotation = 3*Math.PI/2;
+                            sprite.animation.play("stream");
+                            this.overlap[start.x][start.y] = sprite;
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 3*Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "up":
-                            for(let i = y_end; i<= y_start; i++) {
-                                sprite = this.add.animatedSprite(element.type, "primary");
-                                sprite.position.set(x_start*16+8, i*16+8);
-                                sprite.animation.play("stream");
-                                sprite.rotation = Math.PI/2;
-                                this.gameboard[x_start][i] = sprite;
-                                this.airstreams[counter][y_start-i] = new Vec2(x_start, i);
-                            }
-                            break;
+                            sprite = this.add.animatedSprite(element.type, "sky");
+                            sprite.position.set(start.x*16+8, start.y*16+8);
+                            sprite.rotation = Math.PI/2;
+                            sprite.animation.play("stream");
+                            this.overlap[start.x][start.y] = sprite;
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                     }
-                    counter++;
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": controller.id});
                     break;
                 case "portal":
                     this.endposition = new Vec2(element.position[0], element.position[1]);

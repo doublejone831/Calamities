@@ -3,7 +3,7 @@ export enum Element {
     ROCK_M = "rock_M", // medium rock, move 2 tiles, can damage bosses
     ROCK_L = "rock_L", // heavy rock, move 1 tile, can damage bosses
     ROCK_P = "rock_P", // PLAYER SKILL, move to the end
-    TORNADO = "tornado", // ANIMATED, moves in specified path, moves player 2 tiles in player direction
+    TORNADO = "tornado", // ANIMATED, moves in specified path and destroys everything on its path, moves player 2 tiles in player direction
     AIRSTREAM = "airstream", // ANIMATED, line of wind, moves player to the end of the wind direction
     WHIRLWIND = "whirlwind", // ANIMATED, PLAYER SKILL, stationary tornado, becomes airstream when interacted
     SHALLOW_WATER = "shallow_water", // becomes normal ground after 1 rock filling
