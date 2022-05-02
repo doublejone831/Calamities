@@ -625,8 +625,10 @@ export default class BaseStage extends Scene {
                         this.ember_extinguish(pCol, pRow);
                         break;
                     case "hole":
-                        Input.enableInput();
-                        this.restartStage();
+                        if(this.overlap[pCol][pRow] == null) {
+                            Input.enableInput();
+                            this.restartStage();
+                        }
                 }
             }
             if(this.overlap[pCol][pRow]) {
