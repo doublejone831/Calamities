@@ -332,7 +332,6 @@ export default class BaseStage extends Scene {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
-                    if(this.inAir) break;
                     var next = event.data.get("next");
                     if(this.gameboard[next.x][next.y]){
                         switch(this.gameboard[next.x][next.y].imageId) {
