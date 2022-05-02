@@ -73,6 +73,7 @@ export default class WindBoss extends BaseBoss {
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
+        this.currentPos = 1;
         let boardPos = this.pos1.scaled(1/16);
         this.block = new Sprite("boss_block");
         this.boss_dead(boardPos.x, boardPos.y, this.block);

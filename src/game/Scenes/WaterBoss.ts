@@ -75,6 +75,7 @@ export default class WaterBoss extends BaseBoss {
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
+        this.currentPos = 1;
         this.boss.position.set(this.pos1.x, this.pos1.y);
         let boardPos = this.pos1.scaled(1/16);
         this.block = new Sprite("boss_block");

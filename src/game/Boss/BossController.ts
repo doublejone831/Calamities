@@ -21,6 +21,7 @@ export default class BossController extends StateMachineAI {
     update(deltaT: number): void {
         if(this.thresholdReached){
             this.teleport();
+            this.thresholdReached = false;
         }
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
@@ -47,6 +48,7 @@ export default class BossController extends StateMachineAI {
     }
 
     teleport(){
-        
+        this.owner.animation.play("teleport");
+        this.emitter.fireEvent(CTCevent.BOSS_TELEPORT, {});
     }
 }

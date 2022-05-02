@@ -7,6 +7,7 @@ export default class BaseBoss extends BaseStage {
     pos1: Vec2;
     pos2: Vec2;
     pos3: Vec2;
+    currentPos: number;
     bossReceiver: Receiver;
 
     startScene(){
@@ -33,6 +34,29 @@ export default class BaseBoss extends BaseStage {
                 case CTCevent.BOSS_SKILL:
                     break;
                 case CTCevent.BOSS_TELEPORT:
+                    let currPosVec: Vec2 = null;
+                    let nextPosVec: Vec2 = null;
+                    switch (this.currentPos) {
+                        case 1:
+                            this.currentPos = 2;
+                            currPosVec = this.pos1;
+                            nextPosVec = this.pos2;
+                            break;
+                        case 2:
+                            this.currentPos = 3;
+                            currPosVec = this.pos2;
+                            nextPosVec = this.pos3;
+                            break;
+                        case 3:
+                            this.currentPos = 1;
+                            currPosVec = this.pos3;
+                            nextPosVec = this.pos1;
+                            break;
+                    }
+                    let bossSprite = this.gameboard[currPosVec.x/16][currPosVec.y/16];
+                    this.boss_dead(currPosVec.x/16, currPosVec.y/16);
+                    this.boss_dead(nextPosVec.x/16, nextPosVec.x/16, bossSprite);
+                    this.boss.position.set(nextPosVec.x, nextPosVec.y);
                     break;
                 case CTCevent.BOSS_ATTACK:
                     break;

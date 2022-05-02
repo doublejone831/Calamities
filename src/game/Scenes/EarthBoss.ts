@@ -76,6 +76,7 @@ export default class EarthBoss extends BaseBoss {
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
         this.pos3 = new Vec2(14*16, 14*16);
+        this.currentPos = 1;
         this.boss.position.set(this.pos1.x, this.pos1.y);
         this.block = new Sprite("boss_block");
         this.boss_dead(this.pos1.x/16, this.pos1.y/16, this.block);
