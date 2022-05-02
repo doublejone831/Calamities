@@ -107,9 +107,9 @@ export default class PlayerController extends StateMachineAI {
                 var dir;
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
-                        let scaling = event.data.get("scaling");
-                        dir = this.dirUnitVector(16);
-                        this.owner.move(dir.scaled(scaling));
+                        let next_pos = event.data.get("next_pos");
+                        let next = this.board_pos_to_sprite_pos(next_pos.x, next_pos.y);
+                        this.owner.position.set(next.x, next.y);
                         this.owner.animation.play("walking_" + this.facing_direction);
                         Input.enableInput();
                         break;

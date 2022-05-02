@@ -156,10 +156,7 @@ export default class BaseStage extends Scene {
         let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
         // listen to events
         this.check_events(dirVec);
-        if(!this.receiver.hasNextEvent()){
-            // player step on anything
-            this.check_current_tile(playerPosInBoard, dirVec);
-        }
+        this.check_current_tile(playerPosInBoard, dirVec);
     }
 
     check_paused(){
@@ -348,10 +345,10 @@ export default class BaseStage extends Scene {
                                 Input.enableInput();
                                 break;
                             default:
-                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                         }
                     } else {
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"scaling": 1});
+                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                     }
                     break;
                 case CTCevent.WHIRLWIND_MOVE:
