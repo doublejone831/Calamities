@@ -35,28 +35,28 @@
 			"start": [4, 5],
 			"end": [10, 5],
 			"size": 7,
-			"type": "airstream",
+			"type": "airstream_root",
 			"direction": "right"
 		},
 		{
 			"start": [14, 8],
 			"end": [6, 8],
 			"size": 9,
-			"type": "airstream",
+			"type": "airstream_root",
 			"direction": "left"
 		},
 		{
 			"start": [8, 17],
 			"end": [8, 2],
 			"size": 16,
-			"type": "airstream",
+			"type": "airstream_root",
 			"direction": "up"
 		},
 		{
-			"start": [16, 4],
-			"end": [16, 5],
-			"size": 2,
-			"type": "airstream",
+			"start": [13, 4],
+			"end": [13, 10],
+			"size": 7,
+			"type": "airstream_root",
 			"direction": "down"
 		}
 	]

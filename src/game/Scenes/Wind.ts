@@ -17,6 +17,7 @@ export default class Wind extends BaseStage {
         this.load.image("rock_P", "game_assets/sprites/rock_P.png");
         this.load.spritesheet("tornado", "game_assets/spritesheets/tornado.json");
         this.load.spritesheet("airstream", "game_assets/spritesheets/airstream.json");
+        this.load.spritesheet("airstream_root", "game_assets/spritesheets/airstream_root.json");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
@@ -74,7 +75,7 @@ export default class Wind extends BaseStage {
                     sprite.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
-                case "airstream":
+                case "airstream_root":
                     start = new Vec2(element.start[0], element.start[1]);
                     end = new Vec2(element.end[0], element.end[1]);
                     switch(element.direction){
@@ -130,7 +131,7 @@ export default class Wind extends BaseStage {
                             controller.animation.play("stream");
                             controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                     }
-                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": controller.id});
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": controller.id, "blocked": false});
                     break;
                 case "portal":
                     this.endposition = new Vec2(element.position[0], element.position[1]);

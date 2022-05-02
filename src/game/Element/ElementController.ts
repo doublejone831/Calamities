@@ -12,6 +12,7 @@ export default class ElementController extends StateMachineAI {
     protected size: number;
     protected reverse: boolean;
     protected blocked: boolean;
+    protected new_end: Vec2;
     protected dir: Vec2;
     protected frames: number;
     protected paused: boolean;
@@ -24,6 +25,7 @@ export default class ElementController extends StateMachineAI {
         this.size = options.size;
         this.reverse = true;
         this.blocked = false;
+        this.new_end = new Vec2(0, 0);
         if(this.start.x-this.end.x > 0) {
             this.dir = new Vec2(-1, 0);
         } else if(this.start.x-this.end.x < 0) {
@@ -40,7 +42,6 @@ export default class ElementController extends StateMachineAI {
 
         this.receiver.subscribe([
                                 CTCevent.TOGGLE_PAUSE,
-                                CTCevent.AIRSTREAM_BLOCKED,
                                 CTCevent.AIRSTREAM_EXTEND ])
     }
 
@@ -51,11 +52,25 @@ export default class ElementController extends StateMachineAI {
                 case CTCevent.TOGGLE_PAUSE:
                     this.paused = !this.paused;
                     break;
-                case CTCevent.AIRSTREAM_BLOCKED:
-                    if(event.data.get("id") === this.owner.id) this.blocked = true;
-                    break;
                 case CTCevent.AIRSTREAM_EXTEND:
-                    if(event.data.get("id") === this.owner.id) this.extend_airstream();
+                    if(event.data.get("id") === this.owner.id) {
+                        this.blocked = event.data.get("blocked");
+                        if(this.blocked) {
+                            this.reverse = event.data.get("first");
+                            if(this.reverse) {
+                                this.new_end = event.data.get("new_end");
+                                let start = new Vec2((this.new_end.x-8)/16, (this.new_end.y-8)/16);
+                                let end = new Vec2((this.end.x-8)/16, (this.end.y-8)/16);
+                                this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": this.owner.id,"start": start, "end": end, "dir": this.dir});
+                            } else {
+                                this.owner.position.set(this.start.x, this.start.y);
+                                this.extend_airstream();
+                            }
+                        } else {
+                            this.new_end = new Vec2(0, 0);
+                            this.extend_airstream();
+                        }
+                    }
             }
         }
         switch(this.type){
@@ -87,14 +102,16 @@ export default class ElementController extends StateMachineAI {
 
     extend_airstream(){
         if(!this.paused) {
-            if(this.owner.position.equals(this.end)) {
-            this.owner.position.set(this.start.x, this.start.y);
-            this.blocked = false;
-            let start = new Vec2((this.start.x-8)/16, (this.start.y-8)/16);
-            this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": start, "sprite": this.owner, "blocked": this.blocked});
+            if(this.owner.position.equals(this.new_end)) {
+                let blockage = new Vec2((this.new_end.x-8)/16, (this.new_end.y-8)/16);
+                this.emitter.fireEvent(CTCevent.AIRSTREAM_UNBLOCK, {"id": this.owner.id, "blockage": blockage});
+            } else if(this.owner.position.equals(this.end)) {
+                this.owner.position.set(this.start.x, this.start.y);
+                let start = new Vec2((this.start.x-8)/16, (this.start.y-8)/16);
+                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": start, "sprite": this.owner});
             } else {
                 let next_pos = new Vec2((this.owner.position.x-8)/16, (this.owner.position.y-8)/16).add(this.dir);
-                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": next_pos, "sprite": this.owner, "blocked": this.blocked});
+                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND_REQUEST, {"next_pos": next_pos, "sprite": this.owner});
             }
         }
     }

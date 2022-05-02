@@ -137,7 +137,9 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
                                 CTCevent.WHIRLWIND_MOVE,
-                                CTCevent.AIRSTREAM_EXTEND_REQUEST ]);
+                                CTCevent.AIRSTREAM_EXTEND_REQUEST,
+                                CTCevent.AIRSTREAM_BLOCKED,
+                                CTCevent.AIRSTREAM_UNBLOCK ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -366,46 +368,63 @@ export default class BaseStage extends Scene {
                 case CTCevent.AIRSTREAM_EXTEND_REQUEST:
                     let airstream = event.data.get("sprite");
                     let next_pos = event.data.get("next_pos");
-                    let blocked = event.data.get("blocked");
-                    if(blocked) {
-                        if(this.overlap[next_pos.x][next_pos.y]) {
-                            let remove = this.overlap[next_pos.x][next_pos.y];
-                            remove.destroy();
-                            this.overlap[next_pos.x][next_pos.y] = null;
+                    if(this.gameboard[next_pos.x][next_pos.y]) {
+                        switch(this.gameboard[next_pos.x][next_pos.y].imageId) {
+                            case "hole":
+                            case "shallow_water":
+                            case "deep_water":
+                            case "airstream":
+                                // does not block airstream
+                                if(this.overlap[next_pos.x][next_pos.y] == null) {
+                                    let stream = this.add.animatedSprite("airstream", "sky");
+                                    stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                                    stream.rotation = airstream.rotation;
+                                    stream.animation.play("stream");
+                                    this.overlap[next_pos.x][next_pos.y] = stream;
+                                }
+                                airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
+                                break;
+                            default:
+                                let new_end = new Vec2(airstream.position.x, airstream.position.y);
+                                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": true, "first": true, "new_end": new_end});
+                                break;
                         }
-                        if(this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16]) {
-                            let remove = this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16];
-                            remove.destroy();
-                            this.overlap[(airstream.position.x-8)/16][(airstream.position.y-8)/16] = null;
-                        }
+                    } else if(this.overlap[next_pos.x][next_pos.y] == null) {
+                        let stream = this.add.animatedSprite("airstream", "sky");
+                        stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                        stream.rotation = airstream.rotation;
+                        stream.animation.play("stream");
+                        this.overlap[next_pos.x][next_pos.y] = stream;
+                        airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
                     } else {
-                        if(this.gameboard[next_pos.x][next_pos.y]) {
-                            switch(this.gameboard[next_pos.x][next_pos.y].imageId) {
-                                case "hole":
-                                case "shallow_water":
-                                case "deep_water":
-                                    // does not block airstream
-                                    if(this.overlap[next_pos.x][next_pos.y] == null) {
-                                        let stream = this.add.animatedSprite("airstream", "sky");
-                                        stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                                        stream.rotation = airstream.rotation;
-                                        stream.animation.play("stream");
-                                        this.overlap[next_pos.x][next_pos.y] = stream;
-                                    }
-                                    break;
-                                default:
-                                    this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id});
-                            }
-                        } else if(this.overlap[next_pos.x][next_pos.y] == null) {
-                            let stream = this.add.animatedSprite("airstream", "sky");
-                            stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                            stream.rotation = airstream.rotation;
-                            stream.animation.play("stream");
-                            this.overlap[next_pos.x][next_pos.y] = stream;
+                        airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
+                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
+                    }
+                    break;
+                case CTCevent.AIRSTREAM_BLOCKED:
+                    let start = event.data.get("start");
+                    let end = event.data.get("end");
+                    let dir = event.data.get("dir");
+                    while(!start.equals(end)) {
+                        start.add(dir);
+                        if(this.overlap[start.x][start.y]) {
+                            let remove = this.overlap[start.x][start.y];
+                            remove.destroy();
+                            this.overlap[start.x][start.y] = null;
                         }
                     }
-                    airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id});
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": true, "first": false});
+                    break;
+                case CTCevent.AIRSTREAM_UNBLOCK:
+                    let blockage = event.data.get("blockage");
+                    if(this.gameboard[blockage.x][blockage.y]) {
+                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": true, "first": false});
+                    } else {
+                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": false});
+                    }
+                    break;
             }    
         }
     }

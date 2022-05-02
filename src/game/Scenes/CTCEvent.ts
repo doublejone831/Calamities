@@ -17,6 +17,7 @@ export enum CTCevent{
     AIRSTREAM_EXTEND_REQUEST = "airstream_extend_request",
     AIRSTREAM_EXTEND = "airstream_extend",
     AIRSTREAM_BLOCKED = "airstream_blocked",
+    AIRSTREAM_UNBLOCK = "airstream_unblock",
     CHANGE_ELEMENT = "change_element",
     
     // stage events
