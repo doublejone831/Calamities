@@ -67,24 +67,20 @@ export default class Wind extends BaseStage {
             var controller;
             switch(element.type) {
                 case "tornado":
-                    sprite = this.add.animatedSprite(element.type, "primary");
-                    sprite.position.set(element.start[0]*16+8, element.start[1]*16+8);
-                    sprite.animation.play("idle");
                     start = new Vec2(element.start[0], element.start[1]);
                     end = new Vec2(element.end[0], element.end[1]);
-                    sprite.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
+                    controller = this.add.animatedSprite(element.type, "primary");
+                    controller.position.set(start.x*16+8, start.y*16+8);
+                    controller.animation.play("idle");
+                    
+                    controller.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
-                case "airstream_root":
+                case "airstream":
                     start = new Vec2(element.start[0], element.start[1]);
                     end = new Vec2(element.end[0], element.end[1]);
                     switch(element.direction){
                         case "right":
-                            sprite = this.add.animatedSprite(element.type, "sky");
-                            sprite.position.set(start.x*16+8, start.y*16+8);
-                            sprite.rotation = 0;
-                            sprite.animation.play("stream");
-                            this.overlap[start.x][start.y] = sprite;
                             controller = this.add.animatedSprite(element.type, "sky");
                             controller.position.set(start.x*16+8, start.y*16+8);
                             controller.rotation = 0;
@@ -93,11 +89,6 @@ export default class Wind extends BaseStage {
                             controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "left":
-                            sprite = this.add.animatedSprite(element.type, "sky");
-                            sprite.position.set(start.x*16+8, start.y*16+8);
-                            sprite.rotation = Math.PI;
-                            sprite.animation.play("stream");
-                            this.overlap[start.x][start.y] = sprite;
                             controller = this.add.animatedSprite(element.type, "sky");
                             controller.position.set(start.x*16+8, start.y*16+8);
                             controller.rotation = Math.PI;
@@ -106,11 +97,6 @@ export default class Wind extends BaseStage {
                             controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "down":
-                            sprite = this.add.animatedSprite(element.type, "sky");
-                            sprite.position.set(start.x*16+8, start.y*16+8);
-                            sprite.rotation = 3*Math.PI/2;
-                            sprite.animation.play("stream");
-                            this.overlap[start.x][start.y] = sprite;
                             controller = this.add.animatedSprite(element.type, "sky");
                             controller.position.set(start.x*16+8, start.y*16+8);
                             controller.rotation = 3*Math.PI/2;
@@ -119,11 +105,6 @@ export default class Wind extends BaseStage {
                             controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                             break;
                         case "up":
-                            sprite = this.add.animatedSprite(element.type, "sky");
-                            sprite.position.set(start.x*16+8, start.y*16+8);
-                            sprite.rotation = Math.PI/2;
-                            sprite.animation.play("stream");
-                            this.overlap[start.x][start.y] = sprite;
                             controller = this.add.animatedSprite(element.type, "sky");
                             controller.position.set(start.x*16+8, start.y*16+8);
                             controller.rotation = Math.PI/2;
@@ -131,7 +112,7 @@ export default class Wind extends BaseStage {
                             controller.animation.play("stream");
                             controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
                     }
-                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": controller.id, "blocked": false});
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
                 case "portal":
                     this.endposition = new Vec2(element.position[0], element.position[1]);

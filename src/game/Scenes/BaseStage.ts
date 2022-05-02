@@ -137,9 +137,7 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
                                 CTCevent.WHIRLWIND_MOVE,
-                                CTCevent.AIRSTREAM_EXTEND_REQUEST,
-                                CTCevent.AIRSTREAM_BLOCKED,
-                                CTCevent.AIRSTREAM_UNBLOCK ]);
+                                CTCevent.AIRSTREAM_EXTEND ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -158,8 +156,10 @@ export default class BaseStage extends Scene {
         let playerPosInBoard = this.sprite_pos_to_board_pos(this.player.position.x, this.player.position.y);
         // listen to events
         this.check_events(dirVec);
-        // player step on anything
-        this.check_current_tile(playerPosInBoard, dirVec);
+        if(!this.receiver.hasNextEvent()){
+            // player step on anything
+            this.check_current_tile(playerPosInBoard, dirVec);
+        }
     }
 
     check_paused(){
@@ -246,7 +246,6 @@ export default class BaseStage extends Scene {
     check_events(dirVec: Vec2){
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
-
             switch(event.type){
                 case CTCevent.INTERACT_ELEMENT:
                     var targetposX = event.data.get("positionX");
@@ -365,66 +364,67 @@ export default class BaseStage extends Scene {
                     this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16] = whirlwind;
                     this.gameboard[(old_pos.x-8)/16][(old_pos.y-8)/16] = null;
                     break;
-                case CTCevent.AIRSTREAM_EXTEND_REQUEST:
-                    let airstream = event.data.get("sprite");
-                    let next_pos = event.data.get("next_pos");
-                    if(this.gameboard[next_pos.x][next_pos.y]) {
-                        switch(this.gameboard[next_pos.x][next_pos.y].imageId) {
-                            case "hole":
-                            case "shallow_water":
-                            case "deep_water":
-                            case "airstream":
-                                // does not block airstream
-                                if(this.overlap[next_pos.x][next_pos.y] == null) {
-                                    let stream = this.add.animatedSprite("airstream", "sky");
-                                    stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                                    stream.rotation = airstream.rotation;
-                                    stream.animation.play("stream");
-                                    this.overlap[next_pos.x][next_pos.y] = stream;
-                                }
-                                airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
-                                break;
-                            default:
-                                let new_end = new Vec2(airstream.position.x, airstream.position.y);
-                                this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": true, "first": true, "new_end": new_end});
-                                break;
-                        }
-                    } else if(this.overlap[next_pos.x][next_pos.y] == null) {
-                        let stream = this.add.animatedSprite("airstream", "sky");
-                        stream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                        stream.rotation = airstream.rotation;
-                        stream.animation.play("stream");
-                        this.overlap[next_pos.x][next_pos.y] = stream;
-                        airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
-                    } else {
-                        airstream.position.set(next_pos.x*16+8, next_pos.y*16+8);
-                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": airstream.id, "blocked": false});
-                    }
-                    break;
-                case CTCevent.AIRSTREAM_BLOCKED:
+                case CTCevent.AIRSTREAM_EXTEND:
                     let start = event.data.get("start");
-                    let end = event.data.get("end");
+                    let airstream = event.data.get("sprite");
+                    let size = event.data.get("size");
                     let dir = event.data.get("dir");
-                    while(!start.equals(end)) {
-                        start.add(dir);
-                        if(this.overlap[start.x][start.y]) {
-                            let remove = this.overlap[start.x][start.y];
-                            remove.destroy();
-                            this.overlap[start.x][start.y] = null;
+                    let new_size = size;
+                    let removing = false;
+                    for(var i = 0; i<size; i++){
+                        let air_pos = new Vec2((start.x-8)/16, (start.y-8)/16);
+                        air_pos.add(dir.scaled(i));
+                        if(removing) {
+                            if(this.overlap[air_pos.x][air_pos.y]) {
+                                let remove = this.overlap[air_pos.x][air_pos.y];
+                                remove.destroy();
+                                this.overlap[air_pos.x][air_pos.y] = null;
+                            }
+                        } else if(this.gameboard[air_pos.x][air_pos.y]) {
+                            switch(this.gameboard[air_pos.x][air_pos.y].imageId) {
+                                case "rock_S":
+                                case "rock_M":
+                                case "rock_L":
+                                case "rock_P":
+                                case "block":
+                                case "ice_cube":
+                                    if(this.overlap[air_pos.x][air_pos.y]) {
+                                        let remove = this.overlap[air_pos.x][air_pos.y];
+                                        remove.destroy();
+                                        this.overlap[air_pos.x][air_pos.y] = null;
+                                    }
+                                    new_size = i+1;
+                                    removing = true;
+                                    break;
+                                default:
+                                    if(this.overlap[air_pos.x][air_pos.y] == null) {
+                                        let stream = this.add.animatedSprite("airstream", "sky");
+                                        stream.position.set(air_pos.x*16+8, air_pos.y*16+8);
+                                        stream.rotation = airstream.rotation;
+                                        stream.animation.play("stream");
+                                        this.overlap[air_pos.x][air_pos.y] = stream;
+                                    }
+                                    break;
+                            }
+                        } else {
+                            if(this.overlap[air_pos.x][air_pos.y] == null) {
+                                let stream = this.add.animatedSprite("airstream", "sky");
+                                stream.position.set(air_pos.x*16+8, air_pos.y*16+8);
+                                stream.rotation = airstream.rotation;
+                                stream.animation.play("stream");
+                                this.overlap[air_pos.x][air_pos.y] = stream;
+                            }
                         }
                     }
-                    this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": true, "first": false});
-                    break;
-                case CTCevent.AIRSTREAM_UNBLOCK:
-                    let blockage = event.data.get("blockage");
-                    if(this.gameboard[blockage.x][blockage.y]) {
-                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": true, "first": false});
-                    } else {
-                        this.emitter.fireEvent(CTCevent.AIRSTREAM_EXTEND, {"id": event.data.get("id"), "blocked": false});
-                    }
-                    break;
+                    if(new_size == size) {
+                        if(removing) { // blocked by same block
+                            this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id, "blocked": true, "new_size": size});
+                        } else { // not blocked anymore
+                            this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id, "blocked": false});
+                        }
+                    } else { // blocked by new block
+                        this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id, "blocked": true, "new_size": new_size});
+                    }     
             }    
         }
     }
@@ -609,29 +609,43 @@ export default class BaseStage extends Scene {
     }
 
     check_current_tile(pos: Vec2, dirVec: Vec2){
-        let pRow = pos.x;
-        let pCol = pos.y;
+        let pCol = pos.x;
+        let pRow = pos.y;
         if(!this.inAir) {
-            if(this.gameboard[pRow][pCol]){
-                switch(this.gameboard[pRow][pCol].imageId){
+            if(this.gameboard[pCol][pRow]){
+                switch(this.gameboard[pCol][pRow].imageId){
                     case "tornado":
                     case "whirlwind":
-                        this.savedNum = this.whirlwind_fly(pRow, pCol, dirVec);
+                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec);
                         break;
                     case "bubble":
-                        this.bubble_shield(pRow, pCol);
+                        this.bubble_shield(pCol, pRow);
                         break;
                     case "ember":
-                        this.ember_extinguish(pRow, pCol);
+                        this.ember_extinguish(pCol, pRow);
                         break;
                     case "hole":
                         Input.enableInput();
                         this.restartStage();
                 }
             }
-            if(this.overlap[pRow][pCol]) {
+            if(this.overlap[pCol][pRow]) {
                 this.inAir = true;
-                this.airstream_fly(pRow, pCol);
+                switch(this.overlap[pCol][pRow].rotation){
+                    case 0:
+                        this.savedVec = new Vec2(1, 0);
+                        break;
+                    case Math.PI:
+                        this.savedVec = new Vec2(-1, 0);
+                        break;
+                    case Math.PI/2:
+                        this.savedVec = new Vec2(0, -1);
+                        break;
+                    case 3*Math.PI/2:
+                        this.savedVec = new Vec2(0, 1);
+                        break;
+                }
+                this.airstream_fly(pCol, pRow);
             }
             if(this.endposition.equals(pos)){
                 this.nextStage();
@@ -641,7 +655,7 @@ export default class BaseStage extends Scene {
                 this.emitter.fireEvent(CTCevent.FLY);
                 this.savedNum--;
             } else if(this.savedVec != null){
-                this.airstream_fly(pRow, pCol);
+                this.airstream_fly(pCol, pRow);
             } else {
                 this.inAir = false;
                 Input.enableInput();
@@ -676,22 +690,6 @@ export default class BaseStage extends Scene {
 
     airstream_fly(posX: number, posY: number) {
         Input.disableInput();
-        if(this.savedVec == null) {
-            switch(this.overlap[posX][posY].rotation){
-                case 0:
-                    this.savedVec = new Vec2(1, 0);
-                    break;
-                case Math.PI:
-                    this.savedVec = new Vec2(-1, 0);
-                    break;
-                case Math.PI/2:
-                    this.savedVec = new Vec2(0, -1);
-                    break;
-                case 3*Math.PI/2:
-                    this.savedVec = new Vec2(0, 1);
-                    break;
-            }
-        }
         let nextX = posX+this.savedVec.x;
         let nextY = posY+this.savedVec.y;
         if(this.overlap[nextX][nextY]) {
