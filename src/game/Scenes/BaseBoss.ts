@@ -55,7 +55,7 @@ export default class BaseBoss extends BaseStage {
                     }
                     let bossSprite = this.gameboard[currPosVec.x/16][currPosVec.y/16];
                     this.boss_dead(currPosVec.x/16, currPosVec.y/16);
-                    this.boss_dead(nextPosVec.x/16, nextPosVec.x/16, bossSprite);
+                    this.boss_dead(nextPosVec.x/16, nextPosVec.y/16, bossSprite);
                     this.boss.position.set(nextPosVec.x, nextPosVec.y);
                     this.boss.animation.play("appear");
                     this.boss.animation.queue("idle");
