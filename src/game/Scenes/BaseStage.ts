@@ -716,6 +716,12 @@ export default class BaseStage extends Scene {
     }
 
     boss_dead(row: number, col: number, dead: Sprite = null) {
+        if (dead) {
+            if (this.gameboard[row][col]) this.gameboard[row][col].destroy();
+            if (this.gameboard[row-1][col]) this.gameboard[row-1][col].destroy();
+            if (this.gameboard[row][col-1]) this.gameboard[row][col-1].destroy();
+            if (this.gameboard[row-1][col-1]) this.gameboard[row-1][col-1].destroy();
+        }
         this.gameboard[row][col] = dead;
         this.gameboard[row-1][col] = dead;
         this.gameboard[row][col-1] = dead;
