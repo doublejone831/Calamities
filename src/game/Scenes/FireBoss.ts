@@ -78,7 +78,7 @@ export default class FireBoss extends BaseBoss {
         this.boss.animation.play("idle");
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
-        this.pos3 = new Vec2(14*16, 14*16);
+        this.pos3 = new Vec2(14*16, 9*16);
         this.currentPos = 1;
         this.boss.position.set(this.pos1.x, this.pos1.y);
         let boardPos = this.pos1.scaled(1/16);

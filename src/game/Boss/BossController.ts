@@ -20,8 +20,10 @@ export default class BossController extends StateMachineAI {
 
     update(deltaT: number): void {
         if(this.thresholdReached){
-            this.teleport();
-            this.thresholdReached = false;
+            if(!this.owner.animation.isPlaying("teleport")) {
+                this.teleport();
+                this.thresholdReached = false;
+            }   
         }
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
@@ -34,11 +36,13 @@ export default class BossController extends StateMachineAI {
     }
 
     damaged(){
+        if(this.owner.animation.isPlaying("damaged") || this.owner.animation.isPlaying("teleport") || this.owner.animation.isPlaying("appear")) return;
         this.health--;
         this.owner.animation.play("damaged");
         this.owner.animation.queue("idle");
         if(this.health==2 || this.health==4){
             this.thresholdReached = true;
+            this.owner.animation.play("teleport");
         }
         if(this.health == 0) {
             this.owner.animation.play("dying");
@@ -48,7 +52,6 @@ export default class BossController extends StateMachineAI {
     }
 
     teleport(){
-        this.owner.animation.play("teleport");
         this.emitter.fireEvent(CTCevent.BOSS_TELEPORT, {});
     }
 }
