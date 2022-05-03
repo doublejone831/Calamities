@@ -87,7 +87,7 @@ export default class WindBoss extends BaseBoss {
     }
 
     nextStage(): void {
-        MainMenu.unlocked[2] = true;
+        MainMenu.unlocked[3] = true;
         this.sceneManager.changeToScene(Water, {});
     }
 }

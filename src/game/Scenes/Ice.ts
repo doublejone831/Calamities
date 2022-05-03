@@ -3,6 +3,7 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import IceBoss from "./IceBoss";
+import MainMenu from "./MainMenu";
 
 export default class Ice extends BaseStage {
 
@@ -102,6 +103,7 @@ export default class Ice extends BaseStage {
     }
 
     nextStage(): void {
+        MainMenu.unlocked[8] = true;
         this.sceneManager.changeToScene(IceBoss, {});
     }
 }

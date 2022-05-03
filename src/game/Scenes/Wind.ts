@@ -6,6 +6,7 @@ import WindBoss from "./WindBoss";
 import ElementController from "../Element/ElementController";
 import { Element } from "../Element/Element_Enum";
 import { CTCevent } from "./CTCEvent";
+import MainMenu from "./MainMenu";
 
 export default class Wind extends BaseStage {
 
@@ -141,6 +142,7 @@ export default class Wind extends BaseStage {
     }
 
     nextStage(): void {
+        MainMenu.unlocked[2] = true;
         this.sceneManager.changeToScene(WindBoss, {});
     }
 }

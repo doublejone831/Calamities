@@ -5,6 +5,7 @@ import BossController from "../Boss/BossController";
 import Ice from "./Ice";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import BaseBoss from "./BaseBoss";
+import MainMenu from "./MainMenu";
 
 export default class FireBoss extends BaseBoss {
 
@@ -93,6 +94,7 @@ export default class FireBoss extends BaseBoss {
     }
 
     nextStage(): void {
+        MainMenu.unlocked[7] = true;
         this.sceneManager.changeToScene(Ice, {});
     }
 }
