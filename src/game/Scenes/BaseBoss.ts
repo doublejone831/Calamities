@@ -57,8 +57,7 @@ export default class BaseBoss extends BaseStage {
                     this.boss_dead(currPosVec.x/16, currPosVec.y/16);
                     this.boss_dead(nextPosVec.x/16, nextPosVec.y/16, bossSprite);
                     this.boss.position.set(nextPosVec.x, nextPosVec.y);
-                    this.boss.animation.play("appear");
-                    this.boss.animation.queue("idle");
+                    this.boss.animation.queue("idle", true);
                     break;
                 case CTCevent.BOSS_ATTACK:
                     break;

@@ -39,10 +39,13 @@ export default class BossController extends StateMachineAI {
         if(this.owner.animation.isPlaying("damaged") || this.owner.animation.isPlaying("teleport") || this.owner.animation.isPlaying("appear")) return;
         this.health--;
         this.owner.animation.play("damaged");
-        this.owner.animation.queue("idle");
         if(this.health==2 || this.health==4){
             this.thresholdReached = true;
             this.owner.animation.play("teleport");
+            this.owner.animation.queue("appear");
+        }
+        else {
+            this.owner.animation.queue("idle", true);
         }
         if(this.health == 0) {
             this.owner.animation.play("dying");
