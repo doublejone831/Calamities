@@ -1,5 +1,5 @@
 {
-	"numElements": 118,
+	"numElements": 116,
 	"elements": [
 		{
 			"position": [15, 16],
@@ -159,11 +159,7 @@
 		},
 		{
 			"position": [14, 7],
-			"type": "rock_M"
-		},
-		{
-			"position": [15, 7],
-			"type": "rock_L"
+			"type": "rock_S"
 		},
 		{
 			"position": [4, 8],
@@ -324,10 +320,6 @@
 		{
 			"position": [13, 12],
 			"type": "rock_M"
-		},
-		{
-			"position": [14, 12],
-			"type": "rock_L"
 		},
 		{
 			"position": [16, 12],
