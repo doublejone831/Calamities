@@ -30,7 +30,6 @@ export default class BaseStage extends Scene {
     skillUsed: Array<boolean>;
     elementSelected: number;
     inAir: boolean = false;
-    block: Sprite;
     savedNum: number;
     savedVec: Vec2;
     player_shield: Sprite = null;
@@ -49,18 +48,18 @@ export default class BaseStage extends Scene {
         this.viewport.setZoomLevel(2.5);
 
         // Initialize an empty gamebaord
-        this.block = new Sprite("block");
+        let out = new Sprite("outofbounds");
         this.gameboard = new Array(this.num_col);
         this.overlap = new Array(this.num_col);
         for (var i = 0; i < this.num_col; i++) {
             if(i<2 || i>17){
-                this.gameboard[i] = new Array(this.num_row).fill(this.block);
+                this.gameboard[i] = new Array(this.num_row).fill(out);
             } else {
                 let arr = new Array(this.num_row).fill(null, 1, 18);
-                arr[0] = this.block;
-                arr[1] = this.block;
-                arr[18] = this.block;
-                arr[19] = this.block;
+                arr[0] = out;
+                arr[1] = out;
+                arr[18] = out;
+                arr[19] = out;
                 this.gameboard[i] = arr;
             }
             this.overlap[i] = new Array(this.num_row).fill(null);
@@ -338,8 +337,10 @@ export default class BaseStage extends Scene {
                             case "rock_S":
                             case "rock_M":
                             case "rock_L":
+                            case "deep_water":
                             case "ice_cube":
-                            case "block":
+                            case "outofbounds":
+                            case "wall":
                             case "boss_block":
                                 Input.enableInput();
                                 break;

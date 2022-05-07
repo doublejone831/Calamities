@@ -26,7 +26,8 @@ export default class Water extends BaseStage {
         // map
         this.load.tilemap("level", "game_assets/tilemaps/water.json");
         this.load.object("board", "game_assets/data/water_board.json");
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
+        this.load.image("wall", "game_assets/sprites/water_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
@@ -75,7 +76,7 @@ export default class Water extends BaseStage {
                     controller.position.set(start.x*16+8, start.y*16+8);
                     controller.animation.play("idle");
                     controller.addAI(TornadoController, {"start": start, "end": end});
-                    this.gameboard[start.x][start.y] = sprite;
+                    this.gameboard[start.x][start.y] = controller;
                     break;
                 case "airstream":
                     start = new Vec2(element.start[0], element.start[1]);

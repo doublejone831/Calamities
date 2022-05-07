@@ -19,11 +19,12 @@ export default class EarthBoss extends BaseBoss {
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_earth.json");
-        this.load.image("boss_block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("boss_block", "game_assets/sprites/invis_block.png");
         // map
         this.load.tilemap("level", "game_assets/tilemaps/earth.json");
         this.load.object("board", "game_assets/data/earth_boss_board.json");
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
+        this.load.image("wall", "game_assets/sprites/earth_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
@@ -78,8 +79,8 @@ export default class EarthBoss extends BaseBoss {
         this.pos3 = new Vec2(15*16, 10*16);
         this.currentPos = 1;
         this.boss.position.set(this.pos1.x, this.pos1.y);
-        this.block = new Sprite("boss_block");
-        this.boss_dead(this.pos1.x/16, this.pos1.y/16, this.block);
+        let hitbox = new Sprite("boss_block");
+        this.boss_dead(this.pos1.x/16, this.pos1.y/16, hitbox);
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "earth"});
     }

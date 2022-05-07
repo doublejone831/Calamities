@@ -31,11 +31,12 @@ export default class IceBoss extends BaseBoss {
         this.load.image("shield", "game_assets/sprites/shield.png");
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_ice.json");
-        this.load.image("boss_block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("boss_block", "game_assets/sprites/invis_block.png");
         // map
         this.load.tilemap("level", "game_assets/tilemaps/ice.json");
         this.load.object("board", "game_assets/data/ice_boss_board.json");
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
+        this.load.image("wall", "game_assets/sprites/ice_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
@@ -84,8 +85,8 @@ export default class IceBoss extends BaseBoss {
         this.currentPos = 1;
         this.boss.position.set(this.pos1.x, this.pos1.y);
         let boardPos = this.pos1.scaled(1/16);
-        this.block = new Sprite("boss_block");
-        this.boss_dead(boardPos.x, boardPos.y, this.block);
+        let hitbox = new Sprite("boss_block");
+        this.boss_dead(boardPos.x, boardPos.y, hitbox);
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "ice"});
     }

@@ -25,7 +25,8 @@ export default class WindBoss extends BaseBoss {
         // map
         this.load.tilemap("level", "game_assets/tilemaps/wind.json");
         this.load.object("board", "game_assets/data/wind_boss_board.json");
-        this.load.image("block", "game_assets/sprites/all_purpose_block.png");
+        this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
+        this.load.image("wall", "game_assets/sprites/wind_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
@@ -75,8 +76,8 @@ export default class WindBoss extends BaseBoss {
         this.pos3 = new Vec2(15*16, 10*16);
         this.currentPos = 1;
         let boardPos = this.pos1.scaled(1/16);
-        this.block = new Sprite("boss_block");
-        this.boss_dead(boardPos.x, boardPos.y, this.block);
+        let hitbox = new Sprite("boss_block");
+        this.boss_dead(boardPos.x, boardPos.y, hitbox);
         this.boss.position.set(this.pos1.x, this.pos1.y);
         this.boss.addPhysics(new AABB(Vec2.ZERO, new Vec2(16, 16)));
         this.boss.addAI(BossController, {type: "wind"});

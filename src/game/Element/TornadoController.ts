@@ -55,6 +55,7 @@ export default class TornadoController extends StateMachineAI {
                     break;
             }
         }
+        if(this.start.equals(this.end)) return;
         if(this.paused) {
             (<AnimatedSprite>this.owner).animation.pause();
         } else {
