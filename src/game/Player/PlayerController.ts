@@ -132,6 +132,7 @@ export default class PlayerController extends StateMachineAI {
 
     changeDirection(dir: number){
         this.facing_direction = dir;
+        this.owner.animation.play((this.hasShield ? "shield-" : "") + "walking_" + this.facing_direction);
     }
 
     nextposition(){

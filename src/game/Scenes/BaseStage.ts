@@ -782,11 +782,17 @@ export default class BaseStage extends Scene {
                 this.nextStage();
             }
         } else {
-            if(this.savedNum>0) {
+            if(this.savedVec != null){
+                this.airstream_fly(pCol, pRow);
+            } else if(this.savedNum>0) {
                 this.emitter.fireEvent(CTCevent.FLY);
                 this.savedNum--;
-            } else if(this.savedVec != null){
-                this.airstream_fly(pCol, pRow);
+            } else if(this.savedNum<0) {
+                let player_controller = (<PlayerController>this.player._ai);
+                let facing = player_controller.getDirection();
+                player_controller.changeDirection((facing+2)%4);
+                this.emitter.fireEvent(CTCevent.FLY);
+                this.savedNum++;
             } else {
                 this.inAir = false;
                 Input.enableInput();
@@ -806,7 +812,8 @@ export default class BaseStage extends Scene {
                     case "rock_M":
                     case "rock_L":
                     case "ice_cube":
-                    case "block":
+                    case "wall":
+                    case "outofbounds":
                     case "boss_block":
                         break;
                     default:
@@ -816,6 +823,7 @@ export default class BaseStage extends Scene {
                 jumps = i;
             }
         }
+        if(jumps == 0) jumps = -1;
         return jumps;
     }
 
