@@ -72,7 +72,7 @@ export default class TornadoController extends StateMachineAI {
                     this.emitter.fireEvent(CTCevent.TORNADO_MOVE_REQUEST, {"sprite": this.owner, "old": old_pos, "new": new_pos});
                 }
             }
+            this.frames++;
         }
-        this.frames++;
     }
 }

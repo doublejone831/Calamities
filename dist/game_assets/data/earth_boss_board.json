@@ -1,5 +1,5 @@
 {
-	"numElements": 6,
+	"numElements": 7,
 	"elements": [
 		{
 			"position": [7, 5],
@@ -24,6 +24,10 @@
 		{
 			"position": [8, 13],
 			"type":"rock_S"
+		},
+		{
+			"position": [4, 4],
+			"type":"wall"
 		}
 	]
 }

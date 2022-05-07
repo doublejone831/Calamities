@@ -7,30 +7,53 @@ export default class BossController extends StateMachineAI {
     protected type: string;
     protected health: number;
     protected thresholdReached: boolean;
+    protected frames: number;
+    protected paused: boolean;
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
         this.owner = owner;
         this.health = 6;
         this.type = options.type;
         this.thresholdReached = false;
+        this.frames = 0;
+        this.paused = false;
 
         this.receiver.subscribe([
-                                CTCevent.BOSS_DAMAGED, ]);
+                                CTCevent.TOGGLE_PAUSE,
+                                CTCevent.BOSS_DAMAGED ]);
     }
 
     update(deltaT: number): void {
-        if(this.thresholdReached){
-            if(!this.owner.animation.isPlaying("teleport")) {
-                this.teleport();
-                this.thresholdReached = false;
-            }   
-        }
+        if (this.health <= 0) return;
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
             switch(event.type){
+                case CTCevent.TOGGLE_PAUSE:
+                    this.paused = !this.paused;
+                    break;
                 case CTCevent.BOSS_DAMAGED:
                     this.damaged();
                     break;
+            }
+        }
+        if (this.paused) {
+            this.owner.animation.pause();
+        }
+        else {
+            this.owner.animation.resume();
+            this.frames++;
+            if (this.frames === 1000) {
+                this.owner.animation.stop();
+                this.owner.animation.play("skill");
+                this.owner.animation.queue("idle", true);
+                this.emitter.fireEvent(CTCevent.BOSS_SKILL);
+                this.frames = 0;
+            }
+            if(this.thresholdReached){
+                if(!this.owner.animation.isPlaying("teleport")) {
+                    this.teleport();
+                    this.thresholdReached = false;
+                }   
             }
         }
     }
