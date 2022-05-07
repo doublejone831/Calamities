@@ -435,19 +435,43 @@ export default class BaseStage extends Scene {
             case "rock_S":
                 if(this.elementSelected>1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
-                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
-                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else {
-                        break;
+                    switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
+                        case "boss_block":
+                            this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        case "tornado":
+                        case "whirlwind":
+                        case "hole":
+                            this.gameboard[targetposX][targetposY] = null;
+                            target.destroy();
+                            break;
+                        case "bubble":
+                        case "ember":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
+                        case "deep_water":
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let deepWater = this.gameboard[dest.x][dest.y];
+                            let shallowWater = this.add.sprite("shallow_water", "primary");
+                            shallowWater.position.set(deepWater.position.x, deepWater.position.y);
+                            deepWater.destroy();
+                            this.gameboard[dest.x][dest.y] = shallowWater;
+                            break;
+                        case "shallow_water":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            this.gameboard[dest.x][dest.y] = null;
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
                     }
                 } else {
                     dest.add(dir);
@@ -459,20 +483,45 @@ export default class BaseStage extends Scene {
                 }
             case "rock_M":
                 if(this.elementSelected>1) break;
+                if(this.gameboard[targetposX][targetposY] == null) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
-                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
-                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else {
-                        break;
+                    switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
+                        case "boss_block":
+                            this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        case "tornado":
+                        case "whirlwind":
+                        case "hole":
+                            this.gameboard[targetposX][targetposY] = null;
+                            target.destroy();
+                            break;
+                        case "bubble":
+                        case "ember":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
+                        case "deep_water":
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let deepWater = this.gameboard[dest.x][dest.y];
+                            let shallowWater = this.add.sprite("shallow_water", "primary");
+                            shallowWater.position.set(deepWater.position.x, deepWater.position.y);
+                            deepWater.destroy();
+                            this.gameboard[dest.x][dest.y] = shallowWater;
+                            break;
+                        case "shallow_water":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            this.gameboard[dest.x][dest.y] = null;
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
                     }
                 } else {
                     dest.add(dir);
@@ -484,20 +533,46 @@ export default class BaseStage extends Scene {
                 }
             case "rock_L":
                 if(this.elementSelected>1) break;
+                if(this.gameboard[targetposX][targetposY] == null) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
                 this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 if(this.gameboard[dest.x+dir.x][dest.y+dir.y] != null){
-                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
-                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    } else {
-                        break;
+                    switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
+                        case "boss_block":
+                            this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                        case "tornado":
+                        case "whirlwind":
+                        case "hole":
+                            this.gameboard[targetposX][targetposY] = null;
+                            target.destroy();
+                            break;
+                        case "bubble":
+                        case "ember":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
+                        case "deep_water":
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let deepWater = this.gameboard[dest.x][dest.y];
+                            let shallowWater = this.add.sprite("shallow_water", "primary");
+                            shallowWater.position.set(deepWater.position.x, deepWater.position.y);
+                            deepWater.destroy();
+                            this.gameboard[dest.x][dest.y] = shallowWater;
+                            break;
+                        case "shallow_water":
+                            dest.add(dir);
+                            this.gameboard[dest.x][dest.y].destroy();
+                            this.gameboard[dest.x][dest.y] = null;
+                            this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
                     }
                 } else {
                     dest.add(dir);
@@ -521,13 +596,42 @@ export default class BaseStage extends Scene {
                     targetposY = dest.y;
                     if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
                 }
-                if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "boss_block") {
-                    this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                    this.gameboard[targetposX][targetposY] = null;
-                    target.destroy();
-                } else if(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId == "hole") {
-                    this.gameboard[targetposX][targetposY] = null;
-                    target.destroy();
+                switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
+                    case "boss_block":
+                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                    case "tornado":
+                    case "whirlwind":
+                    case "hole":
+                        this.gameboard[targetposX][targetposY] = null;
+                        target.destroy();
+                        break;
+                    case "bubble":
+                    case "ember":
+                        dest.add(dir);
+                        this.gameboard[dest.x][dest.y].destroy();
+                        target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                        this.gameboard[targetposX][targetposY] = null;
+                        this.gameboard[dest.x][dest.y] = target;
+                        targetposX = dest.x;
+                        targetposY = dest.y;
+                        break;
+                    case "deep_water":
+                        this.gameboard[targetposX][targetposY].destroy();
+                        this.gameboard[targetposX][targetposY] = null;
+                        dest.add(dir);
+                        let deepWater = this.gameboard[dest.x][dest.y];
+                        let shallowWater = this.add.sprite("shallow_water", "primary");
+                        shallowWater.position.set(deepWater.position.x, deepWater.position.y);
+                        deepWater.destroy();
+                        this.gameboard[dest.x][dest.y] = shallowWater;
+                        break;
+                    case "shallow_water":
+                        dest.add(dir);
+                        this.gameboard[dest.x][dest.y].destroy();
+                        this.gameboard[dest.x][dest.y] = null;
+                        this.gameboard[targetposX][targetposY].destroy();
+                        this.gameboard[targetposX][targetposY] = null;
+                        break;
                 }
                 break;
             case "whirlwind":

@@ -39,8 +39,6 @@ export default class Earth extends BaseStage {
 
         this.initializeGameboard();
 
-        this.initializePlayer();
-
         this.elementGUI.animation.play("none_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
@@ -49,6 +47,8 @@ export default class Earth extends BaseStage {
             lock.position.set(i*16+6, 19*16);
         }
 
+        this.initializePlayer();
+        
         this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
@@ -71,7 +71,7 @@ export default class Earth extends BaseStage {
     }
 
     initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
+        this.player = this.add.animatedSprite("god", "lock");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));

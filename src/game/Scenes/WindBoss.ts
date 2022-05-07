@@ -40,8 +40,6 @@ export default class WindBoss extends BaseBoss {
     startScene(){
         super.startScene();
 
-        this.initializePlayer();
-
         this.initializeBoss();
         
         this.elementGUI.animation.play("earth_equipped");
@@ -51,6 +49,8 @@ export default class WindBoss extends BaseBoss {
             let lock = this.add.sprite("lock", "lock");
             lock.position.set(i*16+6, 19*16);
         }
+
+        this.initializePlayer();
     }
 
     updateScene(deltaT: number): void{
@@ -58,7 +58,7 @@ export default class WindBoss extends BaseBoss {
     };
 
     initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
+        this.player = this.add.animatedSprite("god", "lock");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
@@ -72,7 +72,7 @@ export default class WindBoss extends BaseBoss {
         this.boss.animation.play("idle");
         this.pos1 = new Vec2(10*16, 15*16);
         this.pos2 = new Vec2(5*16, 5*16);
-        this.pos3 = new Vec2(14*16, 9*16);
+        this.pos3 = new Vec2(15*16, 10*16);
         this.currentPos = 1;
         let boardPos = this.pos1.scaled(1/16);
         this.block = new Sprite("boss_block");

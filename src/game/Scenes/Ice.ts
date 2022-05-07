@@ -4,6 +4,9 @@ import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import IceBoss from "./IceBoss";
 import MainMenu from "./MainMenu";
+import ElementController from "../Element/ElementController";
+import { CTCevent } from "./CTCEvent";
+import { Element } from "../Element/Element_Enum";
 
 export default class Ice extends BaseStage {
 
@@ -30,7 +33,7 @@ export default class Ice extends BaseStage {
         this.load.image("shield", "game_assets/sprites/shield.png");
         // map
         this.load.tilemap("level", "game_assets/tilemaps/ice.json");
-        this.load.object("board", "game_assets/data/ice_board.json");
+        this.load.object("board", "game_assets/data/test_board.json");
         this.load.image("block", "game_assets/sprites/all_purpose_block.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
         // gui
@@ -55,13 +58,13 @@ export default class Ice extends BaseStage {
 
         this.initializeGameboard();
 
-        this.initializePlayer();
-
         this.elementGUI.animation.play("earth_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
         let lock = this.add.sprite("lock", "lock");
         lock.position.set(5*16+6, 19*16);
+
+        this.initializePlayer();
     }
 
     updateScene(deltaT: number): void{
@@ -70,25 +73,73 @@ export default class Ice extends BaseStage {
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
+        var start;
+        var end;
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
             var sprite;
-            if(element.type === "airstream") {
-                sprite = this.add.animatedSprite(element.type, "primary");
-                sprite.animation.play("stream");
-            } else {
-                sprite = this.add.sprite(element.type, "primary");
-            }
-            sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-            this.gameboard[element.position[0]][element.position[1]] = sprite;
-            if(element.type === "portal") {
-                this.endposition = new Vec2(element.position[0], element.position[1]);
+            var controller;
+            switch(element.type) {
+                case "tornado":
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
+                    controller = this.add.animatedSprite(element.type, "primary");
+                    controller.position.set(start.x*16+8, start.y*16+8);
+                    controller.animation.play("idle");
+                    controller.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
+                    this.gameboard[start.x][start.y] = sprite;
+                    break;
+                case "airstream":
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
+                    switch(element.direction){
+                        case "right":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 0;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            break;
+                        case "left":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            break;
+                        case "down":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 3*Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            break;
+                        case "up":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                    }
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
+                    break;
+                case "portal":
+                    this.endposition = new Vec2(element.position[0], element.position[1]);
+                default:
+                    sprite = this.add.sprite(element.type, "primary");
+                    sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
+                    this.gameboard[element.position[0]][element.position[1]] = sprite;
+
             }
         }
     }
 
     initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
+        this.player = this.add.animatedSprite("god", "lock");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));

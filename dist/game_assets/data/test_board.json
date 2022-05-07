@@ -14,8 +14,10 @@
 			"type": "rock_S"
 		},
 		{
-			"position": [7, 4],
-			"type": "gust"
+			"start": [7, 4],
+			"end": [7, 7],
+			"size": 4,
+			"type": "tornado"
 		},
 		{
 			"position": [8, 4],
@@ -30,7 +32,9 @@
 			"type": "flames"
 		},
         {
-			"position": [12, 4],
+			"start": [12, 4],
+			"end": [12, 10],
+			"size": 7,
 			"type": "airstream"
 		},
 		{

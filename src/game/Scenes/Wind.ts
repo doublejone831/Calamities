@@ -43,8 +43,6 @@ export default class Wind extends BaseStage {
 
         this.initializeGameboard();
 
-        this.initializePlayer();
-
         this.elementGUI.animation.play("earth_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
@@ -52,6 +50,8 @@ export default class Wind extends BaseStage {
             let lock = this.add.sprite("lock", "lock");
             lock.position.set(i*16+6, 19*16);
         }
+
+        this.initializePlayer();
     }
 
     updateScene(deltaT: number): void{
@@ -73,7 +73,6 @@ export default class Wind extends BaseStage {
                     controller = this.add.animatedSprite(element.type, "primary");
                     controller.position.set(start.x*16+8, start.y*16+8);
                     controller.animation.play("idle");
-                    
                     controller.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
@@ -127,7 +126,7 @@ export default class Wind extends BaseStage {
     }
 
     initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
+        this.player = this.add.animatedSprite("god", "lock");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));

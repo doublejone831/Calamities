@@ -41,8 +41,6 @@ export default class Water extends BaseStage {
 
         this.initializeGameboard();
 
-        this.initializePlayer();
-
         this.elementGUI.animation.play("earth_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
@@ -50,6 +48,8 @@ export default class Water extends BaseStage {
             let lock = this.add.sprite("lock", "lock");
             lock.position.set(i*16+6, 19*16);
         }
+
+        this.initializePlayer();
     }
 
     updateScene(deltaT: number): void{
@@ -76,7 +76,7 @@ export default class Water extends BaseStage {
     }
 
     initializePlayer(): void {
-        this.player = this.add.animatedSprite("god", "primary");
+        this.player = this.add.animatedSprite("god", "lock");
         this.player.animation.play("idle");
         this.player.position.set(3*16+8, 3*16+8);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(8, 8)));
