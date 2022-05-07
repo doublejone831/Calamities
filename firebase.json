@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "/",
+    "public": "benchmark",
     "site": "calm-the-calamities",
     "ignore": [
       "firebase.json",
