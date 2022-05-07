@@ -1,63 +1,414 @@
 {
-	"numElements": 11,
+	"numElements": 97,
 	"elements": [
 		{
-			"position": [16, 16],
-			"type": "portal"
-		},
-		{
-			"position": [4, 13],
-			"type": "rock_L"
-		},
-		{
-			"position": [14, 9],
-			"type": "rock_M"
-		},
-		{
-			"position": [5, 7],
-			"type": "rock_S"
-		},
-		{
-			"position": [7, 5],
+			"position": [2, 2],
 			"type": "hole"
 		},
 		{
-			"start": [11, 7],
-			"end": [11, 12],
-			"type": "tornado"
+			"position": [2, 3],
+			"type": "hole"
 		},
 		{
-			"start": [9, 15],
-			"end": [17, 15],
-			"type": "tornado"
+			"position": [2, 4],
+			"type": "hole"
 		},
 		{
-			"start": [4, 5],
-			"end": [10, 5],
-			"size": 7,
+			"position": [3, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 3],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 2],
+			"type": "hole"
+		},
+		{
+			"position": [9, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 3],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 3],
+			"type": "hole"
+		},
+		{
+			"position": [8, 4],
+			"type": "hole"
+		},
+		{
+			"position": [9, 4],
+			"type": "hole"
+		},
+		{
+			"position": [10, 4],
+			"type": "hole"
+		},
+		{
+			"position": [11, 4],
+			"type": "hole"
+		},
+		{
+			"position": [11, 3],
+			"type": "rock_S"
+		},
+		{
+			"position": [11, 2],
+			"type": "rock_M"
+		},
+		{
+			"position": [13, 2],
+			"type": "hole"
+		},
+		{
+			"position": [15, 2],
+			"type": "hole"
+		},
+		{
+			"position": [14, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 3],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 3],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 5],
+			"type": "hole"
+		},
+		{
+			"start": [2, 5],
+			"end": [17, 5],
+			"size": 16,
 			"type": "airstream",
 			"direction": "right"
 		},
 		{
-			"start": [14, 8],
-			"end": [6, 8],
-			"size": 9,
-			"type": "airstream",
-			"direction": "left"
+			"position": [17, 5],
+			"type": "hole"
 		},
 		{
-			"start": [8, 17],
-			"end": [8, 2],
-			"size": 16,
+			"start": [2, 6],
+			"end": [9, 6],
+			"size": 8,
+			"type": "airstream",
+			"direction": "right"
+		},
+		{
+			"position": [10, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 6],
+			"type": "rock_L"
+		},
+		{
+			"start": [12, 6],
+			"end": [17, 6],
+			"type": "tornado"
+		},
+		{
+			"start": [2, 7],
+			"end": [9, 7],
+			"type": "tornado"
+		},
+		{
+			"position": [10, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 7],
+			"type": "hole"
+		},
+		{
+			"position": [2, 8],
+			"type": "hole"
+		},
+		{
+			"position": [3, 8],
+			"type": "hole"
+		},
+		{
+			"position": [4, 8],
+			"type": "hole"
+		},
+		{
+			"position": [5, 8],
+			"type": "hole"
+		},
+		{
+			"position": [6, 8],
+			"type": "hole"
+		},
+		{
+			"position": [7, 8],
+			"type": "hole"
+		},
+		{
+			"position": [8, 8],
+			"type": "hole"
+		},
+		{
+			"position": [9, 8],
+			"type": "hole"
+		},
+		{
+			"position": [11, 8],
+			"type": "hole"
+		},
+		{
+			"position": [12, 8],
+			"type": "hole"
+		},
+		{
+			"position": [12, 9],
+			"type": "hole"
+		},
+		{
+			"position": [12, 10],
+			"type": "hole"
+		},
+		{
+			"position": [4, 10],
+			"type": "rock_L"
+		},
+		{
+			"start": [2, 12],
+			"end": [6, 12],
+			"size": 5,
+			"type": "airstream",
+			"direction": "right"
+		},
+		{
+			"start": [2, 13],
+			"end": [6, 13],
+			"size": 5,
+			"type": "airstream",
+			"direction": "right"
+		},
+		{
+			"position": [12, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 12],
+			"type": "rock_L"
+		},
+		{
+			"start": [11, 17],
+			"end": [11, 9],
+			"size": 9,
 			"type": "airstream",
 			"direction": "up"
 		},
 		{
-			"start": [13, 4],
-			"end": [13, 10],
-			"size": 7,
-			"type": "airstream",
-			"direction": "down"
+			"start": [14, 12],
+			"end": [17, 12],
+			"type": "tornado"
+		},
+		{
+			"start": [12, 13],
+			"end": [12, 17],
+			"type": "tornado"
+		},
+		{
+			"position": [13, 13],
+			"type": "hole"
+		},
+		{
+			"position": [14, 13],
+			"type": "hole"
+		},
+		{
+			"position": [15, 13],
+			"type": "hole"
+		},
+		{
+			"position": [16, 13],
+			"type": "hole"
+		},
+		{
+			"position": [17, 13],
+			"type": "hole"
+		},
+		{
+			"position": [14, 14],
+			"type": "hole"
+		},
+		{
+			"position": [15, 14],
+			"type": "hole"
+		},
+		{
+			"position": [16, 15],
+			"type": "hole"
+		},
+		{
+			"position": [14, 16],
+			"type": "hole"
+		},
+		{
+			"position": [17, 17],
+			"type": "hole"
+		},
+		{
+			"position": [10, 10],
+			"type": "hole"
+		},
+		{
+			"position": [9, 11],
+			"type": "hole"
+		},
+		{
+			"position": [8, 11],
+			"type": "hole"
+		},
+		{
+			"position": [9, 12],
+			"type": "hole"
+		},
+		{
+			"position": [9, 13],
+			"type": "hole"
+		},
+		{
+			"position": [9, 14],
+			"type": "hole"
+		},
+		{
+			"position": [9, 15],
+			"type": "hole"
+		},
+		{
+			"position": [9, 16],
+			"type": "hole"
+		},
+		{
+			"position": [6, 16],
+			"type": "hole"
+		},
+		{
+			"position": [3, 16],
+			"type": "hole"
+		},
+		{
+			"position": [2, 16],
+			"type": "hole"
+		},
+		{
+			"position": [3, 17],
+			"type": "hole"
+		},
+		{
+			"start": [2, 15],
+			"end": [3, 15],
+			"type": "tornado"
+		},
+		{
+			"start": [4, 16],
+			"end": [4, 17],
+			"type": "tornado"
+		},
+		{
+			"position": [7, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 16],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 17],
+			"type": "rock_S"
+		},
+		{
+			"position": [2, 17],
+			"type": "portal"
 		}
 	]
 }
