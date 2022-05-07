@@ -2,6 +2,10 @@
 	"numElements": 97,
 	"elements": [
 		{
+			"position": [4, 2],
+			"type": "portal"
+		},
+		{
 			"position": [2, 2],
 			"type": "hole"
 		},
@@ -405,10 +409,6 @@
 		{
 			"position": [7, 17],
 			"type": "rock_S"
-		},
-		{
-			"position": [2, 17],
-			"type": "portal"
 		}
 	]
 }

@@ -22,7 +22,7 @@ export default class Fire extends BaseStage {
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
-        this.load.image("wave", "game_assets/sprites/bubble.png");
+        this.load.image("wave", "game_assets/sprites/wave.png");
         this.load.image("flames", "game_assets/sprites/flames.png");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");

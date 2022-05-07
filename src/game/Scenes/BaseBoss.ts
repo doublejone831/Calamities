@@ -4,6 +4,7 @@ import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
 import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
+import RandUtils from "../../Wolfie2D/Utils/RandUtils";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -34,6 +35,7 @@ export default class BaseBoss extends BaseStage {
             let event = this.bossReceiver.getNextEvent();
             switch(event.type) {
                 case CTCevent.BOSS_SKILL:
+                    this.boss_skill();
                     break;
                 case CTCevent.BOSS_TELEPORT:
                     let currPosVec: Vec2 = null;
@@ -136,5 +138,33 @@ export default class BaseBoss extends BaseStage {
             } 
         }
         this.endposition = new Vec2(0, 0);
+    }
+
+    boss_skill(): void {
+        for (let i = 2; i < this.gameboard.length - 2; i++) {
+            for (let j = 2; j < this.gameboard[i].length - 2; j++) {
+                let sprite = this.gameboard[i][j];
+                if (sprite) {
+                    if (sprite.imageId === "rock_S" || sprite.imageId === "rock_M" || sprite.imageId === "rock_L") {
+                        this.gameboard[i][j] = null;
+                        sprite.destroy();
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < 6; i++) {
+            let type = RandUtils.randInt(0, 3);
+            let x = RandUtils.randInt(2, 18);
+            let y = RandUtils.randInt(2, 18);
+            let spritePos = new Vec2(x*16 + 8, y*16 + 8);
+            if (this.gameboard[x][y] || this.player.position.equals(spritePos)) {
+                i--;
+                continue;
+            }
+            let imageId = (type === 0) ? "rock_S" : ((type === 1) ? "rock_M" : "rock_L");
+            let sprite = this.add.sprite(imageId, "primary");
+            sprite.position.set(spritePos.x, spritePos.y);
+            this.gameboard[x][y] = sprite;
+        }
     }
 }

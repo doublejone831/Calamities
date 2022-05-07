@@ -14,6 +14,7 @@ import MainMenu from "./MainMenu";
 import Input from "../../Wolfie2D/Input/Input";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import AirstreamController from "../Element/AirstreamController";
+import WaveController from "../Element/WaveController";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -137,7 +138,8 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
                                 CTCevent.TORNADO_MOVE_REQUEST,
-                                CTCevent.AIRSTREAM_EXTEND ]);
+                                CTCevent.AIRSTREAM_EXTEND,
+                                CTCevent.WAVE_SPLASH, ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -437,6 +439,37 @@ export default class BaseStage extends Scene {
                     } else { // blocked by new block
                         this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": airstream.id, "blocked": true, "new_size": new_size});
                     }     
+                    break;
+                case CTCevent.WAVE_SPLASH:
+                    let wave = event.data.get("sprite");
+                    let wave_pos = this.sprite_pos_to_board_pos(wave.position.x, wave.position.y);
+                    let wave_dir = event.data.get("dir");
+                    if(this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y]) {
+                        switch(this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y].imageId) {
+                            case "boss_block":
+                                // damage fire boss
+                            case "hole":
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "rock_P":
+                            case "wall":
+                            case "outofbounds":
+                            case "ice_cube":
+                                wave.destroy();
+                                this.gameboard[wave_pos.x][wave_pos.y] = null;
+                                break;
+                            default:
+                                wave_dir.add(wave_dir);
+                                let new_wave = this.board_pos_to_sprite_pos(wave_pos.x, wave_pos.y);
+                                wave.position.set(new_wave.x, new_wave.y);
+                        }
+                    } else {
+                        wave_pos.add(wave_dir);
+                        let new_wave = this.board_pos_to_sprite_pos(wave_pos.x, wave_pos.y);
+                        wave.position.set(new_wave.x, new_wave.y);
+                    }
+                    break;
             }    
         }
     }
@@ -663,9 +696,18 @@ export default class BaseStage extends Scene {
                 break;
             case "bubble":
                 if(this.elementSelected != 3) break;
-                this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
-                this.skillUsed[1] = false;
+                let wave = this.add.sprite("wave", "primary");
+                wave.position.set(targetposX*16+8, targetposY*16+8);
+                if(dir.x == -1) {
+                    wave.rotation = Math.PI;
+                } else if(dir.y == 1) {
+                    wave.rotation = 3*Math.PI/2;
+                } else if(dir.y == -1) {
+                    wave.rotation = Math.PI/2;
+                }
+                this.gameboard[targetposX][targetposY] = wave;
+                wave.addAI(WaveController, {"dir": dir});
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
