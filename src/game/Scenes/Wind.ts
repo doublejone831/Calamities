@@ -3,11 +3,11 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import WindBoss from "./WindBoss";
-import ElementController from "../Element/ElementController";
 import { Element } from "../Element/Element_Enum";
 import { CTCevent } from "./CTCEvent";
 import MainMenu from "./MainMenu";
 import TornadoController from "../Element/TornadoController";
+import AirstreamController from "../Element/AirstreamController";
 
 export default class Wind extends BaseStage {
 
@@ -87,7 +87,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -95,7 +95,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -103,7 +103,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -111,7 +111,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;

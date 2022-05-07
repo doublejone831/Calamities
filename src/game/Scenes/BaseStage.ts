@@ -384,7 +384,7 @@ export default class BaseStage extends Scene {
                     let new_size = size;
                     let removing = false;
                     for(var i = 0; i<size; i++){
-                        let air_pos = new Vec2((start.x-8)/16, (start.y-8)/16);
+                        let air_pos = new Vec2(start.x, start.y);
                         air_pos.add(dir.scaled(i));
                         if(removing) {
                             if(this.overlap[air_pos.x][air_pos.y]) {
@@ -728,6 +728,26 @@ export default class BaseStage extends Scene {
         let pCol = pos.x;
         let pRow = pos.y;
         if(!this.inAir) {
+            if(this.overlap[pCol][pRow]) {
+                this.inAir = true;
+                switch(this.overlap[pCol][pRow].rotation){
+                    case 0:
+                        this.savedVec = new Vec2(1, 0);
+                        break;
+                    case Math.PI:
+                        this.savedVec = new Vec2(-1, 0);
+                        break;
+                    case Math.PI/2:
+                        this.savedVec = new Vec2(0, -1);
+                        break;
+                    case 3*Math.PI/2:
+                        this.savedVec = new Vec2(0, 1);
+                        break;
+                }
+                this.airstream_fly(pCol, pRow);
+            }
+        }
+        if(!this.inAir) {
             if(this.gameboard[pCol][pRow]){
                 switch(this.gameboard[pCol][pRow].imageId){
                     case "tornado":
@@ -746,24 +766,6 @@ export default class BaseStage extends Scene {
                             this.restartStage();
                         }
                 }
-            }
-            if(this.overlap[pCol][pRow]) {
-                this.inAir = true;
-                switch(this.overlap[pCol][pRow].rotation){
-                    case 0:
-                        this.savedVec = new Vec2(1, 0);
-                        break;
-                    case Math.PI:
-                        this.savedVec = new Vec2(-1, 0);
-                        break;
-                    case Math.PI/2:
-                        this.savedVec = new Vec2(0, -1);
-                        break;
-                    case 3*Math.PI/2:
-                        this.savedVec = new Vec2(0, 1);
-                        break;
-                }
-                this.airstream_fly(pCol, pRow);
             }
             if(this.endposition.equals(pos)){
                 this.nextStage();

@@ -4,7 +4,7 @@ import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import IceBoss from "./IceBoss";
 import MainMenu from "./MainMenu";
-import ElementController from "../Element/ElementController";
+import ElementController from "../Element/AirstreamController";
 import { CTCevent } from "./CTCEvent";
 import { Element } from "../Element/Element_Enum";
 

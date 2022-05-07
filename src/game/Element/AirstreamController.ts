@@ -1,27 +1,22 @@
 import StateMachineAI from "../../Wolfie2D/AI/StateMachineAI";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "../Scenes/CTCEvent";
 import { Element } from "./Element_Enum";
-export default class ElementController extends StateMachineAI {
+export default class AirstreamController extends StateMachineAI {
     protected owner: Sprite;
-    protected type : Element;
     protected start : Vec2;
     protected end : Vec2;
     protected size: number;
-    protected reverse: boolean;
     protected dir: Vec2;
     protected frames: number;
     protected paused: boolean;
 
     initializeAI(owner: Sprite, options: Record<string, any>){
         this.owner = owner;
-        this.type = options.type;
-        this.start = options.start.scaled(16).add(new Vec2(8, 8));
-        this.end = options.end.scaled(16).add(new Vec2(8, 8));
+        this.start = options.start;
+        this.end = options.end;
         this.size = options.size;
-        this.reverse = true;
         if(this.start.x-this.end.x > 0) {
             this.dir = new Vec2(-1, 0);
         } else if(this.start.x-this.end.x < 0) {
@@ -58,31 +53,7 @@ export default class ElementController extends StateMachineAI {
                     }
             }
         }
-        switch(this.type){
-            case Element.TORNADO:
-                this.move_tornado();
-                break;
-        }
         this.frames++;
-    }
-
-    move_tornado(){
-        if(this.paused) {
-            (<AnimatedSprite>this.owner).animation.pause();
-        } else {
-            (<AnimatedSprite>this.owner).animation.resume();
-            if(this.frames%30 == 0) {
-                if(this.owner.position.equals(this.start) || this.owner.position.equals(this.end)) this.reverse = !this.reverse;
-                let old_pos = new Vec2(this.owner.position.x, this.owner.position.y);
-                if(this.reverse) {    
-                    let new_pos = this.owner.position.add(this.dir.scaled(-16));
-                    this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
-                } else {
-                    let new_pos = this.owner.position.add(this.dir.scaled(16));
-                    this.emitter.fireEvent(CTCevent.WHIRLWIND_MOVE, {"sprite": this.owner, "old": old_pos, "new": new_pos});
-                }
-            }
-        }
     }
 
     extend_airstream(new_size: number){
