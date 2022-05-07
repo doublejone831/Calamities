@@ -7,6 +7,7 @@ import ElementController from "../Element/ElementController";
 import { Element } from "../Element/Element_Enum";
 import { CTCevent } from "./CTCEvent";
 import MainMenu from "./MainMenu";
+import TornadoController from "../Element/TornadoController";
 
 export default class Wind extends BaseStage {
 
@@ -73,7 +74,7 @@ export default class Wind extends BaseStage {
                     controller = this.add.animatedSprite(element.type, "primary");
                     controller.position.set(start.x*16+8, start.y*16+8);
                     controller.animation.play("idle");
-                    controller.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
+                    controller.addAI(TornadoController, {"start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
                 case "airstream":

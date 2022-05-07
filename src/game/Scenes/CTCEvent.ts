@@ -12,8 +12,8 @@ export enum CTCevent{
     BOSS_DEAD = "boss_dead",
 
     //element events
-    WHIRLWIND_MOVE_REQUEST = "whirlwind_move_request",
-    WHIRLWIND_MOVE = "whirlwind_move",
+    TORNADO_MOVE_REQUEST = "tornado_move_request",
+    TORNADO_BLOCKED = "tornado_blocked",
     AIRSTREAM_EXTEND_REQUEST = "airstream_extend_request",
     AIRSTREAM_EXTEND = "airstream_extend",
     AIRSTREAM_BLOCKED = "airstream_blocked",

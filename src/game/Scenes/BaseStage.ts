@@ -136,7 +136,7 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
-                                CTCevent.WHIRLWIND_MOVE,
+                                CTCevent.TORNADO_MOVE_REQUEST,
                                 CTCevent.AIRSTREAM_EXTEND ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
@@ -351,15 +351,30 @@ export default class BaseStage extends Scene {
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                     }
                     break;
-                case CTCevent.WHIRLWIND_MOVE:
+                case CTCevent.TORNADO_MOVE_REQUEST:
                     let whirlwind = event.data.get("sprite");
                     let old_pos = event.data.get("old");
                     let new_pos = event.data.get("new");
-                    if(this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16]) {
-                        this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16].destroy();
+                    if(this.gameboard[new_pos.x][new_pos.y]) {
+                        switch(this.gameboard[new_pos.x][new_pos.y].imageId) {
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "rock_P":
+                                this.emitter.fireEvent(CTCevent.TORNADO_BLOCKED, {'id': whirlwind.id});
+                                break;
+                            default: // everything destroyed by tornado
+                                if(this.gameboard[new_pos.x][new_pos.y]) this.gameboard[new_pos.x][new_pos.y].destroy();
+                                this.gameboard[new_pos.x][new_pos.y] = whirlwind;
+                                this.gameboard[old_pos.x][old_pos.y] = null;
+                                whirlwind.position.set(new_pos.x*16+8, new_pos.y*16+8);
+                                
+                        }
+                    } else {
+                        this.gameboard[new_pos.x][new_pos.y] = whirlwind;
+                        this.gameboard[old_pos.x][old_pos.y] = null;
+                        whirlwind.position.set(new_pos.x*16+8, new_pos.y*16+8);
                     }
-                    this.gameboard[(new_pos.x-8)/16][(new_pos.y-8)/16] = whirlwind;
-                    this.gameboard[(old_pos.x-8)/16][(old_pos.y-8)/16] = null;
                     break;
                 case CTCevent.AIRSTREAM_EXTEND:
                     let start = event.data.get("start");
