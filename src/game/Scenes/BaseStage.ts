@@ -456,6 +456,7 @@ export default class BaseStage extends Scene {
                             case "wall":
                             case "outofbounds":
                             case "ice_cube":
+                            case "portal":
                                 wave.destroy();
                                 this.gameboard[wave_pos.x][wave_pos.y] = null;
                                 break;
