@@ -13,6 +13,7 @@ import Receiver from "../../Wolfie2D/Events/Receiver";
 import MainMenu from "./MainMenu";
 import Input from "../../Wolfie2D/Input/Input";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import AirstreamController from "../Element/AirstreamController";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -257,8 +258,6 @@ export default class BaseStage extends Scene {
                     let placeY = event.data.get("positionY");
                     let type = event.data.get("type");
                     if (placeX>=2 && placeX<=17 && placeY>=2 && placeY<=17) {
-                        let player_controller = (<PlayerController>this.player._ai);
-                        player_controller.cast_animation();
                         if (this.gameboard[placeX][placeY] == null) {
                             this.place_element(placeX, placeY, type);
                         } else {
@@ -454,8 +453,6 @@ export default class BaseStage extends Scene {
                     switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
                         case "boss_block":
                             this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        case "tornado":
-                        case "whirlwind":
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
@@ -504,8 +501,6 @@ export default class BaseStage extends Scene {
                     switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
                         case "boss_block":
                             this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        case "tornado":
-                        case "whirlwind":
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
@@ -555,8 +550,6 @@ export default class BaseStage extends Scene {
                     switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
                         case "boss_block":
                             this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                        case "tornado":
-                        case "whirlwind":
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
@@ -614,8 +607,6 @@ export default class BaseStage extends Scene {
                 switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
                     case "boss_block":
                         this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                    case "tornado":
-                    case "whirlwind":
                     case "hole":
                         this.gameboard[targetposX][targetposY] = null;
                         target.destroy();
@@ -651,9 +642,23 @@ export default class BaseStage extends Scene {
                 break;
             case "whirlwind":
                 if(this.elementSelected != 2) break;
-                this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
-                this.skillUsed[1] = false;
+                let stream = this.add.animatedSprite("airstream", "sky");
+                stream.animation.play("stream");
+                stream.position.set(targetposX*16+8, targetposY*16+8);
+                if(dir.x == -1) {
+                    stream.rotation = Math.PI;
+                } else if(dir.y == 1) {
+                    stream.rotation = 3*Math.PI/2;
+                } else if(dir.y == -1) {
+                    stream.rotation = Math.PI/2;
+                }
+                stream.alpha = 0;
+                this.gameboard[targetposX][targetposY] = null;
+                let stream_start = new Vec2(targetposX, targetposY);
+                let stream_end = stream_start.clone().add(dir.scaled(4));
+                stream.addAI(AirstreamController, {"start": stream_start, "end": stream_end, "size": 5});
+                this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": stream.id, "blocked": false});
                 break;
             case "bubble":
                 if(this.elementSelected != 3) break;
@@ -686,6 +691,7 @@ export default class BaseStage extends Scene {
                 let place_rock = this.add.sprite("rock_P", "primary");
                 place_rock.position.set(placeX*16+8, placeY*16+8);
                 this.gameboard[placeX][placeY] = place_rock;
+                player_controller.cast_animation();
                 break;
             case 2:
                 if (!player_controller.hasPower[1]) break;
@@ -695,6 +701,7 @@ export default class BaseStage extends Scene {
                 place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
                 place_wind.animation.play("idle");
                 this.gameboard[placeX][placeY] = place_wind;
+                player_controller.cast_animation();
                 break;
             case 3:
                 if (!player_controller.hasPower[2]) break;
@@ -703,6 +710,7 @@ export default class BaseStage extends Scene {
                 let place_water = this.add.sprite("bubble", "primary");
                 place_water.position.set(placeX*16+8, placeY*16+8);
                 this.gameboard[placeX][placeY] = place_water;
+                player_controller.cast_animation();
                 break;
             case 4:
                 if (!player_controller.hasPower[3]) break;
@@ -712,6 +720,7 @@ export default class BaseStage extends Scene {
                 place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
                 place_fire.animation.play("idle");
                 this.gameboard[placeX][placeY] = place_fire;
+                player_controller.cast_animation();
                 break;
             case 5:
                 if (!player_controller.hasPower[4]) break;
@@ -720,6 +729,7 @@ export default class BaseStage extends Scene {
                 let place_ice = this.add.sprite("ice_cube", "primary");
                 place_ice.position.set(placeX*16+8, placeY*16+8);
                 this.gameboard[placeX][placeY] = place_ice;
+                player_controller.cast_animation();
                 break;
         }
     }

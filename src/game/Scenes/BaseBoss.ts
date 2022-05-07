@@ -2,6 +2,8 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import BaseStage from "./BaseStage";
 import Receiver from "../../Wolfie2D/Events/Receiver";
 import { CTCevent } from "./CTCEvent";
+import TornadoController from "../Element/TornadoController";
+import AirstreamController from "../Element/AirstreamController";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -76,18 +78,62 @@ export default class BaseBoss extends BaseStage {
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
-
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
-            var sprite;
-            if(element.type === "airstream") {
-                sprite = this.add.animatedSprite(element.type, "primary");
-                sprite.animation.play("stream");
-            } else {
-                sprite = this.add.sprite(element.type, "primary");
-            }
-            sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
-            this.gameboard[element.position[0]][element.position[1]] = sprite;
+            var controller;
+            switch(element.type){
+                case "tornado":
+                    controller = this.add.animatedSprite(element.type, "primary");
+                    controller.animation.play("idle");
+                    let start = new Vec2(element.start[0], element.start[1]);
+                    let end = new Vec2(element.end[0], element.end[1]);
+                    controller.addAI(TornadoController, {"start": start, "end": end});
+                    controller.position.set(start.x*16+8, start.y*16+8);
+                    this.gameboard[start.x][start.y] = controller;
+                    break;
+                case "airstream":
+                    var controller;
+                    switch(element.direction){
+                        case "right":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 0;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            break;
+                        case "left":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            break;
+                        case "down":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = 3*Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            break;
+                        case "up":
+                            controller = this.add.animatedSprite(element.type, "sky");
+                            controller.position.set(start.x*16+8, start.y*16+8);
+                            controller.rotation = Math.PI/2;
+                            controller.alpha = 0;
+                            controller.animation.play("stream");
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                    }
+                    this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
+                    break;
+                default:
+                    let sprite = this.add.sprite(element.type, "primary");
+                    sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
+                    this.gameboard[element.position[0]][element.position[1]] = sprite;
+                    break;
+            } 
         }
         this.endposition = new Vec2(0, 0);
     }

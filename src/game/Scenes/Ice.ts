@@ -4,9 +4,9 @@ import BaseStage from "./BaseStage";
 import PlayerController from "../Player/PlayerController";
 import IceBoss from "./IceBoss";
 import MainMenu from "./MainMenu";
-import ElementController from "../Element/AirstreamController";
 import { CTCevent } from "./CTCEvent";
-import { Element } from "../Element/Element_Enum";
+import AirstreamController from "../Element/AirstreamController";
+import TornadoController from "../Element/TornadoController";
 
 export default class Ice extends BaseStage {
 
@@ -86,7 +86,7 @@ export default class Ice extends BaseStage {
                     controller = this.add.animatedSprite(element.type, "primary");
                     controller.position.set(start.x*16+8, start.y*16+8);
                     controller.animation.play("idle");
-                    controller.addAI(ElementController, {"type": Element.TORNADO, "start": start, "end": end});
+                    controller.addAI(TornadoController, {"start": start, "end": end});
                     this.gameboard[start.x][start.y] = sprite;
                     break;
                 case "airstream":
@@ -99,7 +99,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -107,7 +107,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -115,7 +115,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -123,7 +123,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(ElementController, {"type": Element.AIRSTREAM, "start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
@@ -133,7 +133,6 @@ export default class Ice extends BaseStage {
                     sprite = this.add.sprite(element.type, "primary");
                     sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
                     this.gameboard[element.position[0]][element.position[1]] = sprite;
-
             }
         }
     }
