@@ -116,7 +116,6 @@ export default class PlayerController extends StateMachineAI {
                         let next = this.board_pos_to_sprite_pos(next_pos.x, next_pos.y);
                         this.owner.position.set(next.x, next.y);
                         this.owner.animation.play((this.hasShield ? "shield-" : "") + "walking_" + this.facing_direction);
-                        Input.enableInput();
                         break;
                     case CTCevent.FLY:
                         this.owner.position.add(this.dirUnitVector(16));

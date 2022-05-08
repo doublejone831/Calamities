@@ -16,6 +16,7 @@ import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import AirstreamController from "../Element/AirstreamController";
 import WaveController from "../Element/WaveController";
 import IgniteController from "../Element/IgniteController";
+import FlamesController from "../Element/FlamesController";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -335,6 +336,7 @@ export default class BaseStage extends Scene {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
+                    if(this.inAir) break;
                     var next = event.data.get("next");
                     if(this.gameboard[next.x][next.y]){
                         switch(this.gameboard[next.x][next.y].imageId) {
@@ -502,7 +504,35 @@ export default class BaseStage extends Scene {
                             this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 3});
                             break;
                         case 3: // spread to nearby tiles
-                            console.log("fire spread");
+                            var new_flame;
+                            if(this.gameboard[flames_pos.x+1][flames_pos.y] == null) {
+                                new_flame = this.add.animatedSprite("flames", "primary");
+                                new_flame.animation.play("level1");
+                                new_flame.position.set((flames_pos.x+1)*16+8, flames_pos.y*16+8);
+                                this.gameboard[flames_pos.x+1][flames_pos.y] = new_flame;
+                                new_flame.addAI(FlamesController, {"level": 1});
+                            }
+                            if(this.gameboard[flames_pos.x][flames_pos.y+1] == null) {
+                                new_flame = this.add.animatedSprite("flames", "primary");
+                                new_flame.animation.play("level1");
+                                new_flame.position.set(flames_pos.x*16+8, (flames_pos.y+1)*16+8);
+                                this.gameboard[flames_pos.x][flames_pos.y+1] = new_flame;
+                                new_flame.addAI(FlamesController, {"level": 1});
+                            }
+                            if(this.gameboard[flames_pos.x-1][flames_pos.y] == null) {
+                                new_flame = this.add.animatedSprite("flames", "primary");
+                                new_flame.animation.play("level1");
+                                new_flame.position.set((flames_pos.x-1)*16+8, flames_pos.y*16+8);
+                                this.gameboard[flames_pos.x-1][flames_pos.y] = new_flame;
+                                new_flame.addAI(FlamesController, {"level": 1});
+                            }
+                            if(this.gameboard[flames_pos.x][flames_pos.y-1] == null) {
+                                new_flame = this.add.animatedSprite("flames", "primary");
+                                new_flame.animation.play("level1");
+                                new_flame.position.set(flames_pos.x*16+8, (flames_pos.y-1)*16+8);
+                                this.gameboard[flames_pos.x][flames_pos.y-1] = new_flame;
+                                new_flame.addAI(FlamesController, {"level": 1});
+                            }
                             break;
                     }
                     break;
@@ -959,6 +989,7 @@ export default class BaseStage extends Scene {
             if(this.endposition.equals(pos)){
                 this.nextStage();
             }
+            Input.enableInput();
         } else {
             if(this.savedVec != null){
                 this.airstream_fly(pCol, pRow);
