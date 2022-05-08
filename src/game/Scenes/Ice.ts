@@ -124,6 +124,12 @@ export default class Ice extends BaseStage {
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
+                case "torch":
+                    sprite = this.add.animatedSprite("torch", "primary");
+                    sprite.animation.play("off");
+                    sprite.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    this.gameboard[element.position[0]][element.position[1]] = sprite;
+                    break;
                 case "portal":
                     this.endposition = new Vec2(element.position[0], element.position[1]);
                 default:

@@ -19,6 +19,7 @@ export enum CTCevent {
     AIRSTREAM_BLOCKED = "airstream_blocked",
     AIRSTREAM_UNBLOCK = "airstream_unblock",
     WAVE_SPLASH = "wave_splash",
+    IGNITE_BURN = "ignite_burn",
     CHANGE_ELEMENT = "change_element",
 
     // stage events

@@ -3,15 +3,15 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { CTCevent } from "../Scenes/CTCEvent";
 
-export default class WaveController extends StateMachineAI {
+export default class IgniteController extends StateMachineAI{
     protected owner: Sprite;
-    protected dir: Vec2;
+    protected hitbox: Vec2;
     protected paused: boolean;
     protected frames: number;
 
     initializeAI(owner: Sprite, options: Record<string, any>) {
         this.owner = owner;
-        this.dir = options.dir;
+        this.hitbox = options.hitbox;
         this.paused = false;
         this.frames = 0;
 
@@ -28,8 +28,8 @@ export default class WaveController extends StateMachineAI {
             }
         }
         if(!this.paused) {
-            if(this.frames%15 == 0) {
-                this.emitter.fireEvent(CTCevent.WAVE_SPLASH, {"sprite": this.owner, "dir": this.dir});
+            if(this.frames>15) {
+                this.emitter.fireEvent(CTCevent.IGNITE_BURN, {"sprite": this.owner, "hitbox": this.hitbox});
             }
             this.frames++;
         }

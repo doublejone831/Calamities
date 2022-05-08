@@ -15,6 +15,7 @@ import Input from "../../Wolfie2D/Input/Input";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import AirstreamController from "../Element/AirstreamController";
 import WaveController from "../Element/WaveController";
+import IgniteController from "../Element/IgniteController";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -139,7 +140,8 @@ export default class BaseStage extends Scene {
                                 CTCevent.CHANGE_ELEMENT,
                                 CTCevent.TORNADO_MOVE_REQUEST,
                                 CTCevent.AIRSTREAM_EXTEND,
-                                CTCevent.WAVE_SPLASH, ]);
+                                CTCevent.WAVE_SPLASH,
+                                CTCevent.IGNITE_BURN ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
                                     CTCevent.CONTROLS_POPUP,
@@ -472,6 +474,23 @@ export default class BaseStage extends Scene {
                         let new_wave = this.board_pos_to_sprite_pos(wave_pos.x, wave_pos.y);
                         wave.position.set(new_wave.x, new_wave.y);
                     }
+                    break;
+                case CTCevent.IGNITE_BURN:
+                    let flame = event.data.get("sprite");
+                    let fire_hit = event.data.get("hitbox");
+                    if(this.gameboard[fire_hit.x][fire_hit.y]){
+                        let ignite_target = this.gameboard[fire_hit.x][fire_hit.y];
+                        switch(ignite_target.imageId) {
+                            case "ice_cube":
+                                ignite_target.destroy();
+                                this.gameboard[fire_hit.x][fire_hit.y] = null;
+                                break;
+                            case "torch":
+                                (<AnimatedSprite>ignite_target).animation.play("on");
+                                break;
+                        }
+                    }
+                    flame.destroy();
                     break;
             }    
         }
@@ -810,9 +829,25 @@ export default class BaseStage extends Scene {
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
-                this.gameboard[targetposX][targetposY] = null;
                 target.destroy();
-                this.skillUsed[1] = false;
+                let ignition = this.add.sprite("ignite", "sky");
+                ignition.position.set(targetposX*16+16, targetposY*16+8);
+                let hitbox = new Vec2(targetposX+1, targetposY);
+                if(dir.x == -1) {
+                    ignition.rotation = Math.PI;
+                    ignition.position.set(targetposX*16, targetposY*16+8);
+                    hitbox = new Vec2(targetposX-1, targetposY);
+                } else if(dir.y == 1) {
+                    ignition.rotation = 3*Math.PI/2;
+                    ignition.position.set(targetposX*16+8, targetposY*16+16);
+                    hitbox = new Vec2(targetposX, targetposY+1);
+                } else if(dir.y == -1) {
+                    ignition.rotation = Math.PI/2;
+                    ignition.position.set(targetposX*16+8, targetposY*16);
+                    hitbox = new Vec2(targetposX, targetposY-1);
+                }
+                this.gameboard[targetposX][targetposY] = null;
+                ignition.addAI(IgniteController, {"hitbox": hitbox});
                 break;
             case "ice_cube":
                 if(this.elementSelected != 5) break;
