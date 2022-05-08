@@ -511,6 +511,8 @@ export default class BaseStage extends Scene {
                                 new_flame.position.set((flames_pos.x+1)*16+8, flames_pos.y*16+8);
                                 this.gameboard[flames_pos.x+1][flames_pos.y] = new_flame;
                                 new_flame.addAI(FlamesController, {"level": 1});
+                            } else if(this.gameboard[flames_pos.x+1][flames_pos.y].imageId == "torch"){
+                                (<AnimatedSprite>this.gameboard[flames_pos.x+1][flames_pos.y]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y+1] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
@@ -518,6 +520,8 @@ export default class BaseStage extends Scene {
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y+1)*16+8);
                                 this.gameboard[flames_pos.x][flames_pos.y+1] = new_flame;
                                 new_flame.addAI(FlamesController, {"level": 1});
+                            } else if(this.gameboard[flames_pos.x][flames_pos.y+1].imageId == "torch"){
+                                (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y+1]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x-1][flames_pos.y] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
@@ -525,6 +529,8 @@ export default class BaseStage extends Scene {
                                 new_flame.position.set((flames_pos.x-1)*16+8, flames_pos.y*16+8);
                                 this.gameboard[flames_pos.x-1][flames_pos.y] = new_flame;
                                 new_flame.addAI(FlamesController, {"level": 1});
+                            } else if(this.gameboard[flames_pos.x-1][flames_pos.y].imageId == "torch"){
+                                (<AnimatedSprite>this.gameboard[flames_pos.x-1][flames_pos.y]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y-1] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
@@ -532,6 +538,8 @@ export default class BaseStage extends Scene {
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y-1)*16+8);
                                 this.gameboard[flames_pos.x][flames_pos.y-1] = new_flame;
                                 new_flame.addAI(FlamesController, {"level": 1});
+                            } else if(this.gameboard[flames_pos.x][flames_pos.y-1].imageId == "torch"){
+                                (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y-1]).animation.play("on");
                             }
                             break;
                     }
