@@ -8,6 +8,7 @@ import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
 import FlamesController from "../Element/FlamesController";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Fire extends BaseStage {
 
@@ -38,6 +39,12 @@ export default class Fire extends BaseStage {
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
+        this.load.audio("fire", "game_assets/sound/fire.wav");
     }
 
     unloadScene(): void {
@@ -60,6 +67,8 @@ export default class Fire extends BaseStage {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -157,11 +166,13 @@ export default class Fire extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Fire, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[6] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(FireBoss, {});
     }
 }

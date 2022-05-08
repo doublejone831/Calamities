@@ -7,6 +7,7 @@ import MainMenu from "./MainMenu";
 import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Water extends BaseStage {
 
@@ -33,6 +34,11 @@ export default class Water extends BaseStage {
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
     }
 
     unloadScene(): void {
@@ -55,6 +61,8 @@ export default class Water extends BaseStage {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -139,11 +147,13 @@ export default class Water extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Water, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[4] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(WaterBoss, {});
     }
 }

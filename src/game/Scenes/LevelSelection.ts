@@ -74,13 +74,10 @@ export default class LevelSelection extends Scene {
         fireB.clone(earth, "play-fire-boss", MainMenu.unlocked[6]);
 
         /* ICE ROW */
-        const iceHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levels", {position: new Vec2(center.x - 225, center.y + 150), text: "ICE"});;
 
-        const ice = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 150), text: "Puzzle Stage"});
-        ice.clone(earth, "play-ice", MainMenu.unlocked[7]);
-
-        const iceB = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x + 250, center.y + 150), text: "Boss Stage"});
-        iceB.clone(earth, "play-ice-boss", MainMenu.unlocked[8]);
+        const ice = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 150), text: "TUTORIAL STAGE"});
+        ice.clone(earth, "play-ice", true);
+        ice.size = new Vec2(300, 50);
 
         /* BACK BUTTON */
         const back = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 300), text: "Back"});
@@ -95,8 +92,7 @@ export default class LevelSelection extends Scene {
                                 "play-fire-boss",
                                 "play-water",
                                 "play-water-boss",
-                                "play-ice",
-                                "play-ice-boss"]);
+                                "play-ice"]);
     }
 
     updateScene(){
@@ -151,14 +147,7 @@ export default class LevelSelection extends Scene {
                     }
                     break;
                 case "play-ice":
-                    if (MainMenu.unlocked[7]) {
-                        this.sceneManager.changeToScene(Ice);
-                    }
-                    break;
-                case "play-ice-boss":
-                    if (MainMenu.unlocked[8]) {
-                        this.sceneManager.changeToScene(IceBoss);
-                    }
+                    this.sceneManager.changeToScene(Ice);
                     break;
             }
 

@@ -8,6 +8,7 @@ import { CTCevent } from "./CTCEvent";
 import MainMenu from "./MainMenu";
 import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Wind extends BaseStage {
 
@@ -32,6 +33,10 @@ export default class Wind extends BaseStage {
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
     }
 
     unloadScene(): void {
@@ -54,6 +59,8 @@ export default class Wind extends BaseStage {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -139,11 +146,13 @@ export default class Wind extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Wind, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[2] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(WindBoss, {});
     }
 }

@@ -6,6 +6,7 @@ import Fire from "./Fire";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import BaseBoss from "./BaseBoss";
 import MainMenu from "./MainMenu";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class WaterBoss extends BaseBoss {
 
@@ -36,6 +37,11 @@ export default class WaterBoss extends BaseBoss {
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
     }
 
     unloadScene(): void {
@@ -56,6 +62,8 @@ export default class WaterBoss extends BaseBoss {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -88,11 +96,13 @@ export default class WaterBoss extends BaseBoss {
     }
 
     restartStage(): void {
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(WaterBoss, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[5] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Fire, {});
     }
 }
