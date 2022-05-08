@@ -13,7 +13,7 @@ export default class WaveController extends StateMachineAI {
         this.owner = owner;
         this.dir = options.dir;
         this.paused = false;
-        this.frames = 0;
+        this.frames = 1;
 
         this.receiver.subscribe(CTCevent.TOGGLE_PAUSE);
     }

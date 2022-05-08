@@ -9,7 +9,6 @@ export default class AirstreamController extends StateMachineAI {
     protected end : Vec2;
     protected size: number;
     protected dir: Vec2;
-    protected frames: number;
     protected paused: boolean;
 
     initializeAI(owner: Sprite, options: Record<string, any>){
@@ -28,7 +27,6 @@ export default class AirstreamController extends StateMachineAI {
                 this.dir = new Vec2(0, 1);
             }
         }
-        this.frames = 0;
         this.paused = false;
 
         this.receiver.subscribe([
@@ -53,7 +51,6 @@ export default class AirstreamController extends StateMachineAI {
                     }
             }
         }
-        this.frames++;
     }
 
     extend_airstream(new_size: number){

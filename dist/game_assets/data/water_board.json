@@ -1,5 +1,5 @@
 {
-	"numElements": 150,
+	"numElements": 149,
 	"elements": [
 		{
 			"position": [16,16],
@@ -393,10 +393,6 @@
 		{
 			"position": [13,14],
 			"type" : "rock_M"
-		},
-		{
-			"position": [14,11],
-			"type" : "rock_S"
 		},
 		{
 			"start": [15, 9],

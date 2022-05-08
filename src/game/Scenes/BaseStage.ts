@@ -141,6 +141,7 @@ export default class BaseStage extends Scene {
                                 CTCevent.TORNADO_MOVE_REQUEST,
                                 CTCevent.AIRSTREAM_EXTEND,
                                 CTCevent.WAVE_SPLASH,
+                                CTCevent.FLAMES_GROW,
                                 CTCevent.IGNITE_BURN ]);
         this.pauseReceiver = new Receiver();
         this.pauseReceiver.subscribe([
@@ -469,9 +470,7 @@ export default class BaseStage extends Scene {
                                 wave.destroy();
                                 break;
                             case "ember":
-                            case "flames1":
-                            case "flames2":
-                            case "flames3":
+                            case "flames":
                                 this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y].destroy();
                                 this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y] = null;
                             default:
@@ -483,6 +482,27 @@ export default class BaseStage extends Scene {
                         wave_pos.add(wave_dir);
                         let new_wave = this.board_pos_to_sprite_pos(wave_pos.x, wave_pos.y);
                         wave.position.set(new_wave.x, new_wave.y);
+                    }
+                    break;
+                case CTCevent.FLAMES_GROW:
+                    let flames = event.data.get("sprite");
+                    let firepower = event.data.get("level");
+                    let flames_pos = this.sprite_pos_to_board_pos(flames.position.x, flames.position.y);
+                    switch(firepower){
+                        case 0: // blocked by rock
+                            if(this.gameboard[flames_pos.x][flames_pos.y] == null){
+                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 1});
+                            }
+                            break;
+                        case 1: // grow to level 2
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 2});
+                            break;
+                        case 2: // grow to level 3
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 3});
+                            break;
+                        case 3: // spread to nearby tiles
+                            console.log("fire spread");
+                            break;
                     }
                     break;
                 case CTCevent.IGNITE_BURN:
@@ -523,6 +543,15 @@ export default class BaseStage extends Scene {
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
                             break;
+                        case "flames":
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
+                            dest.add(dir);
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
                         case "bubble":
                         case "ember":
                             dest.add(dir);
@@ -548,30 +577,6 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y].destroy();
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            break;
-                        case "flames1":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire1 = this.gameboard[dest.x][dest.y];
-                            let flame2 = this.add.sprite("flames2", "primary");
-                            flame2.position.set(fire1.position.x, fire1.position.y);
-                            this.gameboard[dest.x][dest.y] = flame2;
-                            fire1.destroy();
-                            break;
-                        case "flames2":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire2 = this.gameboard[dest.x][dest.y];
-                            let flame3 = this.add.sprite("flames3", "primary");
-                            flame3.position.set(fire2.position.x, fire2.position.y);
-                            this.gameboard[dest.x][dest.y] = flame3;
-                            fire2.destroy();
-                            break;
-                        case "flames3":
-                            target.destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
                     }
@@ -595,6 +600,15 @@ export default class BaseStage extends Scene {
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
                             break;
+                        case "flames":
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
+                            dest.add(dir);
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
                         case "bubble":
                         case "ember":
                             dest.add(dir);
@@ -620,30 +634,6 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y].destroy();
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            break;
-                        case "flames1":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire1 = this.gameboard[dest.x][dest.y];
-                            let flame2 = this.add.sprite("flames2", "primary");
-                            flame2.position.set(fire1.position.x, fire1.position.y);
-                            this.gameboard[dest.x][dest.y] = flame2;
-                            fire1.destroy();
-                            break;
-                        case "flames2":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire2 = this.gameboard[dest.x][dest.y];
-                            let flame3 = this.add.sprite("flames3", "primary");
-                            flame3.position.set(fire2.position.x, fire2.position.y);
-                            this.gameboard[dest.x][dest.y] = flame3;
-                            fire2.destroy();
-                            break;
-                        case "flames3":
-                            target.destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
                     }
@@ -668,6 +658,15 @@ export default class BaseStage extends Scene {
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
                             break;
+                        case "flames":
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
+                            dest.add(dir);
+                            target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                            this.gameboard[targetposX][targetposY] = null;
+                            this.gameboard[dest.x][dest.y] = target;
+                            targetposX = dest.x;
+                            targetposY = dest.y;
+                            break;
                         case "bubble":
                         case "ember":
                             dest.add(dir);
@@ -693,30 +692,6 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y].destroy();
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            break;
-                        case "flames1":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire1 = this.gameboard[dest.x][dest.y];
-                            let flame2 = this.add.sprite("flames2", "primary");
-                            flame2.position.set(fire1.position.x, fire1.position.y);
-                            this.gameboard[dest.x][dest.y] = flame2;
-                            fire1.destroy();
-                            break;
-                        case "flames2":
-                            target.destroy();
-                            this.gameboard[targetposX][targetposY] = null;
-                            dest.add(dir);
-                            let fire2 = this.gameboard[dest.x][dest.y];
-                            let flame3 = this.add.sprite("flames3", "primary");
-                            flame3.position.set(fire2.position.x, fire2.position.y);
-                            this.gameboard[dest.x][dest.y] = flame3;
-                            fire2.destroy();
-                            break;
-                        case "flames3":
-                            target.destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
                     }
@@ -749,6 +724,15 @@ export default class BaseStage extends Scene {
                         this.gameboard[targetposX][targetposY] = null;
                         target.destroy();
                         break;
+                    case "flames":
+                        this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
+                        dest.add(dir);
+                        target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                        this.gameboard[targetposX][targetposY] = null;
+                        this.gameboard[dest.x][dest.y] = target;
+                        targetposX = dest.x;
+                        targetposY = dest.y;
+                        break;
                     case "bubble":
                     case "ember":
                         dest.add(dir);
@@ -774,30 +758,6 @@ export default class BaseStage extends Scene {
                         this.gameboard[dest.x][dest.y].destroy();
                         this.gameboard[dest.x][dest.y] = null;
                         this.gameboard[targetposX][targetposY].destroy();
-                        this.gameboard[targetposX][targetposY] = null;
-                        break;
-                    case "flames1":
-                        target.destroy();
-                        this.gameboard[targetposX][targetposY] = null;
-                        dest.add(dir);
-                        let fire1 = this.gameboard[dest.x][dest.y];
-                        let flame2 = this.add.sprite("flames2", "primary");
-                        flame2.position.set(fire1.position.x, fire1.position.y);
-                        this.gameboard[dest.x][dest.y] = flame2;
-                        fire1.destroy();
-                        break;
-                    case "flames2":
-                        target.destroy();
-                        this.gameboard[targetposX][targetposY] = null;
-                        dest.add(dir);
-                        let fire2 = this.gameboard[dest.x][dest.y];
-                        let flame3 = this.add.sprite("flames3", "primary");
-                        flame3.position.set(fire2.position.x, fire2.position.y);
-                        this.gameboard[dest.x][dest.y] = flame3;
-                        fire2.destroy();
-                        break;
-                    case "flames3":
-                        target.destroy();
                         this.gameboard[targetposX][targetposY] = null;
                         break;
                 }
@@ -959,9 +919,7 @@ export default class BaseStage extends Scene {
                         break;
                     case "deep_water":
                     case "hole":
-                    case "flames1":
-                    case "flames2":
-                    case "flames3":
+                    case "flames":
                         if(this.overlap[pCol][pRow] == null) {
                             Input.enableInput();
                             this.restartStage();

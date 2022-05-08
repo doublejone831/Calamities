@@ -34,7 +34,7 @@ export default class TornadoController extends StateMachineAI {
             }
 
         }
-        this.frames = 0;
+        this.frames = 1;
         this.paused = false;
 
         this.receiver.subscribe([

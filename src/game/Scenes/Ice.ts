@@ -7,6 +7,7 @@ import MainMenu from "./MainMenu";
 import { CTCevent } from "./CTCEvent";
 import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
+import FlamesController from "../Element/FlamesController";
 
 export default class Ice extends BaseStage {
 
@@ -23,9 +24,7 @@ export default class Ice extends BaseStage {
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
-        this.load.image("flames1", "game_assets/sprites/flames1.png");
-        this.load.image("flames2", "game_assets/sprites/flames2.png");
-        this.load.image("flames3", "game_assets/sprites/flames3.png");
+        this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
         this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
         this.load.image("ignite", "game_assets/sprites/ignite.png");
         this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
@@ -123,6 +122,13 @@ export default class Ice extends BaseStage {
                             controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
+                    break;
+                case "flames":
+                    controller = this.add.animatedSprite("flames", "primary");
+                    controller.animation.play("level"+element.firepower);
+                    controller.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    controller.addAI(FlamesController, {"level": element.firepower});
+                    this.gameboard[element.position[0]][element.position[1]] = controller;
                     break;
                 case "torch":
                     sprite = this.add.animatedSprite("torch", "primary");

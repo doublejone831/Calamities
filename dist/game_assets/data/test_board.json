@@ -47,15 +47,19 @@
 		},
         {
 			"position": [11, 11],
-			"type": "flames1"
+			"type": "flames",
+			"firepower": 1
+
 		},
 		{
 			"position": [12, 12],
-			"type": "flames2"
+			"type": "flames",
+			"firepower": 2
 		},
 		{
 			"position": [13, 13],
-			"type": "flames3"
+			"type": "flames",
+			"firepower": 3
 		},
 		{
 			"position": [14, 14],
