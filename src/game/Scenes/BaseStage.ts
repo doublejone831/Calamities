@@ -816,6 +816,7 @@ export default class BaseStage extends Scene {
                     case "ember":
                         this.ember_extinguish(pCol, pRow);
                         break;
+                    case "deep_water":
                     case "hole":
                         if(this.overlap[pCol][pRow] == null) {
                             Input.enableInput();

@@ -1,29 +1,623 @@
 {
-	"numElements": 6,
+	"numElements": 150,
 	"elements": [
 		{
-			"position": [4, 4],
+			"position": [16,16],
+			"type" : "portal"
+		},
+		{
+			"position": [6, 3],
 			"type": "rock_L"
 		},
 		{
-			"position": [14, 4],
+			"position": [6, 4],
 			"type": "rock_L"
 		},
 		{
-			"position": [4, 14],
-			"type": "rock_M"
+			"position": [6, 5],
+			"type": "rock_L"
 		},
 		{
-			"position": [14, 14],
-			"type": "rock_M"
+			"position": [5, 5],
+			"type": "rock_L"
 		},
 		{
-			"position": [6, 7],
-			"type": "rock_S"
+			"position": [4, 5],
+			"type": "rock_L"
 		},
 		{
-			"position": [16, 16],
-			"type": "portal"
+			"position": [3, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [3,6],
+			"type" : "rock_L"
+		},
+		{
+			"position": [4,6],
+			"type" : "rock_L"
+		},
+		{
+			"position": [2,7],
+			"type" : "wall"
+		},
+		{
+			"position": [3,7],
+			"type" : "wall"
+		},
+		{
+			"position": [4,7],
+			"type" : "wall"
+		},
+		{
+			"position": [5,7],
+			"type" : "wall"
+		},
+		{
+			"position": [6,7],
+			"type" : "wall"
+		},
+		{
+			"position": [7,7],
+			"type" : "wall"
+		},
+		{
+			"position": [8,7],
+			"type" : "wall"
+		},
+		{
+			"position": [8,6],
+			"type" : "wall"
+		},
+		{
+			"position": [8,5],
+			"type" : "wall"
+		},
+		{
+			"position": [8,4],
+			"type" : "deep_water"
+		},
+		{
+			"position": [8,3],
+			"type" : "wall"
+		},
+		{
+			"position": [8,2],
+			"type" : "wall"
+		},
+		{
+			"position": [9,4],
+			"type" : "deep_water"
+		},
+		{
+			"start": [7, 2],
+			"end": [7, 6],
+			"size": 5,
+			"type": "airstream",
+			"direction": "down"
+		},
+		{
+			"position": [4,3],
+			"type" : "rock_L"
+		},
+		{
+			"position": [5,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [6,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [2,8],
+			"type" : "wall"
+		},
+		{
+			"position": [3,8],
+			"type" : "wall"
+		},
+		{
+			"position": [4,8],
+			"type" : "wall"
+		},
+		{
+			"position": [5,8],
+			"type" : "wall"
+		},
+		{
+			"position": [6,8],
+			"type" : "wall"
+		},
+		{
+			"position": [7,8],
+			"type" : "wall"
+		},
+		{
+			"position": [8,8],
+			"type" : "wall"
+		},
+		{
+			"position": [6,6],
+			"type" : "rock_L"
+		},
+		{
+			"position": [9,2],
+			"type" : "wall"
+		},
+		{
+			"position": [9,3],
+			"type" : "wall"
+		},
+		{
+			"position": [9,8],
+			"type" : "wall"
+		},
+		{
+			"position": [9,5],
+			"type" : "wall"
+		},
+		{
+			"position": [9,6],
+			"type" : "wall"
+		},
+		{
+			"position": [9,7],
+			"type" : "wall"
+		},
+		{
+			"position": [10,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [11,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [12,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [13,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [14,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [16,2],
+			"type" : "rock_L"
+		},
+		{
+			"position": [16,3],
+			"type" : "rock_L"
+		},
+		{
+			"position": [16,4],
+			"type" : "rock_L"
+		},
+		{
+			"position": [11,4],
+			"type" : "rock_L"
+		},
+		{
+			"position": [10,7],
+			"type" : "wall"
+		},
+		{
+			"position": [11,7],
+			"type" : "wall"
+		},
+		{
+			"position": [12,7],
+			"type" : "wall"
+		},
+		{
+			"position": [13,7],
+			"type" : "wall"
+		},
+		{
+			"position": [14,7],
+			"type" : "wall"
+		},
+		{
+			"position": [16,7],
+			"type" : "wall"
+		},
+		{
+			"position": [17,7],
+			"type" : "wall"
+		},
+		{
+			"position": [12,4],
+			"type" : "rock_M"
+		},
+		{
+			"position": [11,5],
+			"type" : "rock_L"
+		},
+		{
+			"position": [12,5],
+			"type" : "rock_L"
+		},
+		{
+			"position": [13,5],
+			"type" : "rock_L"
+		},
+		{
+			"position": [11,6],
+			"type" : "rock_L"
+		},
+		{
+			"position": [14,4],
+			"type" : "rock_L"
+		},
+		{
+			"position": [16,6],
+			"type" : "rock_L"
+		},
+		{
+			"position": [17,6],
+			"type" : "rock_L"
+		},
+		{
+			"start": [15, 2],
+			"end": [15, 6],
+			"size": 5,
+			"type": "airstream",
+			"direction": "down"
+		},
+		{
+			"start": [17, 3],
+			"end": [10, 3],
+			"size": 8,
+			"type": "airstream",
+			"direction": "left"
+		},
+		{
+			"position": [12,3],
+			"type" : "rock_S"
+		},
+		{
+			"position": [10,7],
+			"type" : "wall"
+		},
+		{
+			"position": [11,7],
+			"type" : "wall"
+		},
+		{
+			"position": [12,7],
+			"type" : "wall"
+		},
+		{
+			"position": [13,7],
+			"type" : "wall"
+		},
+		{
+			"position": [14,7],
+			"type" : "wall"
+		},
+		{
+			"position": [16,7],
+			"type" : "wall"
+		},
+		{
+			"position": [17,7],
+			"type" : "wall"
+		},
+		{
+			"position": [17,8],
+			"type" : "wall"
+		},
+		{
+			"position": [16,8],
+			"type" : "wall"
+		},
+		{
+			"position": [14,8],
+			"type" : "wall"
+		},
+		{
+			"position": [13,8],
+			"type" : "wall"
+		},
+		{
+			"position": [12,8],
+			"type" : "wall"
+		},
+		{
+			"position": [11,8],
+			"type" : "wall"
+		},
+		{
+			"position": [10,8],
+			"type" : "wall"
+		},
+		{
+			"position": [15,7],
+			"type" : "deep_water"
+		},
+		{
+			"position": [15,8],
+			"type" : "deep_water"
+		},
+		{
+			"position": [16,9],
+			"type" : "deep_water"
+		},
+		{
+			"position": [16,11],
+			"type" : "rock_L"
+		},
+		{
+			"position": [16,12],
+			"type" : "rock_S"
+		},
+		{
+			"position": [16,13],
+			"type" : "rock_S"
+		},
+		{
+			"position": [14,9],
+			"type" : "hole"
+		},
+		{
+			"position": [14,10],
+			"type" : "hole"
+		},
+		{
+			"position": [14,11],
+			"type" : "hole"
+		},
+		{
+			"position": [14,12],
+			"type" : "rock_S"
+		},
+		{
+			"position": [14,13],
+			"type" : "rock_M"
+		},
+		{
+			"position": [14,14],
+			"type" : "rock_S"
+		},
+		{
+			"position": [13,12],
+			"type" : "rock_L"
+		},
+		{
+			"position": [13,13],
+			"type" : "rock_S"
+		},
+		{
+			"position": [13,14],
+			"type" : "rock_M"
+		},
+		{
+			"position": [14,11],
+			"type" : "rock_S"
+		},
+		{
+			"start": [15, 9],
+			"end": [15, 14],
+			"size": 6,
+			"type": "airstream",
+			"direction": "down"
+		},
+		{
+			"start": [12, 9],
+			"end": [5, 9],
+			"size": 8,
+			"type": "airstream",
+			"direction": "left"
+		},
+		{
+			"start": [12, 10],
+			"end": [5, 10],
+			"size": 8,
+			"type": "airstream",
+			"direction": "left"
+		},
+		{
+			"position": [5,9],
+			"type" : "deep_water"
+		},
+		{
+			"position": [6,9],
+			"type" : "deep_water"
+		},
+		{
+			"position": [5,10],
+			"type" : "hole"
+		},
+		{
+			"position": [6,10],
+			"type" : "hole"
+		},
+		{
+			"position": [9,10],
+			"type" : "hole"
+		},
+		{
+			"position": [8,11],
+			"type" : "rock_L"
+		},
+		{
+			"position": [9,11],
+			"type" : "rock_L"
+		},
+		{
+			"position": [10,11],
+			"type" : "rock_L"
+		},
+		{
+			"position": [11,11],
+			"type" : "rock_L"
+		},
+		{
+			"position": [7,13],
+			"type" : "rock_L"
+		},
+		{
+			"position": [8,13],
+			"type" : "rock_L"
+		},
+		{
+			"position": [9,13],
+			"type" : "rock_L"
+		},
+		{
+			"position": [10,13],
+			"type" : "rock_L"
+		},
+		{
+			"position": [11,13],
+			"type" : "rock_L"
+		},
+		{
+			"position": [5,11],
+			"type" : "wall"
+		},
+		{
+			"position": [6,11],
+			"type" : "wall"
+		},
+		{
+			"position": [5,12],
+			"type" : "wall"
+		},
+		{
+			"position": [6,12],
+			"type" : "wall"
+		},
+		{
+			"position": [5,13],
+			"type" : "wall"
+		},
+		{
+			"position": [6,13],
+			"type" : "wall"
+		},
+		{
+			"position": [5,14],
+			"type" : "wall"
+		},
+		{
+			"position": [6,14],
+			"type" : "wall"
+		},
+		{
+			"position": [5,15],
+			"type" : "wall"
+		},
+		{
+			"position": [6,15],
+			"type" : "wall"
+		},
+		{
+			"position": [7,15],
+			"type" : "wall"
+		},
+		{
+			"position": [8,15],
+			"type" : "wall"
+		},
+		{
+			"position": [9,15],
+			"type" : "wall"
+		},
+		{
+			"position": [10,15],
+			"type" : "wall"
+		},
+		{
+			"position": [11,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [13,15],
+			"type" : "wall"
+		},
+		{
+			"position": [14,15],
+			"type" : "wall"
+		},
+		{
+			"position": [15,15],
+			"type" : "wall"
+		},
+		{
+			"position": [16,15],
+			"type" : "wall"
+		},
+		{
+			"position": [17,15],
+			"type" : "wall"
+		},
+		{
+			"position": [2,15],
+			"type" : "wall"
+		},
+		{
+			"position": [3,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
+		},
+		{
+			"position": [12,15],
+			"type" : "wall"
 		}
 	]
 }

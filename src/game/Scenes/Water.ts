@@ -21,6 +21,7 @@ export default class Water extends BaseStage {
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
