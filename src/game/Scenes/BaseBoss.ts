@@ -7,6 +7,7 @@ import AirstreamController from "../Element/AirstreamController";
 import RandUtils from "../../Wolfie2D/Utils/RandUtils";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import FlamesController from "../Element/FlamesController";
+import PlayerController from "../Player/PlayerController";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -89,7 +90,13 @@ export default class BaseBoss extends BaseStage {
                     let botR = this.cursors[8].position;
                     let playerPos = this.player.position;
                     if (playerPos.x >= topL.x && playerPos.x <= botR.x && playerPos.y >= topL.y && playerPos.y <= botR.y) {
-                        this.restartStage();
+                        let ai = <PlayerController>this.player._ai;
+                        if (ai.hasShield) {
+                            ai.gainShield(false);
+                        }
+                        else {
+                            this.restartStage();
+                        }
                     }
                     for (let i = 0; i < this.cursors.length; i++) {
                         this.cursors[i].destroy();
