@@ -43,12 +43,6 @@ export default class Ice extends BaseStage {
     }
 
     unloadScene(): void {
-        this.load.keepImage("rock_M");
-        this.load.keepImage("whirlwind");
-        this.load.keepImage("tornado");
-        this.load.keepSpritesheet("airstream");
-        this.load.keepSpritesheet("god");
-        this.load.keepSpritesheet("element_equipped");
         this.load.unloadAllResources();
     }
 

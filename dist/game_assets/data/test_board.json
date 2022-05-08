@@ -35,6 +35,7 @@
 			"start": [12, 4],
 			"end": [12, 10],
 			"size": 7,
+			"direction": "down",
 			"type": "airstream"
 		},
 		{
