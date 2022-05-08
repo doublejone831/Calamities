@@ -1,5 +1,5 @@
 {
-	"numElements": 11,
+	"numElements": 10,
 	"elements": [
 		{
 			"position": [4, 4],
@@ -20,11 +20,11 @@
 			"type": "tornado"
 		},
 		{
-			"position": [8, 4],
+			"position": [12, 11],
 			"type": "shallow_water"
 		},
         {
-			"position": [9, 4],
+			"position": [12, 10],
 			"type": "deep_water"
 		},
         {
@@ -37,10 +37,6 @@
 			"size": 7,
 			"direction": "down",
 			"type": "airstream"
-		},
-		{
-			"position": [13,4],
-			"type": "wave"
 		},
 		{
 			"position": [15, 4],

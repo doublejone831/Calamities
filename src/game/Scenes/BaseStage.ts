@@ -400,7 +400,9 @@ export default class BaseStage extends Scene {
                                 case "rock_M":
                                 case "rock_L":
                                 case "rock_P":
-                                case "block":
+                                case "wall":
+                                case "outofbounds":
+                                case "boss_block":
                                 case "ice_cube":
                                     if(this.overlap[air_pos.x][air_pos.y]) {
                                         let remove = this.overlap[air_pos.x][air_pos.y];
