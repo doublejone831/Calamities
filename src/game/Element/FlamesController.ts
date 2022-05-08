@@ -29,6 +29,7 @@ export default class FlamesController extends StateMachineAI {
                     if(event.data.get("id") === this.owner.id) {
                         this.level = event.data.get("level");
                         this.owner.animation.play("level"+this.level);
+                        this.frames = 1;
                     }
                     break;
             }
@@ -37,7 +38,7 @@ export default class FlamesController extends StateMachineAI {
             if(this.level == 0) {
                 this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": 0});
             } else {
-                if(this.frames%1000 == 0) {
+                if(this.frames%600 == 0) {
                     this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});
                 }
             }

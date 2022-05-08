@@ -7,6 +7,7 @@ import MainMenu from "./MainMenu";
 import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
+import FlamesController from "../Element/FlamesController";
 
 export default class Fire extends BaseStage {
 
@@ -33,6 +34,7 @@ export default class Fire extends BaseStage {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/fire_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
@@ -92,7 +94,7 @@ export default class Fire extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -100,7 +102,7 @@ export default class Fire extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -108,7 +110,7 @@ export default class Fire extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -116,9 +118,22 @@ export default class Fire extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
+                    break;
+                case "flames":
+                    controller = this.add.animatedSprite("flames", "primary");
+                    controller.animation.play("level"+element.firepower);
+                    controller.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    controller.addAI(FlamesController, {"level": element.firepower});
+                    this.gameboard[element.position[0]][element.position[1]] = controller;
+                    break;
+                case "torch":
+                    sprite = this.add.animatedSprite("torch", "primary");
+                    sprite.animation.play("off");
+                    sprite.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    this.gameboard[element.position[0]][element.position[1]] = sprite;
                     break;
                 case "portal":
                     this.endposition = new Vec2(element.position[0], element.position[1]);

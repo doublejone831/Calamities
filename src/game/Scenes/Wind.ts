@@ -88,7 +88,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -96,7 +96,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -104,7 +104,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -112,7 +112,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;

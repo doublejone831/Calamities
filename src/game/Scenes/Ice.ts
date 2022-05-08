@@ -38,6 +38,7 @@ export default class Ice extends BaseStage {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/ice_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
@@ -95,7 +96,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -103,7 +104,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -111,7 +112,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -119,7 +120,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;

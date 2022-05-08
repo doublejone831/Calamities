@@ -31,6 +31,7 @@ export default class WaterBoss extends BaseBoss {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/water_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");

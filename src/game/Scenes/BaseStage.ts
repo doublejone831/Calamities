@@ -492,6 +492,7 @@ export default class BaseStage extends Scene {
                         case 0: // blocked by rock
                             if(this.gameboard[flames_pos.x][flames_pos.y] == null){
                                 this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 1});
+                                this.gameboard[flames_pos.x][flames_pos.y] = flames;
                             }
                             break;
                         case 1: // grow to level 2
@@ -544,8 +545,9 @@ export default class BaseStage extends Scene {
                             target.destroy();
                             break;
                         case "flames":
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
                             dest.add(dir);
+                            let flames = this.gameboard[dest.x][dest.y];
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -601,8 +603,9 @@ export default class BaseStage extends Scene {
                             target.destroy();
                             break;
                         case "flames":
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
                             dest.add(dir);
+                            let flames = this.gameboard[dest.x][dest.y];
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -659,8 +662,9 @@ export default class BaseStage extends Scene {
                             target.destroy();
                             break;
                         case "flames":
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
                             dest.add(dir);
+                            let flames = this.gameboard[dest.x][dest.y];
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -708,58 +712,86 @@ export default class BaseStage extends Scene {
                 if(this.elementSelected != 1) break;
                 if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
                 this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
-                while(this.gameboard[dest.x+dir.x][dest.y+dir.y] == null) {
-                    dest.add(dir);
-                    target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                    this.gameboard[dest.x][dest.y] = target;
-                    this.gameboard[targetposX][targetposY] = null;
-                    targetposX = dest.x;
-                    targetposY = dest.y;
+                let rolling = true;
+                while(rolling) {
                     if(dest.x+dir.x<2 || dest.y+dir.y<2 || dest.x+dir.x>17 || dest.y+dir.y>17) break;
-                }
-                switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
-                    case "boss_block":
-                        this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
-                    case "hole":
-                        this.gameboard[targetposX][targetposY] = null;
-                        target.destroy();
-                        break;
-                    case "flames":
-                        this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"level": 0});
+                    if(this.gameboard[dest.x+dir.x][dest.y+dir.y] == null) {
                         dest.add(dir);
                         target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                        this.gameboard[targetposX][targetposY] = null;
                         this.gameboard[dest.x][dest.y] = target;
+                        this.gameboard[targetposX][targetposY] = null;
                         targetposX = dest.x;
                         targetposY = dest.y;
-                        break;
-                    case "bubble":
-                    case "ember":
-                        dest.add(dir);
-                        this.gameboard[dest.x][dest.y].destroy();
-                        target.position.set(dest.x*16 + 8, dest.y*16 + 8);
-                        this.gameboard[targetposX][targetposY] = null;
-                        this.gameboard[dest.x][dest.y] = target;
-                        targetposX = dest.x;
-                        targetposY = dest.y;
-                        break;
-                    case "deep_water":
-                        this.gameboard[targetposX][targetposY].destroy();
-                        this.gameboard[targetposX][targetposY] = null;
-                        dest.add(dir);
-                        let deepWater = this.gameboard[dest.x][dest.y];
-                        let shallowWater = this.add.sprite("shallow_water", "primary");
-                        shallowWater.position.set(deepWater.position.x, deepWater.position.y);
-                        deepWater.destroy();
-                        this.gameboard[dest.x][dest.y] = shallowWater;
-                        break;
-                    case "shallow_water":
-                        dest.add(dir);
-                        this.gameboard[dest.x][dest.y].destroy();
-                        this.gameboard[dest.x][dest.y] = null;
-                        this.gameboard[targetposX][targetposY].destroy();
-                        this.gameboard[targetposX][targetposY] = null;
-                        break;
+                    } else {
+                        switch(this.gameboard[dest.x+dir.x][dest.y+dir.y].imageId){
+                            case "boss_block":
+                                this.emitter.fireEvent(CTCevent.BOSS_DAMAGED);
+                            case "hole":
+                                this.gameboard[targetposX][targetposY] = null;
+                                target.destroy();
+                                rolling = false;
+                                break;
+                            case "flames":
+                                dest.add(dir);
+                                let flames = this.gameboard[dest.x][dest.y];
+                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
+                                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                                this.gameboard[targetposX][targetposY] = null;
+                                this.gameboard[dest.x][dest.y] = target;
+                                targetposX = dest.x;
+                                targetposY = dest.y;
+                                break;
+                            case "bubble":
+                            case "ember":
+                                dest.add(dir);
+                                this.gameboard[dest.x][dest.y].destroy();
+                                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                                this.gameboard[targetposX][targetposY] = null;
+                                this.gameboard[dest.x][dest.y] = target;
+                                targetposX = dest.x;
+                                targetposY = dest.y;
+                                break;
+                            case "deep_water":
+                                this.gameboard[targetposX][targetposY].destroy();
+                                this.gameboard[targetposX][targetposY] = null;
+                                dest.add(dir);
+                                let deepWater = this.gameboard[dest.x][dest.y];
+                                let shallowWater = this.add.sprite("shallow_water", "primary");
+                                shallowWater.position.set(deepWater.position.x, deepWater.position.y);
+                                deepWater.destroy();
+                                this.gameboard[dest.x][dest.y] = shallowWater;
+                                rolling = false;
+                                break;
+                            case "shallow_water":
+                                dest.add(dir);
+                                this.gameboard[dest.x][dest.y].destroy();
+                                this.gameboard[dest.x][dest.y] = null;
+                                this.gameboard[targetposX][targetposY].destroy();
+                                this.gameboard[targetposX][targetposY] = null;
+                                rolling = false;
+                                break;
+                            case "rock_S":
+                            case "rock_M":
+                            case "rock_L":
+                            case "tornado":
+                            case "whirlwind":
+                            case "ice_cube":
+                            case "torch":
+                            case "wall":
+                            case "outofbounds":
+                            case "boss_block":
+                                rolling = false;
+                                break;
+                            default:
+                                dest.add(dir);
+                                target.position.set(dest.x*16 + 8, dest.y*16 + 8);
+                                this.gameboard[dest.x][dest.y] = target;
+                                this.gameboard[targetposX][targetposY] = null;
+                                targetposX = dest.x;
+                                targetposY = dest.y;
+                                break;
+                        }
+                    }
                 }
                 break;
             case "whirlwind":
@@ -779,7 +811,7 @@ export default class BaseStage extends Scene {
                 this.gameboard[targetposX][targetposY] = null;
                 let stream_start = new Vec2(targetposX, targetposY);
                 let stream_end = stream_start.clone().add(dir.scaled(4));
-                stream.addAI(AirstreamController, {"start": stream_start, "end": stream_end, "size": 5});
+                stream.addAI(AirstreamController, {"start": stream_start, "end": stream_end, "size": 5, "dir": dir});
                 this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": stream.id, "blocked": false});
                 break;
             case "bubble":
@@ -799,7 +831,6 @@ export default class BaseStage extends Scene {
                 break;
             case "ember":
                 if(this.elementSelected != 4) break;
-                target.destroy();
                 let ignition = this.add.sprite("ignite", "sky");
                 ignition.position.set(targetposX*16+16, targetposY*16+8);
                 let hitbox = new Vec2(targetposX+1, targetposY);
@@ -816,7 +847,6 @@ export default class BaseStage extends Scene {
                     ignition.position.set(targetposX*16+8, targetposY*16);
                     hitbox = new Vec2(targetposX, targetposY-1);
                 }
-                this.gameboard[targetposX][targetposY] = null;
                 ignition.addAI(IgniteController, {"hitbox": hitbox});
                 break;
             case "ice_cube":
@@ -988,6 +1018,7 @@ export default class BaseStage extends Scene {
                     case "rock_M":
                     case "rock_L":
                     case "ice_cube":
+                    case "torch":
                     case "wall":
                     case "outofbounds":
                     case "boss_block":

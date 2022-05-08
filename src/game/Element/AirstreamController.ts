@@ -16,17 +16,7 @@ export default class AirstreamController extends StateMachineAI {
         this.start = options.start;
         this.end = options.end;
         this.size = options.size;
-        if(this.start.x-this.end.x > 0) {
-            this.dir = new Vec2(-1, 0);
-        } else if(this.start.x-this.end.x < 0) {
-            this.dir = new Vec2(1, 0);
-        } else {
-            if(this.start.y-this.end.y > 0) {
-                this.dir = new Vec2(0, -1);
-            } else if(this.start.y-this.end.y < 0) {
-                this.dir = new Vec2(0, 1);
-            }
-        }
+        this.dir = options.dir;
         this.paused = false;
 
         this.receiver.subscribe([

@@ -6,6 +6,7 @@ import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
 import RandUtils from "../../Wolfie2D/Utils/RandUtils";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import FlamesController from "../Element/FlamesController";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -112,21 +113,25 @@ export default class BaseBoss extends BaseStage {
 
     initializeGameboard(): void {
         let boardData = this.load.getObject("board");
+        var start;
+        var end;
         for (let i = 0; i < boardData.numElements; i++) {
             let element = boardData.elements[i];
+            var sprite;
             var controller;
-            switch(element.type){
+            switch(element.type) {
                 case "tornado":
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
                     controller = this.add.animatedSprite(element.type, "primary");
-                    controller.animation.play("idle");
-                    let start = new Vec2(element.start[0], element.start[1]);
-                    let end = new Vec2(element.end[0], element.end[1]);
-                    controller.addAI(TornadoController, {"start": start, "end": end});
                     controller.position.set(start.x*16+8, start.y*16+8);
+                    controller.animation.play("idle");
+                    controller.addAI(TornadoController, {"start": start, "end": end});
                     this.gameboard[start.x][start.y] = controller;
                     break;
                 case "airstream":
-                    var controller;
+                    start = new Vec2(element.start[0], element.start[1]);
+                    end = new Vec2(element.end[0], element.end[1]);
                     switch(element.direction){
                         case "right":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -134,7 +139,7 @@ export default class BaseBoss extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -142,7 +147,7 @@ export default class BaseBoss extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -150,7 +155,7 @@ export default class BaseBoss extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -158,16 +163,29 @@ export default class BaseBoss extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
+                case "flames":
+                    controller = this.add.animatedSprite("flames", "primary");
+                    controller.animation.play("level"+element.firepower);
+                    controller.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    controller.addAI(FlamesController, {"level": element.firepower});
+                    this.gameboard[element.position[0]][element.position[1]] = controller;
+                    break;
+                case "torch":
+                    sprite = this.add.animatedSprite("torch", "primary");
+                    sprite.animation.play("off");
+                    sprite.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    this.gameboard[element.position[0]][element.position[1]] = sprite;
+                    break;
                 default:
-                    let sprite = this.add.sprite(element.type, "primary");
+                    sprite = this.add.sprite(element.type, "primary");
                     sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
                     this.gameboard[element.position[0]][element.position[1]] = sprite;
                     break;
-            } 
+            }
         }
         this.endposition = new Vec2(0, 0);
     }
