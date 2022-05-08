@@ -1010,9 +1010,16 @@ export default class BaseStage extends Scene {
                         this.gameboard[pCol][pRow].destroy();
                         this.gameboard[pCol][pRow] =null;
                         break;
+                    case "flames":
+                        if(this.player_shield != null) {
+                            this.player_shield = null;
+                            (<PlayerController>this.player._ai).gainShield(false);
+                            this.gameboard[pCol][pRow].destroy();
+                            this.gameboard[pCol][pRow] = null;
+                            break;
+                        }
                     case "deep_water":
                     case "hole":
-                    case "flames":
                         if(this.overlap[pCol][pRow] == null) {
                             Input.enableInput();
                             this.restartStage();

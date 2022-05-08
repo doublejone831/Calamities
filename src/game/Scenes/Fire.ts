@@ -9,8 +9,11 @@ import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
 import FlamesController from "../Element/FlamesController";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 
 export default class Fire extends BaseStage {
+    switch1: AnimatedSprite;
+    switch2: AnimatedSprite;
 
     loadScene(){
         // elements
@@ -26,6 +29,7 @@ export default class Fire extends BaseStage {
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
         this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
+        this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.image("shield", "game_assets/sprites/shield.png");
@@ -56,6 +60,8 @@ export default class Fire extends BaseStage {
         // Add in the tilemap
         this.add.tilemap("level");
 
+        this.switch1 = null;
+        this.switch2 = null;
         this.initializeGameboard();
 
         this.elementGUI.animation.play("earth_equipped");
@@ -67,12 +73,17 @@ export default class Fire extends BaseStage {
         }
 
         this.initializePlayer();
-
+        
         this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
         super.updateScene(deltaT);
+        if(this.switch1 != null && this.switch2 != null) {
+            if(this.switch1.animation.isPlaying("on") && this.switch2.animation.isPlaying("on")) {
+                this.nextStage();
+            }
+        }
     };
 
     initializeGameboard(): void {
@@ -143,15 +154,19 @@ export default class Fire extends BaseStage {
                     sprite.animation.play("off");
                     sprite.position.set(element.position[0]*16+8, element.position[1]*16+8);
                     this.gameboard[element.position[0]][element.position[1]] = sprite;
+                    if(this.switch1 == null) {
+                        this.switch1 = sprite;
+                    } else {
+                        this.switch2 = sprite;
+                    }
                     break;
-                case "portal":
-                    this.endposition = new Vec2(element.position[0], element.position[1]);
                 default:
                     sprite = this.add.sprite(element.type, "primary");
                     sprite.position.set(element.position[0]*16 + 8, element.position[1]*16 + 8);
                     this.gameboard[element.position[0]][element.position[1]] = sprite;
             }
         }
+        this.endposition = new Vec2(0, 0);
     }
 
     initializePlayer(): void {

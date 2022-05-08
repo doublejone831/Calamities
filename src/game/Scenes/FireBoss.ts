@@ -24,6 +24,7 @@ export default class FireBoss extends BaseBoss {
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
         this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
+        this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.image("shield", "game_assets/sprites/shield.png");
