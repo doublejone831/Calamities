@@ -8,6 +8,7 @@ export default class BossController extends StateMachineAI {
     protected health: number;
     protected thresholdReached: boolean;
     protected frames: number;
+    protected charge: number;
     protected paused: boolean;
 
     initializeAI(owner: AnimatedSprite, options: Record<string, any>){
@@ -16,6 +17,7 @@ export default class BossController extends StateMachineAI {
         this.type = options.type;
         this.thresholdReached = false;
         this.frames = 0;
+        this.charge = 0;
         this.paused = false;
 
         this.receiver.subscribe([
@@ -41,13 +43,21 @@ export default class BossController extends StateMachineAI {
         }
         else {
             this.owner.animation.resume();
+            this.charge++;
             this.frames++;
             if (this.frames === 1000) {
                 this.owner.animation.stop();
-                this.owner.animation.play("skill");
+                this.owner.animation.play("attack_left");
                 this.owner.animation.queue("idle", true);
                 this.emitter.fireEvent(CTCevent.BOSS_SKILL);
                 this.frames = 0;
+            }
+            if (this.charge === 400) {
+                this.owner.animation.stop();
+                this.owner.animation.play("attack_right");
+                this.owner.animation.queue("idle", true);
+                this.emitter.fireEvent(CTCevent.BOSS_ATTACK);
+                this.charge = 0;
             }
             if(this.thresholdReached){
                 if(!this.owner.animation.isPlaying("teleport")) {

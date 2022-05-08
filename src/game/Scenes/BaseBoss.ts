@@ -5,6 +5,7 @@ import { CTCevent } from "./CTCEvent";
 import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
 import RandUtils from "../../Wolfie2D/Utils/RandUtils";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -12,6 +13,8 @@ export default class BaseBoss extends BaseStage {
     pos3: Vec2;
     currentPos: number;
     bossReceiver: Receiver;
+    cursors: Array<AnimatedSprite>;
+    paused: boolean;
 
     startScene(){
         super.startScene();
@@ -20,12 +23,17 @@ export default class BaseBoss extends BaseStage {
 
         this.initializeGameboard();
 
+        this.cursors = new Array(9);
+        this.paused = false;
+
         this.bossReceiver = new Receiver();
         this.bossReceiver.subscribe([
                                     CTCevent.BOSS_SKILL,
                                     CTCevent.BOSS_TELEPORT,
                                     CTCevent.BOSS_ATTACK,
-                                    CTCevent.BOSS_DEAD ]);
+                                    CTCevent.BOSS_DEAD,
+                                    CTCevent.PLAYER_KILL,
+                                    CTCevent.TOGGLE_PAUSE ]);
 
     }
 
@@ -64,6 +72,7 @@ export default class BaseBoss extends BaseStage {
                     this.boss.animation.queue("idle", true);
                     break;
                 case CTCevent.BOSS_ATTACK:
+                    this.boss_attack();
                     break;
                 case CTCevent.BOSS_DEAD:
                     this.boss.removePhysics();
@@ -73,6 +82,29 @@ export default class BaseBoss extends BaseStage {
                     let exit = this.add.sprite("portal", "primary");
                     exit.position.set(this.endposition.x*16+8, this.endposition.y*16+8);
                     this.gameboard[pos.x/16][pos.y/16-1] = exit;
+                    break;
+                case CTCevent.PLAYER_KILL:
+                    let topL = this.cursors[0].position;
+                    let botR = this.cursors[8].position;
+                    let playerPos = this.player.position;
+                    if (playerPos.x >= topL.x && playerPos.x <= botR.x && playerPos.y >= topL.y && playerPos.y <= botR.y) {
+                        this.restartStage();
+                    }
+                    for (let i = 0; i < this.cursors.length; i++) {
+                        this.cursors[i].destroy();
+                        this.cursors[i] = null;
+                    }
+                    break;
+                case CTCevent.TOGGLE_PAUSE:
+                    this.paused = !this.paused;
+                    if (this.cursors[0]) {
+                        if (this.paused) {
+                            for (let i = 0; i < this.cursors.length; i++) this.cursors[i].animation.pause();
+                        }
+                        else {
+                            for (let i = 0; i < this.cursors.length; i++) this.cursors[i].animation.resume();
+                        }
+                    }
                     break;
             }   
         }
@@ -165,6 +197,44 @@ export default class BaseBoss extends BaseStage {
             let sprite = this.add.sprite(imageId, "primary");
             sprite.position.set(spritePos.x, spritePos.y);
             this.gameboard[x][y] = sprite;
+        }
+    }
+
+    boss_attack(): void {
+        for (let i = 0; i < 9; i++) {
+            let cursor = this.add.animatedSprite("cursor", "primary");
+            this.cursors[i] = cursor;
+            if (i === 0) cursor.animation.play("blink", false, CTCevent.PLAYER_KILL);
+            else cursor.animation.play("blink");
+            let posX = this.player.position.x;
+            let posY = this.player.position.y;
+            switch (i) {
+                case 0:
+                    posX -= 16; posY -= 16;
+                    break;
+                case 1:
+                    posY -= 16;
+                    break;
+                case 2:
+                    posX += 16; posY -= 16;
+                    break;
+                case 3:
+                    posX -= 16;
+                    break;
+                case 5:
+                    posX += 16;
+                    break;
+                case 6:
+                    posX -= 16; posY += 16;
+                    break;
+                case 7:
+                    posY += 16;
+                    break;
+                case 8:
+                    posX += 16; posY += 16;
+                    break;
+            }
+            cursor.position.set(posX, posY);
         }
     }
 }

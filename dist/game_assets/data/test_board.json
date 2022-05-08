@@ -1,5 +1,5 @@
 {
-	"numElements": 10,
+	"numElements": 13,
 	"elements": [
 		{
 			"position": [4, 4],
@@ -29,7 +29,11 @@
 		},
         {
 			"position": [10, 4],
-			"type": "flames"
+			"type": "flames1"
+		},
+		{
+			"position": [11, 4],
+			"type": "flames2"
 		},
         {
 			"start": [12, 4],
@@ -41,6 +45,14 @@
 		{
 			"position": [15, 4],
 			"type": "wall"
+		},
+		{
+			"position": [13, 4],
+			"type": "torch"
+		},
+		{
+			"position": [10, 10],
+			"type": "ice_cube"
 		},
 		{
 			"position": [16, 4],
