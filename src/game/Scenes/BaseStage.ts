@@ -521,6 +521,30 @@ export default class BaseStage extends Scene {
                             this.gameboard[targetposX][targetposY].destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
+                        case "flames1":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire1 = this.gameboard[dest.x][dest.y];
+                            let flame2 = this.add.sprite("flames2", "primary");
+                            flame2.position.set(fire1.position.x, fire1.position.y);
+                            this.gameboard[dest.x][dest.y] = flame2;
+                            fire1.destroy();
+                            break;
+                        case "flames2":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire2 = this.gameboard[dest.x][dest.y];
+                            let flame3 = this.add.sprite("flames3", "primary");
+                            flame3.position.set(fire2.position.x, fire2.position.y);
+                            this.gameboard[dest.x][dest.y] = flame3;
+                            fire2.destroy();
+                            break;
+                        case "flames3":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
                     }
                 } else {
                     dest.add(dir);
@@ -567,6 +591,30 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y].destroy();
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
+                        case "flames1":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire1 = this.gameboard[dest.x][dest.y];
+                            let flame2 = this.add.sprite("flames2", "primary");
+                            flame2.position.set(fire1.position.x, fire1.position.y);
+                            this.gameboard[dest.x][dest.y] = flame2;
+                            fire1.destroy();
+                            break;
+                        case "flames2":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire2 = this.gameboard[dest.x][dest.y];
+                            let flame3 = this.add.sprite("flames3", "primary");
+                            flame3.position.set(fire2.position.x, fire2.position.y);
+                            this.gameboard[dest.x][dest.y] = flame3;
+                            fire2.destroy();
+                            break;
+                        case "flames3":
+                            target.destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
                     }
@@ -616,6 +664,30 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y].destroy();
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            break;
+                        case "flames1":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire1 = this.gameboard[dest.x][dest.y];
+                            let flame2 = this.add.sprite("flames2", "primary");
+                            flame2.position.set(fire1.position.x, fire1.position.y);
+                            this.gameboard[dest.x][dest.y] = flame2;
+                            fire1.destroy();
+                            break;
+                        case "flames2":
+                            target.destroy();
+                            this.gameboard[targetposX][targetposY] = null;
+                            dest.add(dir);
+                            let fire2 = this.gameboard[dest.x][dest.y];
+                            let flame3 = this.add.sprite("flames3", "primary");
+                            flame3.position.set(fire2.position.x, fire2.position.y);
+                            this.gameboard[dest.x][dest.y] = flame3;
+                            fire2.destroy();
+                            break;
+                        case "flames3":
+                            target.destroy();
                             this.gameboard[targetposX][targetposY] = null;
                             break;
                     }
@@ -673,6 +745,30 @@ export default class BaseStage extends Scene {
                         this.gameboard[dest.x][dest.y].destroy();
                         this.gameboard[dest.x][dest.y] = null;
                         this.gameboard[targetposX][targetposY].destroy();
+                        this.gameboard[targetposX][targetposY] = null;
+                        break;
+                    case "flames1":
+                        target.destroy();
+                        this.gameboard[targetposX][targetposY] = null;
+                        dest.add(dir);
+                        let fire1 = this.gameboard[dest.x][dest.y];
+                        let flame2 = this.add.sprite("flames2", "primary");
+                        flame2.position.set(fire1.position.x, fire1.position.y);
+                        this.gameboard[dest.x][dest.y] = flame2;
+                        fire1.destroy();
+                        break;
+                    case "flames2":
+                        target.destroy();
+                        this.gameboard[targetposX][targetposY] = null;
+                        dest.add(dir);
+                        let fire2 = this.gameboard[dest.x][dest.y];
+                        let flame3 = this.add.sprite("flames3", "primary");
+                        flame3.position.set(fire2.position.x, fire2.position.y);
+                        this.gameboard[dest.x][dest.y] = flame3;
+                        fire2.destroy();
+                        break;
+                    case "flames3":
+                        target.destroy();
                         this.gameboard[targetposX][targetposY] = null;
                         break;
                 }
@@ -817,6 +913,9 @@ export default class BaseStage extends Scene {
                         this.ember_extinguish(pCol, pRow);
                         break;
                     case "hole":
+                    case "flames1":
+                    case "flames2":
+                    case "flames3":
                         if(this.overlap[pCol][pRow] == null) {
                             Input.enableInput();
                             this.restartStage();
