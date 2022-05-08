@@ -1,61 +1,76 @@
 {
-	"numElements": 13,
+	"numElements": 16,
 	"elements": [
 		{
 			"position": [4, 4],
 			"type": "rock_L"
 		},
 		{
-			"position":[5, 4],
+			"position":[5, 5],
 			"type": "rock_M"
 		},
 		{
-			"position": [6, 4],
+			"position": [6, 6],
 			"type": "rock_S"
 		},
 		{
-			"start": [7, 4],
-			"end": [7, 4],
-			"size": 1,
+			"start": [7, 7],
+			"end": [7, 7],
 			"type": "tornado"
 		},
 		{
-			"position": [12, 11],
-			"type": "shallow_water"
-		},
-        {
-			"position": [12, 10],
-			"type": "deep_water"
-		},
-        {
-			"position": [10, 4],
-			"type": "flames1"
+			"start": [7, 4],
+			"end": [2, 4],
+			"type": "tornado"
 		},
 		{
-			"position": [11, 4],
-			"type": "flames2"
-		},
-        {
-			"start": [12, 4],
-			"end": [12, 10],
-			"size": 7,
+			"start": [8, 4],
+			"end": [8, 8],
+			"size": 5,
 			"direction": "down",
 			"type": "airstream"
 		},
 		{
-			"position": [15, 4],
+			"start": [5, 6],
+			"end": [10, 6],
+			"size": 6,
+			"direction": "right",
+			"type": "airstream"
+		},
+		{
+			"position": [9, 9],
+			"type": "shallow_water"
+		},
+        {
+			"position": [10, 10],
+			"type": "deep_water"
+		},
+        {
+			"position": [11, 11],
+			"type": "flames1"
+		},
+		{
+			"position": [12, 12],
+			"type": "flames2"
+		},
+		{
+			"position": [13, 13],
+			"type": "flames3"
+		},
+		{
+			"position": [14, 14],
 			"type": "wall"
 		},
 		{
-			"position": [13, 4],
+			"position": [15, 15],
 			"type": "torch"
 		},
 		{
-			"position": [10, 10],
+			"position": [16, 16],
 			"type": "ice_cube"
 		},
 		{
-			"position": [16, 4],
+			"position": [17, 17],
 			"type": "portal"
 		}
 	]

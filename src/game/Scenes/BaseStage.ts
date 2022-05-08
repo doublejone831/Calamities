@@ -342,6 +342,7 @@ export default class BaseStage extends Scene {
                             case "rock_M":
                             case "rock_L":
                             case "deep_water":
+                            case "torch":
                             case "ice_cube":
                             case "outofbounds":
                             case "wall":
@@ -452,6 +453,10 @@ export default class BaseStage extends Scene {
                         switch(this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y].imageId) {
                             case "boss_block":
                                 // damage fire boss
+                                wave.destroy();
+                                break;
+                            case "torch":
+                                (<AnimatedSprite>this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y]).animation.play("off");
                             case "hole":
                             case "rock_S":
                             case "rock_M":
@@ -462,10 +467,15 @@ export default class BaseStage extends Scene {
                             case "ice_cube":
                             case "portal":
                                 wave.destroy();
-                                this.gameboard[wave_pos.x][wave_pos.y] = null;
                                 break;
+                            case "ember":
+                            case "flames1":
+                            case "flames2":
+                            case "flames3":
+                                this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y].destroy();
+                                this.gameboard[wave_pos.x+wave_dir.x][wave_pos.y+wave_dir.y] = null;
                             default:
-                                wave_dir.add(wave_dir);
+                                wave_pos.add(wave_dir);
                                 let new_wave = this.board_pos_to_sprite_pos(wave_pos.x, wave_pos.y);
                                 wave.position.set(new_wave.x, new_wave.y);
                         }
@@ -824,7 +834,7 @@ export default class BaseStage extends Scene {
                 } else if(dir.y == -1) {
                     wave.rotation = Math.PI/2;
                 }
-                this.gameboard[targetposX][targetposY] = wave;
+                this.gameboard[targetposX][targetposY] = null;
                 wave.addAI(WaveController, {"dir": dir});
                 break;
             case "ember":
@@ -916,7 +926,6 @@ export default class BaseStage extends Scene {
         let pRow = pos.y;
         if(!this.inAir) {
             if(this.overlap[pCol][pRow]) {
-                this.inAir = true;
                 switch(this.overlap[pCol][pRow].rotation){
                     case 0:
                         this.savedVec = new Vec2(1, 0);
@@ -945,7 +954,8 @@ export default class BaseStage extends Scene {
                         this.bubble_shield(pCol, pRow);
                         break;
                     case "ember":
-                        this.ember_extinguish(pCol, pRow);
+                        this.gameboard[pCol][pRow].destroy();
+                        this.gameboard[pCol][pRow] =null;
                         break;
                     case "deep_water":
                     case "hole":
@@ -1011,11 +1021,35 @@ export default class BaseStage extends Scene {
         Input.disableInput();
         let nextX = posX+this.savedVec.x;
         let nextY = posY+this.savedVec.y;
-        if(this.overlap[nextX][nextY]) {
+        // end the loop
+        if(this.overlap[nextX][nextY] ==  null) {
+            if(this.gameboard[nextX][nextY]){
+                switch(this.gameboard[nextX][nextY].imageId){
+                    case "rock_P":
+                    case "rock_S":
+                    case "rock_M":
+                    case "rock_L":
+                    case "ice_cube":
+                    case "wall":
+                    case "outofbounds":
+                    case "boss_block":
+                        this.inAir = true;
+                        this.savedVec = null;
+                        break;
+                    default:
+                        this.inAir = true;
+                        this.player.position.set(nextX*16+8, nextY*16+8);
+                        this.savedVec = null;
+                        break;
+                }
+            } else {
+                this.inAir = true;
+                this.player.position.set(nextX*16+8, nextY*16+8);
+                this.savedVec = null;
+            }
+        } else { // continue flying
+            this.inAir = true;
             this.player.position.set(nextX*16+8, nextY*16+8);
-        } else {
-            this.savedVec = null;
-            Input.enableInput();
         }
     }
 
@@ -1026,13 +1060,6 @@ export default class BaseStage extends Scene {
         (<PlayerController>this.player._ai).gainShield(true);
         this.player_shield = new Sprite("shield");
         this.player_shield.position.set(posX*16+8, posY*16+8);
-    }
-
-    ember_extinguish(posX: number, posY: number){
-        let ember = this.gameboard[posX][posY];
-        ember.destroy();
-        this.gameboard[posX][posY] = null;
-        this.skillUsed[3] = false;
     }
 
     boss_dead(row: number, col: number, dead: Sprite = null) {
