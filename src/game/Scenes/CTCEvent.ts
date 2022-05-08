@@ -1,7 +1,8 @@
-export enum CTCevent{
+export enum CTCevent {
     // player events
     PLAYER_MOVE_REQUEST = "player_move_request",
     PLAYER_MOVE = "player_move",
+    PLAYER_KILL = "PLAYER_KILL",
     FLY = "fly",
 
     //boss events
@@ -19,7 +20,7 @@ export enum CTCevent{
     AIRSTREAM_UNBLOCK = "airstream_unblock",
     WAVE_SPLASH = "wave_splash",
     CHANGE_ELEMENT = "change_element",
-    
+
     // stage events
     INTERACT_ELEMENT = "interact_element",
     PLACE_ELEMENT = "place_element",
