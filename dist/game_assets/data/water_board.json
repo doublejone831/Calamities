@@ -395,10 +395,6 @@
 			"type" : "rock_M"
 		},
 		{
-			"position": [14,11],
-			"type" : "rock_S"
-		},
-		{
 			"start": [15, 9],
 			"end": [15, 14],
 			"size": 6,

@@ -9,7 +9,6 @@ export default class AirstreamController extends StateMachineAI {
     protected end : Vec2;
     protected size: number;
     protected dir: Vec2;
-    protected frames: number;
     protected paused: boolean;
 
     initializeAI(owner: Sprite, options: Record<string, any>){
@@ -17,18 +16,7 @@ export default class AirstreamController extends StateMachineAI {
         this.start = options.start;
         this.end = options.end;
         this.size = options.size;
-        if(this.start.x-this.end.x > 0) {
-            this.dir = new Vec2(-1, 0);
-        } else if(this.start.x-this.end.x < 0) {
-            this.dir = new Vec2(1, 0);
-        } else {
-            if(this.start.y-this.end.y > 0) {
-                this.dir = new Vec2(0, -1);
-            } else if(this.start.y-this.end.y < 0) {
-                this.dir = new Vec2(0, 1);
-            }
-        }
-        this.frames = 0;
+        this.dir = options.dir;
         this.paused = false;
 
         this.receiver.subscribe([
@@ -53,7 +41,6 @@ export default class AirstreamController extends StateMachineAI {
                     }
             }
         }
-        this.frames++;
     }
 
     extend_airstream(new_size: number){

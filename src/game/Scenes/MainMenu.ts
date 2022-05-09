@@ -167,7 +167,7 @@ export default class MainMenu extends Scene {
         this.receiver.subscribe("control");
         this.receiver.subscribe("credits");
 
-        if (!MainMenu.unlocked) MainMenu.unlocked = new Array(9).fill(false);
+        if (!MainMenu.unlocked) MainMenu.unlocked = new Array(7).fill(false);
     }
 
     updateScene(){

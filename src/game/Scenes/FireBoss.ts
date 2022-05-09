@@ -6,6 +6,7 @@ import Ice from "./Ice";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import BaseBoss from "./BaseBoss";
 import MainMenu from "./MainMenu";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class FireBoss extends BaseBoss {
 
@@ -22,9 +23,8 @@ export default class FireBoss extends BaseBoss {
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
-        this.load.image("flames1", "game_assets/sprites/flames1.png");
-        this.load.image("flames2", "game_assets/sprites/flames2.png");
-        this.load.image("flames3", "game_assets/sprites/flames3.png");
+        this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
+        this.load.spritesheet("torch", "game_assets/spritesheets/torch.json");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         this.load.image("shield", "game_assets/sprites/shield.png");
@@ -37,10 +37,17 @@ export default class FireBoss extends BaseBoss {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/fire_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
+        this.load.audio("fire", "game_assets/sound/fire.wav");
     }
 
     unloadScene(): void {
@@ -61,10 +68,24 @@ export default class FireBoss extends BaseBoss {
         }
         
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
         super.updateScene(deltaT);
+        if(!this.endposition.equals(new Vec2(0, 0))){
+            for(var i = 2; i<18; i++) {
+                for(var j = 2; j<18; j++) {
+                    if(this.gameboard[i][j]) {
+                        if(this.gameboard[i][j].imageId == "flames") {
+                            this.gameboard[i][j].destroy();
+                            this.gameboard[i][j] = null;
+                        }
+                    }
+                }
+            }
+        }
     };
 
     initializePlayer(): void {
@@ -93,11 +114,13 @@ export default class FireBoss extends BaseBoss {
     }
 
     restartStage(): void {
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(FireBoss, {});
     }
 
     nextStage(): void {
-        MainMenu.unlocked[7] = true;
-        this.sceneManager.changeToScene(Ice, {});
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(MainMenu, {});
     }
 }

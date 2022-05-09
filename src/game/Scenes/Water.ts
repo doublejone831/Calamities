@@ -7,6 +7,7 @@ import MainMenu from "./MainMenu";
 import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Water extends BaseStage {
 
@@ -21,7 +22,6 @@ export default class Water extends BaseStage {
         this.load.spritesheet("whirlwind", "game_assets/spritesheets/whirlwind.json");
         this.load.image("shallow_water", "game_assets/sprites/shallow_water.png");
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
-        this.load.image("hole", "game_assets/sprites/hole.png");
         // player
         this.load.spritesheet("god", "game_assets/spritesheets/god.json");
         // map
@@ -30,9 +30,15 @@ export default class Water extends BaseStage {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/water_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
     }
 
     unloadScene(): void {
@@ -55,6 +61,8 @@ export default class Water extends BaseStage {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -89,7 +97,7 @@ export default class Water extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -97,7 +105,7 @@ export default class Water extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -105,7 +113,7 @@ export default class Water extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -113,7 +121,7 @@ export default class Water extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
@@ -139,11 +147,13 @@ export default class Water extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Water, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[4] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(WaterBoss, {});
     }
 }

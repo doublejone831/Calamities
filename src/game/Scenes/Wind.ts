@@ -8,6 +8,7 @@ import { CTCevent } from "./CTCEvent";
 import MainMenu from "./MainMenu";
 import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Wind extends BaseStage {
 
@@ -32,6 +33,10 @@ export default class Wind extends BaseStage {
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
     }
 
     unloadScene(): void {
@@ -54,6 +59,8 @@ export default class Wind extends BaseStage {
         }
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -88,7 +95,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -96,7 +103,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -104,7 +111,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -112,7 +119,7 @@ export default class Wind extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
                     break;
@@ -139,11 +146,13 @@ export default class Wind extends BaseStage {
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Wind, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[2] = true;
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(WindBoss, {});
     }
 }

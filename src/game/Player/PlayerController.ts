@@ -147,6 +147,7 @@ export default class PlayerController extends StateMachineAI {
     }
 
     gainShield(shield: boolean){
+        this.owner.animation.play((shield ? "shield-" : "") + "face_" + this.facing_direction);
         this.hasShield = shield;
     }
 

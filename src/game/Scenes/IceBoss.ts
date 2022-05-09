@@ -21,9 +21,7 @@ export default class IceBoss extends BaseBoss {
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
-        this.load.image("flames1", "game_assets/sprites/flames1.png");
-        this.load.image("flames2", "game_assets/sprites/flames2.png");
-        this.load.image("flames3", "game_assets/sprites/flames3.png");
+        this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
         this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
         this.load.image("ignite", "game_assets/sprites/ignite.png");
         this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
@@ -40,6 +38,7 @@ export default class IceBoss extends BaseBoss {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/ice_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");

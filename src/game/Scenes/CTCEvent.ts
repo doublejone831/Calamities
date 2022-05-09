@@ -19,6 +19,8 @@ export enum CTCevent {
     AIRSTREAM_BLOCKED = "airstream_blocked",
     AIRSTREAM_UNBLOCK = "airstream_unblock",
     WAVE_SPLASH = "wave_splash",
+    FLAMES_GROW = "flames_grow",
+    FLAMES_CHANGE = "flames_change",
     IGNITE_BURN = "ignite_burn",
     CHANGE_ELEMENT = "change_element",
 

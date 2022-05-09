@@ -7,6 +7,8 @@ import MainMenu from "./MainMenu";
 import { CTCevent } from "./CTCEvent";
 import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
+import FlamesController from "../Element/FlamesController";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Ice extends BaseStage {
 
@@ -23,9 +25,7 @@ export default class Ice extends BaseStage {
         this.load.image("deep_water", "game_assets/sprites/deep_water.png");
         this.load.image("bubble", "game_assets/sprites/bubble.png");
         this.load.image("wave", "game_assets/sprites/wave.png");
-        this.load.image("flames1", "game_assets/sprites/flames1.png");
-        this.load.image("flames2", "game_assets/sprites/flames2.png");
-        this.load.image("flames3", "game_assets/sprites/flames3.png");
+        this.load.spritesheet("flames", "game_assets/spritesheets/flames.json");
         this.load.spritesheet("ember", "game_assets/spritesheets/ember.json");
         this.load.image("ignite", "game_assets/sprites/ignite.png");
         this.load.image("ice_cube", "game_assets/sprites/ice_cube.png");
@@ -39,9 +39,17 @@ export default class Ice extends BaseStage {
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/ice_wall.png");
         this.load.image("portal", "game_assets/sprites/portal.png");
+        this.load.image("hole", "game_assets/sprites/hole.png");
         // gui
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
+
+        this.load.audio("level_music", "game_assets/sound/song.mp3");
+        this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("wind", "game_assets/sound/wind.wav");
+        this.load.audio("water", "game_assets/sound/water.wav");
+        this.load.audio("fire", "game_assets/sound/fire.wav");
+        this.load.audio("ice", "game_assets/sound/ice.wav");
     }
 
     unloadScene(): void {
@@ -58,10 +66,12 @@ export default class Ice extends BaseStage {
         this.elementGUI.animation.play("earth_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
-        let lock = this.add.sprite("lock", "lock");
-        lock.position.set(5*16+6, 19*16);
+        //let lock = this.add.sprite("lock", "lock");
+        //lock.position.set(5*16+6, 19*16);
 
         this.initializePlayer();
+
+        this.emitter.fireEvent(GameEventType.PLAY_MUSIC, {key: "level_music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void{
@@ -96,7 +106,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 0;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(1, 0)});
                             break;
                         case "left":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -104,7 +114,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(-1, 0)});
                             break;
                         case "down":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -112,7 +122,7 @@ export default class Ice extends BaseStage {
                             controller.rotation = 3*Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, 1)});
                             break;
                         case "up":
                             controller = this.add.animatedSprite(element.type, "sky");
@@ -120,9 +130,16 @@ export default class Ice extends BaseStage {
                             controller.rotation = Math.PI/2;
                             controller.alpha = 0;
                             controller.animation.play("stream");
-                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size});
+                            controller.addAI(AirstreamController, {"start": start, "end": end, "size": element.size, "dir": new Vec2(0, -1)});
                     }
                     this.emitter.fireEvent(CTCevent.AIRSTREAM_BLOCKED, {"id": controller.id, "blocked": false});
+                    break;
+                case "flames":
+                    controller = this.add.animatedSprite("flames", "primary");
+                    controller.animation.play("level"+element.firepower);
+                    controller.position.set(element.position[0]*16+8, element.position[1]*16+8);
+                    controller.addAI(FlamesController, {"level": element.firepower});
+                    this.gameboard[element.position[0]][element.position[1]] = controller;
                     break;
                 case "torch":
                     sprite = this.add.animatedSprite("torch", "primary");
@@ -148,15 +165,17 @@ export default class Ice extends BaseStage {
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
         this.inAir = false;
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,false]});
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
     }
 
     restartStage(): void{
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
         this.sceneManager.changeToScene(Ice, {});
     }
 
     nextStage(): void {
-        MainMenu.unlocked[8] = true;
-        this.sceneManager.changeToScene(IceBoss, {});
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        this.viewport.setZoomLevel(1);
+        this.sceneManager.changeToScene(MainMenu, {});
     }
 }

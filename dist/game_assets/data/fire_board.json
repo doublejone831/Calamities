@@ -1,45 +1,109 @@
 {
-	"numElements": 10,
+	"numElements": 25,
 	"elements": [
 		{
-			"position": [16, 16],
-			"type": "portal"
+			"position": [17, 4],
+			"type": "torch"
 		},
 		{
-			"position": [4, 4],
-			"type": "rock_L"
+			"position": [9, 17],
+			"type": "torch"
 		},
 		{
-			"position": [14, 4],
-			"type": "rock_L"
-		},
+			"position": [7, 3],
+			"type": "flames",
+			"firepower": 2
+		}
+		,
 		{
-			"position": [4, 14],
-			"type": "rock_M"
-		},
-		{
-			"position": [14, 14],
-			"type": "rock_M"
-		},
-		{
-			"position": [6, 7],
-			"type": "rock_S"
-		},
-		{
-			"position": [3, 16],
-			"type": "flames1"
+			"position": [4, 10],
+			"type": "flames",
+			"firepower": 2
 		},
 		{
 			"position": [10, 10],
-			"type": "flames1"
+			"type": "flames",
+			"firepower": 1
 		},
 		{
-			"position": [7, 6],
-			"type": "flames1"
+			"position": [6, 2],
+			"type": "wall"
 		},
 		{
-			"position": [4, 9],
-			"type": "flames2"
+			"position": [6, 3],
+			"type": "wall"
+		},
+		{
+			"position": [6, 4],
+			"type": "wall"
+		},
+		{
+			"position": [2, 7],
+			"type": "wall"
+		},
+		{
+			"position": [3, 7],
+			"type": "wall"
+		},
+		{
+			"position": [4, 7],
+			"type": "wall"
+		},
+		{
+			"position": [11, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 17],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 16],
+			"type": "rock_L"
 		}
 	]
 }
