@@ -1,5 +1,5 @@
 {
-	"numElements": 15,
+	"numElements": 14,
 	"elements": [
 		{
 			"position": [4, 4],
@@ -62,10 +62,6 @@
 		{
 			"position": [14, 14],
 			"type": "torch"
-		},
-		{
-			"position": [15, 15],
-			"type": "ice_cube"
 		},
 		{
 			"position": [17, 17],

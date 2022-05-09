@@ -66,8 +66,8 @@ export default class Ice extends BaseStage {
         this.elementGUI.animation.play("earth_equipped");
         // Create lock layer
         this.addLayer("lock", 20);
-        let lock = this.add.sprite("lock", "lock");
-        lock.position.set(5*16+6, 19*16);
+        //let lock = this.add.sprite("lock", "lock");
+        //lock.position.set(5*16+6, 19*16);
 
         this.initializePlayer();
 
@@ -165,7 +165,7 @@ export default class Ice extends BaseStage {
         this.skillUsed = new Array(5).fill(false);
         this.elementSelected = 1;
         this.inAir = false;
-        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,false]});
+        this.player.addAI(PlayerController, {tilemap: "Main", hasPower: [true,true,true,true,true]});
     }
 
     restartStage(): void{
