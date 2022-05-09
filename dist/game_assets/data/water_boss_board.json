@@ -1,5 +1,5 @@
 {
-	"numElements": 6,
+	"numElements": 78,
 	"elements": [
 		{
 			"position": [7, 5],
@@ -24,6 +24,302 @@
 		{
 			"position": [8, 13],
 			"type":"rock_S"
+		},
+		{
+			"position": [9, 2],
+			"type": "wall"
+		},
+		{
+			"position": [9, 3],
+			"type": "wall"
+		},
+		{
+			"start": [8, 2],
+			"end": [8, 2],
+			"type": "tornado"
+		},
+		{
+			"start": [10, 3],
+			"end": [10, 3],
+			"type": "tornado"
+		},
+		{
+			"position": [3, 7],
+			"type": "wall"
+		},
+		{
+			"position": [3, 8],
+			"type": "wall"
+		},
+		{
+			"position": [3, 10],
+			"type": "hole"
+		},
+		{
+			"position": [14, 14],
+			"type": "wall"
+		},
+		{
+			"position": [15, 15],
+			"type": "wall"
+		},
+		{
+			"position": [14, 15],
+			"type": "hole"
+		},
+		{
+			"position": [15, 14],
+			"type": "hole"
+		},
+		{
+			"position": [3, 13],
+			"type": "shallow_water"
+		},
+		{
+			"position": [4, 13],
+			"type": "shallow_water"
+		},
+		{
+			"position": [5, 13],
+			"type": "shallow_water"
+		},
+		{
+			"position": [6, 13],
+			"type": "shallow_water"
+		},
+		{
+			"position": [3, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [4, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [5, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [6, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [3, 16],
+			"type": "shallow_water"
+		},
+		{
+			"position": [4, 16],
+			"type": "shallow_water"
+		},
+		{
+			"position": [5, 16],
+			"type": "shallow_water"
+		},
+		{
+			"position": [6, 16],
+			"type": "shallow_water"
+		},
+		{
+			"position": [3, 17],
+			"type": "shallow_water"
+		},
+		{
+			"position": [4, 17],
+			"type": "shallow_water"
+		},
+		{
+			"position": [5, 17],
+			"type": "shallow_water"
+		},
+		{
+			"position": [6, 17],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [15, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [16, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [15, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [16, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [15, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [16, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 7],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 7],
+			"type": "shallow_water"
+		},
+		{
+			"position": [15, 7],
+			"type": "shallow_water"
+		},
+		{
+			"position": [16, 7],
+			"type": "shallow_water"
+		},
+		{
+			"start": [7, 6],
+			"end": [7, 11],
+			"size": 6,
+			"type": "airstream",
+			"direction": "down"
+		},
+		{
+			"start": [11, 12],
+			"end": [11, 7],
+			"size": 6,
+			"type": "airstream",
+			"direction": "up"
+		},
+		{
+			"position": [7, 7],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 7],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 7],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 7],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 7],
+			"type": "deep_water"
+		},
+		{
+			"position": [7, 8],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 8],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 8],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 8],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 8],
+			"type": "deep_water"
+		},
+		{
+			"position": [7, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [7, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [7, 11],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 11],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 11],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 11],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 11],
+			"type": "deep_water"
+		},
+		{
+			"position": [7, 6],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 12],
+			"type": "deep_water"
 		}
 	]
 }
