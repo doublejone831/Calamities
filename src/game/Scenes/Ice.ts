@@ -9,6 +9,7 @@ import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import FlamesController from "../Element/FlamesController";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Ice extends BaseStage {
 
@@ -170,11 +171,13 @@ export default class Ice extends BaseStage {
 
     restartStage(): void{
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Ice, {});
     }
 
     nextStage(): void {
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.viewport.setZoomLevel(1);
         this.sceneManager.changeToScene(MainMenu, {});
     }

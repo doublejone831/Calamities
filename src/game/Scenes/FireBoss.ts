@@ -7,6 +7,7 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import BaseBoss from "./BaseBoss";
 import MainMenu from "./MainMenu";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class FireBoss extends BaseBoss {
 
@@ -115,11 +116,13 @@ export default class FireBoss extends BaseBoss {
 
     restartStage(): void {
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(FireBoss, {});
     }
 
     nextStage(): void {
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.viewport.setZoomLevel(1);
         this.sceneManager.changeToScene(MainMenu, {});
     }
