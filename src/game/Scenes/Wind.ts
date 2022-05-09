@@ -9,6 +9,7 @@ import MainMenu from "./MainMenu";
 import TornadoController from "../Element/TornadoController";
 import AirstreamController from "../Element/AirstreamController";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Wind extends BaseStage {
 
@@ -147,12 +148,14 @@ export default class Wind extends BaseStage {
 
     restartStage(): void{
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Wind, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[2] = true;
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(WindBoss, {});
     }
 }

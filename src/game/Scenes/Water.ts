@@ -8,6 +8,7 @@ import AirstreamController from "../Element/AirstreamController";
 import TornadoController from "../Element/TornadoController";
 import { CTCevent } from "./CTCEvent";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Water extends BaseStage {
 
@@ -148,12 +149,14 @@ export default class Water extends BaseStage {
 
     restartStage(): void{
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Water, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[4] = true;
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(WaterBoss, {});
     }
 }

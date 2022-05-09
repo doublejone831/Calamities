@@ -5,6 +5,7 @@ import BossController from "../Boss/BossController";
 import MainMenu from "./MainMenu";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import BaseBoss from "./BaseBoss";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class IceBoss extends BaseBoss {
 
@@ -93,10 +94,12 @@ export default class IceBoss extends BaseBoss {
     }
 
     restartStage(): void {
+        Input.enableInput();
         this.sceneManager.changeToScene(IceBoss, {});
     }
 
     nextStage(): void {
+        Input.enableInput();
         this.viewport.setZoomLevel(1);
         this.sceneManager.changeToScene(MainMenu, {});
     }

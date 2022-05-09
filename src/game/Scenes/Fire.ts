@@ -10,6 +10,7 @@ import { CTCevent } from "./CTCEvent";
 import FlamesController from "../Element/FlamesController";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Fire extends BaseStage {
     switch1: AnimatedSprite;
@@ -196,12 +197,14 @@ export default class Fire extends BaseStage {
 
     restartStage(): void{
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Fire, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[6] = true;
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(FireBoss, {});
     }
 }

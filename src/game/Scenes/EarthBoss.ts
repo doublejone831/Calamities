@@ -7,6 +7,7 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import MainMenu from "./MainMenu";
 import BaseBoss from "./BaseBoss";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class EarthBoss extends BaseBoss {
 
@@ -87,12 +88,14 @@ export default class EarthBoss extends BaseBoss {
 
     restartStage(): void {
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(EarthBoss, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[1] = true;
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Wind, {});
     }
 }

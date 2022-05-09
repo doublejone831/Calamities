@@ -5,6 +5,7 @@ import PlayerController from "../Player/PlayerController";
 import EarthBoss from "./EarthBoss";
 import MainMenu from "./MainMenu";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class Earth extends BaseStage {
 
@@ -83,12 +84,14 @@ export default class Earth extends BaseStage {
 
     restartStage(): void{
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(Earth, {});
     }
 
     nextStage(): void {
         MainMenu.unlocked[0] = true;
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
+        Input.enableInput();
         this.sceneManager.changeToScene(EarthBoss, {});
     }
 }
