@@ -45,6 +45,8 @@ export default class IceBoss extends BaseBoss {
         this.load.spritesheet("element_equipped", "game_assets/spritesheets/element_equipped.json");
         this.load.image("lock", "game_assets/sprites/lock.png");
         this.load.spritesheet("cursor", "game_assets/spritesheets/cursor.json");
+        this.load.audio("bossattack", "game_assets/sound/bossattack.wav");
+        this.load.audio("bossskill", "game_assets/sound/bossskill.wav");
     }
 
     unloadScene(): void {

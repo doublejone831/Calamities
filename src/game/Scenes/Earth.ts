@@ -28,6 +28,7 @@ export default class Earth extends BaseStage {
         // audio
         this.load.audio("level_music", "game_assets/sound/song.mp3");
         this.load.audio("rock", "game_assets/sound/rock.wav");
+        
     }
 
     unloadScene(): void {

@@ -9,6 +9,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import FlamesController from "../Element/FlamesController";
 import PlayerController from "../Player/PlayerController";
 import Input from "../../Wolfie2D/Input/Input";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -48,6 +49,7 @@ export default class BaseBoss extends BaseStage {
             switch(event.type) {
                 case CTCevent.BOSS_SKILL:
                     this.boss_skill();
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key:"bossskill"});
                     break;
                 case CTCevent.BOSS_TELEPORT:
                     let currPosVec: Vec2 = null;
@@ -77,6 +79,7 @@ export default class BaseBoss extends BaseStage {
                     break;
                 case CTCevent.BOSS_ATTACK:
                     this.boss_attack();
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key:"bossattack"});
                     break;
                 case CTCevent.BOSS_DEAD:
                     this.boss.removePhysics();

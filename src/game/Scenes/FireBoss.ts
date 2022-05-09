@@ -50,6 +50,8 @@ export default class FireBoss extends BaseBoss {
         this.load.audio("wind", "game_assets/sound/wind.wav");
         this.load.audio("water", "game_assets/sound/water.wav");
         this.load.audio("fire", "game_assets/sound/fire.wav");
+        this.load.audio("bossattack", "game_assets/sound/bossattack.wav");
+        this.load.audio("bossskill", "game_assets/sound/bossskill.wav");
     }
 
     unloadScene(): void {

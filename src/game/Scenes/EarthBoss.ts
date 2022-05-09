@@ -35,6 +35,8 @@ export default class EarthBoss extends BaseBoss {
         // audio
         this.load.audio("level_music", "game_assets/sound/song.mp3");
         this.load.audio("rock", "game_assets/sound/rock.wav");
+        this.load.audio("bossattack", "game_assets/sound/bossattack.wav");
+        this.load.audio("bossskill", "game_assets/sound/bossskill.wav");
     }
 
     unloadScene(): void {
