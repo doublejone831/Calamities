@@ -1,5 +1,5 @@
 {
-	"numElements": 6,
+	"numElements": 27,
 	"elements": [
 		{
 			"position": [7, 5],
@@ -24,6 +24,104 @@
 		{
 			"position": [8, 13],
 			"type":"rock_S"
+		},
+		{
+			"start": [15, 16],
+			"end": [15, 12],
+			"size": 5,
+			"type": "airstream",
+			"direction": "up"
+		},
+		{
+			"start": [15, 5],
+			"end": [10, 5],
+			"size": 6,
+			"type": "airstream",
+			"direction": "left"
+		},
+		{
+			"start": [3, 6],
+			"end": [3, 13],
+			"size": 8,
+			"type": "airstream",
+			"direction": "down"
+		},
+		{
+			"start": [7, 2],
+			"end": [12, 2],
+			"type": "tornado"
+		},
+		{
+			"start": [12, 4],
+			"end": [7, 4],
+			"type": "tornado"
+		},
+		{
+			"start": [10, 10],
+			"end": [10, 10],
+			"type": "tornado"
+		},
+		{
+			"start": [8, 9],
+			"end": [8, 11],
+			"type": "tornado"
+		},
+		{
+			"start": [9, 12],
+			"end": [11, 12],
+			"type": "tornado"
+		},
+		{
+			"position": [5, 14],
+			"type": "hole"
+		},
+		{
+			"position": [15, 3],
+			"type": "hole"
+		},
+		{
+			"position": [7, 3],
+			"type":"wall"
+		},
+		{
+			"position": [8, 3],
+			"type":"wall"
+		},
+		{
+			"position": [9, 3],
+			"type":"wall"
+		},
+		{
+			"position": [10, 3],
+			"type":"wall"
+		},
+		{
+			"position": [11, 3],
+			"type":"wall"
+		},
+		{
+			"position": [12, 3],
+			"type":"wall"
+		},
+		{
+			"position": [9, 9],
+			"type":"wall"
+		},
+		{
+			"position": [9, 10],
+			"type":"wall"
+		},
+		{
+			"position": [9, 11],
+			"type":"wall"
+		},
+		{
+			"position": [10, 11],
+			"type":"wall"
+		},
+		{
+			"position": [11, 11],
+			"type":"wall"
 		}
 	]
 }
