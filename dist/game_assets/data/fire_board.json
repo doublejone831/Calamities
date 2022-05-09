@@ -1,5 +1,5 @@
 {
-	"numElements": 77,
+	"numElements": 75,
 	"elements": [
 		{
 			"position": [10, 3],
@@ -69,14 +69,6 @@
 		},
 		{
 			"position": [15, 12],
-			"type": "wall"
-		},
-		{
-			"position": [14, 12],
-			"type": "wall"
-		},
-		{
-			"position": [12, 14],
 			"type": "wall"
 		},
 		{
