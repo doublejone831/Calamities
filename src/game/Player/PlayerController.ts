@@ -109,12 +109,8 @@ export default class PlayerController extends StateMachineAI {
             
             while(this.receiver.hasNextEvent()){
                 let event = this.receiver.getNextEvent();  
-                var dir;
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
-                        let next_pos = event.data.get("next_pos");
-                        let next = this.board_pos_to_sprite_pos(next_pos.x, next_pos.y);
-                        this.owner.position.set(next.x, next.y);
                         this.owner.animation.play((this.hasShield ? "shield-" : "") + "walking_" + this.facing_direction);
                         Input.enableInput();
                         break;

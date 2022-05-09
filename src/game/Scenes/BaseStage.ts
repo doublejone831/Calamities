@@ -36,6 +36,7 @@ export default class BaseStage extends Scene {
     savedNum: number;
     savedVec: Vec2;
     player_shield: Sprite = null;
+    player_moving: boolean;
     // GUI
     elementGUI: AnimatedSprite;
     // Viewport
@@ -132,6 +133,7 @@ export default class BaseStage extends Scene {
 
         BaseStage.paused = false;
         this.savedVec = null;
+        this.player_moving = false;
 
         // Receivers
         this.receiver.subscribe([
@@ -163,6 +165,7 @@ export default class BaseStage extends Scene {
         // listen to events
         this.check_events(dirVec);
         this.check_current_tile(playerPosInBoard, dirVec);
+        this.player_moving = false;
     }
 
     check_paused(){
@@ -353,9 +356,13 @@ export default class BaseStage extends Scene {
                                 Input.enableInput();
                                 break;
                             default:
+                                this.player_moving = true;
+                                this.player.position.set(next.x*16+8, next.y*16+8);
                                 this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                         }
                     } else {
+                        this.player_moving = true;
+                        this.player.position.set(next.x*16+8, next.y*16+8);
                         this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                     }
                     break;
@@ -1053,6 +1060,7 @@ export default class BaseStage extends Scene {
     }
 
     check_current_tile(pos: Vec2, dirVec: Vec2){
+        if(this.player_moving) return;
         let pCol = pos.x;
         let pRow = pos.y;
         if(!this.inAir) {

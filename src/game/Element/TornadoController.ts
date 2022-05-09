@@ -60,7 +60,7 @@ export default class TornadoController extends StateMachineAI {
             (<AnimatedSprite>this.owner).animation.pause();
         } else {
             (<AnimatedSprite>this.owner).animation.resume();
-            if(this.frames%30 == 0) {
+            if(this.frames%15 == 0) {
                 if(this.owner_pos.equals(this.start)) this.reverse = false;
                 if(this.owner_pos.equals(this.end)) this.reverse = true;
                 let old_pos = this.owner_pos.clone();
