@@ -1,5 +1,5 @@
 {
-	"numElements": 25,
+	"numElements": 29,
 	"elements": [
 		{
 			"position": [17, 4],
@@ -13,41 +13,56 @@
 			"position": [7, 3],
 			"type": "flames",
 			"firepower": 2
-		}
-		,
+		},
 		{
 			"position": [4, 10],
 			"type": "flames",
 			"firepower": 2
 		},
 		{
-			"position": [10, 10],
+			"position": [2, 2],
 			"type": "flames",
 			"firepower": 1
 		},
 		{
 			"position": [6, 2],
-			"type": "wall"
+			"type": "hole"
 		},
 		{
 			"position": [6, 3],
-			"type": "wall"
+			"type": "hole"
 		},
 		{
 			"position": [6, 4],
-			"type": "wall"
+			"type": "hole"
+		},
+		{
+			"position": [6, 5],
+			"type": "hole"
+		},
+		{
+			"position": [6, 6],
+			"type": "hole"
+		},
+		{
+			"position": [6, 7],
+			"type": "hole"
 		},
 		{
 			"position": [2, 7],
-			"type": "wall"
+			"type": "hole"
 		},
 		{
 			"position": [3, 7],
-			"type": "wall"
+			"type": "hole"
 		},
 		{
 			"position": [4, 7],
-			"type": "wall"
+			"type": "hole"
+		},
+		{
+			"position": [5, 7],
+			"type": "hole"
 		},
 		{
 			"position": [11, 5],

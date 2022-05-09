@@ -1094,10 +1094,8 @@ export default class BaseStage extends Scene {
             if(this.gameboard[pCol][pRow]){
                 switch(this.gameboard[pCol][pRow].imageId){
                     case "tornado":
-                        this.whirlwind_fly(pCol, pRow, dirVec, 0);
-                        break;
                     case "whirlwind":
-                        this.whirlwind_fly(pCol, pRow, dirVec, -1);
+                        this.whirlwind_fly(pCol, pRow, dirVec);
                         break;
                     case "bubble":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -1137,10 +1135,10 @@ export default class BaseStage extends Scene {
         }
     }
 
-    whirlwind_fly(posX: number, posY: number, dirVec: Vec2, jump: number){
+    whirlwind_fly(posX: number, posY: number, dirVec: Vec2){
         this.inAir = true;
         Input.disableInput();
-        var jumps = jump;
+        var jumps = 0;
         for(var i = 1; i<3; i++) {
             if(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y]){
                 switch(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y].imageId){
@@ -1160,7 +1158,7 @@ export default class BaseStage extends Scene {
                 jumps = i;
             }
         }
-        this.player.position.set((posX+dirVec.x*jumps)*16+8,(posY+dirVec.y*jumps)*16+8);
+        if(jumps>0) this.player.position.set((posX+dirVec.x*jumps)*16+8,(posY+dirVec.y*jumps)*16+8);
     }
 
     airstream_fly(posX: number, posY: number) {
