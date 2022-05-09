@@ -24,6 +24,7 @@ export default class WindBoss extends BaseBoss {
         // boss
         this.load.spritesheet("boss", "game_assets/spritesheets/boss_wind.json");
         this.load.image("boss_block", "game_assets/sprites/invis_block.png");
+        this.load.spritesheet("explosion", "game_assets/spritesheets/explosion.json");
         // map
         this.load.tilemap("level", "game_assets/tilemaps/wind.json");
         this.load.object("board", "game_assets/data/wind_boss_board.json");

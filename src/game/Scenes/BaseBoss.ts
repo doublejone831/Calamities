@@ -8,6 +8,7 @@ import RandUtils from "../../Wolfie2D/Utils/RandUtils";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import FlamesController from "../Element/FlamesController";
 import PlayerController from "../Player/PlayerController";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class BaseBoss extends BaseStage {
     pos1: Vec2;
@@ -35,6 +36,7 @@ export default class BaseBoss extends BaseStage {
                                     CTCevent.BOSS_ATTACK,
                                     CTCevent.BOSS_DEAD,
                                     CTCevent.PLAYER_KILL,
+                                    CTCevent.REMOVE_ATTACK,
                                     CTCevent.TOGGLE_PAUSE ]);
 
     }
@@ -89,16 +91,37 @@ export default class BaseBoss extends BaseStage {
                     let topL = this.cursors[0].position;
                     let botR = this.cursors[8].position;
                     let playerPos = this.player.position;
+                    for (let i = 0; i < this.cursors.length; i++) {
+                        let explode = this.add.animatedSprite("explosion", "primary");
+                        let aim = this.cursors[i];
+                        if(i == 0) {
+                            explode.animation.play("blink", false, CTCevent.REMOVE_ATTACK);
+                        } else {
+                            explode.animation.play("blink");
+                        }
+                        explode.position.set(aim.position.x, aim.position.y);
+                        aim.destroy();
+                        this.cursors[i] = explode;
+                    }
                     if (playerPos.x >= topL.x && playerPos.x <= botR.x && playerPos.y >= topL.y && playerPos.y <= botR.y) {
                         let ai = <PlayerController>this.player._ai;
                         if (ai.hasShield) {
                             ai.gainShield(false);
                         }
                         else {
-                            this.restartStage();
+                            Input.disableInput();
+                            for(let i = 0; i < this.cursors.length; i++) {
+                                if(i == 0) {
+                                    this.cursors[i].animation.play("blink", false, CTCevent.RESTART_STAGE);
+                                } else {
+                                    this.cursors[i].animation.play("blink");
+                                }
+                            }
                         }
                     }
-                    for (let i = 0; i < this.cursors.length; i++) {
+                    break;
+                case CTCevent.REMOVE_ATTACK:
+                    for(let i = 0; i < this.cursors.length; i++) {
                         this.cursors[i].destroy();
                         this.cursors[i] = null;
                     }

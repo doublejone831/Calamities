@@ -11,6 +11,7 @@ export enum CTCevent {
     BOSS_ATTACK = "boss_attack",
     BOSS_DAMAGED = "boss_damaged",
     BOSS_DEAD = "boss_dead",
+    REMOVE_ATTACK = "remove_Attack",
 
     //element events
     TORNADO_MOVE_REQUEST = "tornado_move_request",

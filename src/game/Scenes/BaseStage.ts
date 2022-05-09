@@ -190,7 +190,7 @@ export default class BaseStage extends Scene {
                     this.sceneManager.changeToScene(MainMenu, {});                    
                     break;
                 case CTCevent.RESTART_STAGE:
-                    if(BaseStage.paused) this.restartStage();
+                    this.restartStage();
                     break;
                 case CTCevent.CONTROLS_POPUP:
                     this.pauseMenuControls.setHidden(!this.pauseMenuControls.isHidden());
@@ -339,9 +339,7 @@ export default class BaseStage extends Scene {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
-                    console.log("move request received");
                     if(this.inAir) break;
-                    console.log("player not in air");
                     var next = event.data.get("next");
                     if(this.gameboard[next.x][next.y]){
                         switch(this.gameboard[next.x][next.y].imageId) {
@@ -365,7 +363,6 @@ export default class BaseStage extends Scene {
                         this.player.position.set(next.x*16+8, next.y*16+8);
                     }
                     this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
-                    console.log("move fired");
                     break;
                 case CTCevent.TORNADO_MOVE_REQUEST:
                     let whirlwind = event.data.get("sprite");
@@ -1126,13 +1123,11 @@ export default class BaseStage extends Scene {
             } else {
                 this.inAir = false;
                 Input.enableInput();
-                console.log("fly finished");
             }
         }
     }
 
     whirlwind_fly(posX: number, posY: number, dirVec: Vec2, jump: number){
-        console.log("fly started");
         this.inAir = true;
         Input.disableInput();
         var jumps = jump;
