@@ -74,6 +74,18 @@ export default class FireBoss extends BaseBoss {
 
     updateScene(deltaT: number): void{
         super.updateScene(deltaT);
+        if(!this.endposition.equals(new Vec2(0, 0))){
+            for(var i = 2; i<18; i++) {
+                for(var j = 2; j<18; j++) {
+                    if(this.gameboard[i][j]) {
+                        if(this.gameboard[i][j].imageId == "flames") {
+                            this.gameboard[i][j].destroy();
+                            this.gameboard[i][j] = null;
+                        }
+                    }
+                }
+            }
+        }
     };
 
     initializePlayer(): void {
