@@ -999,8 +999,10 @@ export default class BaseStage extends Scene {
             if(this.gameboard[pCol][pRow]){
                 switch(this.gameboard[pCol][pRow].imageId){
                     case "tornado":
+                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec, 0);
+                        break;
                     case "whirlwind":
-                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec);
+                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec, -1);
                         break;
                     case "bubble":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -1050,10 +1052,10 @@ export default class BaseStage extends Scene {
         }
     }
 
-    whirlwind_fly(posX: number, posY: number, dirVec: Vec2){
+    whirlwind_fly(posX: number, posY: number, dirVec: Vec2, jump: number){
         this.inAir = true;
         Input.disableInput();
-        var jumps = 0;
+        var jumps = jump;
         for(var i = 1; i<3; i++) {
             if(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y]){
                 switch(this.gameboard[posX+dirVec.scaled(i).x][posY+dirVec.scaled(i).y].imageId){
@@ -1073,7 +1075,6 @@ export default class BaseStage extends Scene {
                 jumps = i;
             }
         }
-        if(jumps == 0) jumps = -1;
         return jumps;
     }
 
