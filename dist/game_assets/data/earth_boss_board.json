@@ -1,5 +1,5 @@
 {
-	"numElements": 7,
+	"numElements": 22,
 	"elements": [
 		{
 			"position": [7, 5],
@@ -26,7 +26,67 @@
 			"type":"rock_S"
 		},
 		{
-			"position": [4, 4],
+			"position": [3, 2],
+			"type":"wall"
+		},
+		{
+			"position": [2, 10],
+			"type":"wall"
+		},
+		{
+			"position": [7, 11],
+			"type":"wall"
+		},
+		{
+			"position": [7, 7],
+			"type":"wall"
+		},
+		{
+			"position": [7, 17],
+			"type":"wall"
+		},
+		{
+			"position": [9, 8],
+			"type":"wall"
+		},
+		{
+			"position": [17, 5],
+			"type":"wall"
+		},
+		{
+			"position": [12, 4],
+			"type":"wall"
+		},
+		{
+			"position": [13, 4],
+			"type":"wall"
+		},
+		{
+			"position": [5, 14],
+			"type":"wall"
+		},
+		{
+			"position": [5, 13],
+			"type":"wall"
+		},
+		{
+			"position": [4, 14],
+			"type":"wall"
+		},
+		{
+			"position": [15, 15],
+			"type":"wall"
+		},
+		{
+			"position": [14, 15],
+			"type":"wall"
+		},
+		{
+			"position": [15, 14],
+			"type":"wall"
+		},
+		{
+			"position": [14, 14],
 			"type":"wall"
 		}
 	]
