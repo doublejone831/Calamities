@@ -1029,7 +1029,6 @@ export default class BaseStage extends Scene {
             if(this.endposition.equals(pos)){
                 this.nextStage();
             }
-            Input.enableInput();
         } else {
             if(this.savedVec != null){
                 this.airstream_fly(pCol, pRow);

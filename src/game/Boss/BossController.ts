@@ -17,7 +17,7 @@ export default class BossController extends StateMachineAI {
         this.type = options.type;
         this.thresholdReached = false;
         this.frames = 0;
-        this.charge = 0;
+        this.charge = 200;
         this.paused = false;
 
         this.receiver.subscribe([
@@ -45,7 +45,7 @@ export default class BossController extends StateMachineAI {
             this.owner.animation.resume();
             this.charge++;
             this.frames++;
-            if (this.frames === 1000) {
+            if (this.frames === 800) {
                 this.owner.animation.stop();
                 this.owner.animation.play("attack_left", false, CTCevent.BOSS_SKILL);
                 this.owner.animation.queue("idle", true);

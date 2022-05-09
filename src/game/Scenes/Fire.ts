@@ -81,7 +81,21 @@ export default class Fire extends BaseStage {
         super.updateScene(deltaT);
         if(this.switch1 != null && this.switch2 != null) {
             if(this.switch1.animation.isPlaying("on") && this.switch2.animation.isPlaying("on")) {
-                this.nextStage();
+                for(var i = 2; i<18; i++) {
+                    for(var j = 2; j<18; j++) {
+                        if(this.gameboard[i][j]) {
+                            if(this.gameboard[i][j].imageId == "flames") {
+                                this.gameboard[i][j].destroy();
+                                this.gameboard[i][j] = null;
+                            }
+                        }
+                    }
+                }
+                let portal = this.add.sprite("portal", "primary");
+                portal.position.set(this.switch1.position.x, this.switch1.position.y);
+                this.gameboard[(this.switch1.position.x-8)/16][(this.switch1.position.y-8)/16].destroy();
+                this.gameboard[(this.switch1.position.x-8)/16][(this.switch1.position.y-8)/16] = portal;
+                this.endposition = new Vec2((portal.position.x-8)/16, (portal.position.y-8)/16);
             }
         }
     };
