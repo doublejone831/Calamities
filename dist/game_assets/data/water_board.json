@@ -654,6 +654,10 @@
 		{
 			"position": [4,13],
 			"type" : "rock_L"
+		},
+		{
+			"position": [4,14],
+			"type" : "deep_water"
 		}
 	]
 }
