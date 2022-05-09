@@ -45,13 +45,13 @@ export default class BossController extends StateMachineAI {
             this.owner.animation.resume();
             this.charge++;
             this.frames++;
-            if (this.frames === 800) {
+            if (this.frames === 1000) {
                 this.owner.animation.stop();
                 this.owner.animation.play("attack_left", false, CTCevent.BOSS_SKILL);
                 this.owner.animation.queue("idle", true);
                 this.frames = 0;
             }
-            if (this.charge === 400) {
+            if (this.charge === 500) {
                 if (!this.owner.animation.isPlaying("attack_left")) this.owner.animation.play("attack_right");
                 this.owner.animation.queue("idle", true);
                 this.emitter.fireEvent(CTCevent.BOSS_ATTACK);

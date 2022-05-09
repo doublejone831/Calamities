@@ -25,7 +25,6 @@ export default class PlayerController extends StateMachineAI {
         this.selectedElement = 1;
 
         this.facing_direction = 2; //start down
-
         this.hasPower = options.hasPower;
         this.inFlight = 0;
         this.hasShield = false;
@@ -44,6 +43,7 @@ export default class PlayerController extends StateMachineAI {
                 var next_position = this.nextposition();
                 this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
                 this.owner.animation.play((this.hasShield ? "shield-" : "") + "face_0");
+                console.log("move request fired");
             }
             else if (Input.isJustPressed("left")) {
                 Input.disableInput();
@@ -51,6 +51,7 @@ export default class PlayerController extends StateMachineAI {
                 var next_position = this.nextposition();
                 this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
                 this.owner.animation.play((this.hasShield ? "shield-" : "") + "face_1");
+                console.log("move request fired");
             }
             else if (Input.isJustPressed("down")) {
                 Input.disableInput();
@@ -58,6 +59,7 @@ export default class PlayerController extends StateMachineAI {
                 var next_position = this.nextposition();
                 this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
                 this.owner.animation.play((this.hasShield ? "shield-" : "") + "face_2");
+                console.log("move request fired");
             }
             else if (Input.isJustPressed("right")) {
                 Input.disableInput();
@@ -65,7 +67,8 @@ export default class PlayerController extends StateMachineAI {
                 var next_position = this.nextposition();
                 this.emitter.fireEvent(CTCevent.PLAYER_MOVE_REQUEST, {"next" : next_position});
                 this.owner.animation.play((this.hasShield ? "shield-" : "") + "face_3");
-            }
+                console.log("move request fired");
+            } 
             else if (Input.isJustPressed("rotate_cc")) {
                 this.facing_direction = (this.facing_direction + 1) % 4;
                 this.owner.animation.play((this.hasShield ? "shield-" : "") + "face_" + this.facing_direction);
@@ -111,10 +114,12 @@ export default class PlayerController extends StateMachineAI {
                 let event = this.receiver.getNextEvent();  
                 switch(event.type){
                     case CTCevent.PLAYER_MOVE:
+                        console.log("move received");
                         this.owner.animation.play((this.hasShield ? "shield-" : "") + "walking_" + this.facing_direction);
                         Input.enableInput();
                         break;
                     case CTCevent.FLY:
+                        console.log("fly received- move player 1 tiles in player position");
                         this.owner.position.add(this.dirUnitVector(16));
                         break;
                 }

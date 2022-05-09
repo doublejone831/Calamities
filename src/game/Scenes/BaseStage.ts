@@ -339,7 +339,9 @@ export default class BaseStage extends Scene {
                     }
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
+                    console.log("move request received");
                     if(this.inAir) break;
+                    console.log("player not in air");
                     var next = event.data.get("next");
                     if(this.gameboard[next.x][next.y]){
                         switch(this.gameboard[next.x][next.y].imageId) {
@@ -353,18 +355,17 @@ export default class BaseStage extends Scene {
                             case "outofbounds":
                             case "wall":
                             case "boss_block":
-                                Input.enableInput();
                                 break;
                             default:
                                 this.player_moving = true;
                                 this.player.position.set(next.x*16+8, next.y*16+8);
-                                this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                         }
                     } else {
                         this.player_moving = true;
                         this.player.position.set(next.x*16+8, next.y*16+8);
-                        this.emitter.fireEvent(CTCevent.PLAYER_MOVE, {"next_pos": next});
                     }
+                    this.emitter.fireEvent(CTCevent.PLAYER_MOVE);
+                    console.log("move fired");
                     break;
                 case CTCevent.TORNADO_MOVE_REQUEST:
                     let whirlwind = event.data.get("sprite");
@@ -1086,10 +1087,10 @@ export default class BaseStage extends Scene {
             if(this.gameboard[pCol][pRow]){
                 switch(this.gameboard[pCol][pRow].imageId){
                     case "tornado":
-                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec, 0);
+                        this.whirlwind_fly(pCol, pRow, dirVec, 0);
                         break;
                     case "whirlwind":
-                        this.savedNum = this.whirlwind_fly(pCol, pRow, dirVec, -1);
+                        this.whirlwind_fly(pCol, pRow, dirVec, -1);
                         break;
                     case "bubble":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -1118,28 +1119,20 @@ export default class BaseStage extends Scene {
             if(this.endposition.equals(pos)){
                 this.nextStage();
             }
-        } else {
+        }
+        if(this.inAir) {
             if(this.savedVec != null){
                 this.airstream_fly(pCol, pRow);
-            } else if(this.savedNum>0) {
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "wind"} );
-                this.emitter.fireEvent(CTCevent.FLY);
-                this.savedNum--;
-            } else if(this.savedNum<0) {
-                let player_controller = (<PlayerController>this.player._ai);
-                let facing = player_controller.getDirection();
-                player_controller.changeDirection((facing+2)%4);
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "wind"} );
-                this.emitter.fireEvent(CTCevent.FLY);
-                this.savedNum++;
             } else {
                 this.inAir = false;
                 Input.enableInput();
+                console.log("fly finished");
             }
         }
     }
 
     whirlwind_fly(posX: number, posY: number, dirVec: Vec2, jump: number){
+        console.log("fly started");
         this.inAir = true;
         Input.disableInput();
         var jumps = jump;
@@ -1162,7 +1155,7 @@ export default class BaseStage extends Scene {
                 jumps = i;
             }
         }
-        return jumps;
+        this.player.position.set((posX+dirVec.x*jumps)*16+8,(posY+dirVec.y*jumps)*16+8);
     }
 
     airstream_fly(posX: number, posY: number) {
