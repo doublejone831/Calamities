@@ -498,17 +498,14 @@ export default class BaseStage extends Scene {
                             }
                             break;
                         case 1: // grow to level 2
-                            this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                             this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 2});
                             break;
                         case 2: // grow to level 3
-                            this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                             this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 3});
                             break;
                         case 3: // spread to nearby tiles
                             var new_flame;
                             if(this.gameboard[flames_pos.x+1][flames_pos.y] == null) {
-                                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                 new_flame = this.add.animatedSprite("flames", "primary");
                                 new_flame.animation.play("level1");
                                 new_flame.position.set((flames_pos.x+1)*16+8, flames_pos.y*16+8);
@@ -519,7 +516,6 @@ export default class BaseStage extends Scene {
                                 (<AnimatedSprite>this.gameboard[flames_pos.x+1][flames_pos.y]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y+1] == null) {
-                                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                 new_flame = this.add.animatedSprite("flames", "primary");
                                 new_flame.animation.play("level1");
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y+1)*16+8);
@@ -530,7 +526,6 @@ export default class BaseStage extends Scene {
                                 (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y+1]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x-1][flames_pos.y] == null) {
-                                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                 new_flame = this.add.animatedSprite("flames", "primary");
                                 new_flame.animation.play("level1");
                                 new_flame.position.set((flames_pos.x-1)*16+8, flames_pos.y*16+8);
@@ -541,7 +536,6 @@ export default class BaseStage extends Scene {
                                 (<AnimatedSprite>this.gameboard[flames_pos.x-1][flames_pos.y]).animation.play("on");
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y-1] == null) {
-                                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                 new_flame = this.add.animatedSprite("flames", "primary");
                                 new_flame.animation.play("level1");
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y-1)*16+8);
@@ -926,6 +920,7 @@ export default class BaseStage extends Scene {
             case 1:
                 if (!player_controller.hasPower[0]) break;
                 if(this.skillUsed[0]) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "rock"} );
                 this.skillUsed[0] = true;
                 let place_rock = this.add.sprite("rock_P", "primary");
                 place_rock.position.set(placeX*16+8, placeY*16+8);
@@ -935,6 +930,7 @@ export default class BaseStage extends Scene {
             case 2:
                 if (!player_controller.hasPower[1]) break;
                 if(this.skillUsed[1]) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "wind"} );
                 this.skillUsed[1] = true;
                 let place_wind = this.add.animatedSprite("whirlwind", "primary");
                 place_wind.position.set(placeX*16 + 8, placeY*16 + 8);
@@ -945,6 +941,7 @@ export default class BaseStage extends Scene {
             case 3:
                 if (!player_controller.hasPower[2]) break;
                 if(this.skillUsed[2]) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
                 this.skillUsed[2] = true;
                 let place_water = this.add.sprite("bubble", "primary");
                 place_water.position.set(placeX*16+8, placeY*16+8);
@@ -954,6 +951,7 @@ export default class BaseStage extends Scene {
             case 4:
                 if (!player_controller.hasPower[3]) break;
                 if(this.skillUsed[3]) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                 this.skillUsed[3] = true;
                 let place_fire = this.add.animatedSprite("ember", "primary");
                 place_fire.position.set(placeX*16 + 8, placeY*16 + 8);
@@ -964,6 +962,7 @@ export default class BaseStage extends Scene {
             case 5:
                 if (!player_controller.hasPower[4]) break;
                 if(this.skillUsed[4]) break;
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "ice"} );
                 this.skillUsed[4] = true;
                 let place_ice = this.add.sprite("ice_cube", "primary");
                 place_ice.position.set(placeX*16+8, placeY*16+8);
