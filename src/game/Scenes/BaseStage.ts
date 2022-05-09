@@ -17,6 +17,7 @@ import AirstreamController from "../Element/AirstreamController";
 import WaveController from "../Element/WaveController";
 import IgniteController from "../Element/IgniteController";
 import FlamesController from "../Element/FlamesController";
+import { AudioChannelType } from "../../Wolfie2D/Sound/AudioManager";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -174,9 +175,13 @@ export default class BaseStage extends Scene {
             switch(event.type){
                 case CTCevent.TOGGLE_PAUSE:
                     if(!BaseStage.paused) {
+                        this.emitter.fireEvent(GameEventType.MUTE_CHANNEL, {channel: AudioChannelType.SFX});
+                        this.emitter.fireEvent(GameEventType.MUTE_CHANNEL, {channel: AudioChannelType.MUSIC});
                         this.pauseGUI.setHidden(false);
                         this.pauseAnimations(); 
                     } else {
+                        this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.SFX});
+                        this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.MUSIC});
                         this.pauseGUI.setHidden(true);
                         this.pauseMenuControls.setHidden(true);
                         this.resumeAnimations();
@@ -185,11 +190,15 @@ export default class BaseStage extends Scene {
                     break;
                 case CTCevent.BACK_TO_MENU:
                     console.log("BACK TO MENU");
+                    this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.SFX});
+                    this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.MUSIC});
                     this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level_music"});
                     this.viewport.setZoomLevel(1);
                     this.sceneManager.changeToScene(MainMenu, {});                    
                     break;
                 case CTCevent.RESTART_STAGE:
+                    this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.SFX});
+                    this.emitter.fireEvent(GameEventType.UNMUTE_CHANNEL, {channel: AudioChannelType.MUSIC});
                     this.restartStage();
                     break;
                 case CTCevent.CONTROLS_POPUP:
