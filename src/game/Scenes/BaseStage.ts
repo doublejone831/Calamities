@@ -1178,7 +1178,10 @@ export default class BaseStage extends Scene {
                 jumps = i;
             }
         }
-        if(jumps>0) this.player.position.set((posX+dirVec.x*jumps)*16+8,(posY+dirVec.y*jumps)*16+8);
+        if(jumps>0) {
+            this.player.position.set((posX+dirVec.x*jumps)*16+8,(posY+dirVec.y*jumps)*16+8);
+            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "wind"});
+        }
     }
 
     airstream_fly(posX: number, posY: number) {
