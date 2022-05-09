@@ -917,6 +917,7 @@ export default class BaseStage extends Scene {
                             case "wall":
                             case "outofbounds":
                             case "boss_block":
+                            case "portal":
                                 rolling = false;
                                 break;
                             default:
