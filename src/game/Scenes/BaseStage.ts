@@ -534,6 +534,11 @@ export default class BaseStage extends Scene {
                                             anime.animation.play("on");
                                         }
                                         break;
+                                    case "bubble":
+                                            this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
+                                            this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
+                                            break;
                                     case "ember":
                                         this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
                                         new_flame = this.add.animatedSprite("flames", "primary");
@@ -563,6 +568,11 @@ export default class BaseStage extends Scene {
                                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                             anime.animation.play("on");
                                         }
+                                        break;
+                                    case "bubble":
+                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
+                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
                                         break;
                                     case "ember":
                                         this.gameboard[flames_pos.x][flames_pos.y+1].destroy();
@@ -594,6 +604,11 @@ export default class BaseStage extends Scene {
                                             anime.animation.play("on");
                                         }
                                         break;
+                                    case "bubble":
+                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
+                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
+                                        break;
                                     case "ember":
                                         this.gameboard[flames_pos.x-1][flames_pos.y].destroy();
                                         new_flame = this.add.animatedSprite("flames", "primary");
@@ -623,6 +638,11 @@ export default class BaseStage extends Scene {
                                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                             anime.animation.play("on");
                                         }
+                                        break;
+                                    case "bubble":
+                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
+                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
                                         break;
                                     case "ember":
                                         this.gameboard[flames_pos.x][flames_pos.y-1].destroy();
