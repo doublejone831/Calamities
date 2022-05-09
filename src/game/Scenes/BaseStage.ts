@@ -514,7 +514,7 @@ export default class BaseStage extends Scene {
                             } else {
                                 switch(this.gameboard[flames_pos.x+1][flames_pos.y].imageId) {
                                     case "torch":
-                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y-1]);
+                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x+1][flames_pos.y]);
                                         if(anime.animation.isPlaying("off")) {
                                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                             anime.animation.play("on");
@@ -544,11 +544,12 @@ export default class BaseStage extends Scene {
                             } else {
                                 switch(this.gameboard[flames_pos.x][flames_pos.y+1].imageId) {
                                     case "torch":
-                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y-1]);
+                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y+1]);
                                         if(anime.animation.isPlaying("off")) {
                                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                             anime.animation.play("on");
                                         }
+                                        break;
                                     case "ember":
                                         this.gameboard[flames_pos.x][flames_pos.y+1].destroy();
                                         new_flame = this.add.animatedSprite("flames", "primary");
@@ -573,7 +574,7 @@ export default class BaseStage extends Scene {
                             } else {
                                 switch(this.gameboard[flames_pos.x-1][flames_pos.y].imageId) {
                                     case "torch":
-                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x][flames_pos.y-1]);
+                                        let anime = (<AnimatedSprite>this.gameboard[flames_pos.x-1][flames_pos.y]);
                                         if(anime.animation.isPlaying("off")) {
                                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "fire"} );
                                             anime.animation.play("on");
