@@ -505,11 +505,15 @@ export default class BaseStage extends Scene {
                     let firepower = event.data.get("level");
                     let flames_pos = this.sprite_pos_to_board_pos(flames.position.x, flames.position.y);
                     switch(firepower){
-                        case 0: // blocked by rock
+                        case -1: // blocked by rock
                             if(this.gameboard[flames_pos.x][flames_pos.y] == null){
-                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 1});
+                                flames.alpha = 1;
+                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
                                 this.gameboard[flames_pos.x][flames_pos.y] = flames;
                             }
+                            break;
+                        case 0: // grow to level 1
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 1});
                             break;
                         case 1: // grow to level 2
                             this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 2});
@@ -521,10 +525,10 @@ export default class BaseStage extends Scene {
                             var new_flame;
                             if(this.gameboard[flames_pos.x+1][flames_pos.y] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
-                                new_flame.animation.play("level1");
+                                new_flame.animation.play("level0");
                                 new_flame.position.set((flames_pos.x+1)*16+8, flames_pos.y*16+8);
                                 this.gameboard[flames_pos.x+1][flames_pos.y] = new_flame;
-                                new_flame.addAI(FlamesController, {"level": 1});
+                                new_flame.addAI(FlamesController, {"level": 0});
                             } else {
                                 switch(this.gameboard[flames_pos.x+1][flames_pos.y].imageId) {
                                     case "torch":
@@ -556,10 +560,10 @@ export default class BaseStage extends Scene {
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y+1] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
-                                new_flame.animation.play("level1");
+                                new_flame.animation.play("level0");
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y+1)*16+8);
                                 this.gameboard[flames_pos.x][flames_pos.y+1] = new_flame;
-                                new_flame.addAI(FlamesController, {"level": 1});
+                                new_flame.addAI(FlamesController, {"level": 0});
                             } else {
                                 switch(this.gameboard[flames_pos.x][flames_pos.y+1].imageId) {
                                     case "torch":
@@ -591,10 +595,10 @@ export default class BaseStage extends Scene {
                             }
                             if(this.gameboard[flames_pos.x-1][flames_pos.y] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
-                                new_flame.animation.play("level1");
+                                new_flame.animation.play("level0");
                                 new_flame.position.set((flames_pos.x-1)*16+8, flames_pos.y*16+8);
                                 this.gameboard[flames_pos.x-1][flames_pos.y] = new_flame;
-                                new_flame.addAI(FlamesController, {"level": 1});
+                                new_flame.addAI(FlamesController, {"level": 0});
                             } else {
                                 switch(this.gameboard[flames_pos.x-1][flames_pos.y].imageId) {
                                     case "torch":
@@ -626,10 +630,10 @@ export default class BaseStage extends Scene {
                             }
                             if(this.gameboard[flames_pos.x][flames_pos.y-1] == null) {
                                 new_flame = this.add.animatedSprite("flames", "primary");
-                                new_flame.animation.play("level1");
+                                new_flame.animation.play("level0");
                                 new_flame.position.set(flames_pos.x*16+8, (flames_pos.y-1)*16+8);
                                 this.gameboard[flames_pos.x][flames_pos.y-1] = new_flame;
-                                new_flame.addAI(FlamesController, {"level": 1});
+                                new_flame.addAI(FlamesController, {"level": 0});
                             } else {
                                 switch(this.gameboard[flames_pos.x][flames_pos.y-1].imageId) {
                                     case "torch":
@@ -705,7 +709,7 @@ export default class BaseStage extends Scene {
                         case "flames":
                             dest.add(dir);
                             let flames = this.gameboard[dest.x][dest.y];
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": -1});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -765,7 +769,7 @@ export default class BaseStage extends Scene {
                         case "flames":
                             dest.add(dir);
                             let flames = this.gameboard[dest.x][dest.y];
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": -1});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -826,7 +830,7 @@ export default class BaseStage extends Scene {
                         case "flames":
                             dest.add(dir);
                             let flames = this.gameboard[dest.x][dest.y];
-                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
+                            this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": -1});
                             target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                             this.gameboard[targetposX][targetposY] = null;
                             this.gameboard[dest.x][dest.y] = target;
@@ -898,7 +902,7 @@ export default class BaseStage extends Scene {
                             case "flames":
                                 dest.add(dir);
                                 let flames = this.gameboard[dest.x][dest.y];
-                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": 0});
+                                this.emitter.fireEvent(CTCevent.FLAMES_CHANGE, {"id": flames.id, "level": -1});
                                 target.position.set(dest.x*16 + 8, dest.y*16 + 8);
                                 this.gameboard[targetposX][targetposY] = null;
                                 this.gameboard[dest.x][dest.y] = target;
@@ -1126,6 +1130,9 @@ export default class BaseStage extends Scene {
                         this.gameboard[pCol][pRow] =null;
                         break;
                     case "flames":
+                        if((<AnimatedSprite>this.gameboard[pCol][pRow]).animation.isPlaying("level0")) {
+                            break;
+                        }
                         if(this.player_shield != null) {
                             this.player_shield = null;
                             (<PlayerController>this.player._ai).gainShield(false);

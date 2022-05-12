@@ -12,7 +12,7 @@
 	"animations": [
         {
 			"name": "level0",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 0,
@@ -22,7 +22,7 @@
 		},
 		{
 			"name": "level1",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 1,
@@ -32,7 +32,7 @@
 		},
 		{
 			"name": "level2",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 2,
@@ -42,7 +42,7 @@
 		},
 		{
 			"name": "level3",
-			"repeat": false,
+			"repeat": true,
 			"frames": [
 				{
 					"index": 3,

@@ -28,19 +28,22 @@ export default class FlamesController extends StateMachineAI {
                 case CTCevent.FLAMES_CHANGE:
                     if(event.data.get("id") === this.owner.id) {
                         this.level = event.data.get("level");
-                        this.owner.animation.play("level"+this.level);
+                        if(this.level == -1) {
+                            this.owner.alpha = 0;
+                            this.owner.animation.play("level0");
+                        } else {
+                            this.owner.animation.play("level"+this.level);
+                        }
                         this.frames = 1;
                     }
                     break;
             }
         }
         if(!this.paused) {
-            if(this.level == 0 && this.frames%30 == 0) {
-                this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": 0});
-            } else {
-                if(this.frames%100 == 0) {
-                    this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});
-                }
+            if(this.level == -1) {
+                this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});
+            } else if(this.frames%120 == 0) {
+                this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});   
             }
             this.frames++;
         }
