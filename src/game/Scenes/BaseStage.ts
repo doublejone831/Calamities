@@ -574,8 +574,8 @@ export default class BaseStage extends Scene {
                                         }
                                         break;
                                     case "bubble":
-                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
-                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.gameboard[flames_pos.x][flames_pos.y+1].destroy();
+                                        this.gameboard[flames_pos.x][flames_pos.y+1] = null;
                                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
                                         break;
                                     case "ember":
@@ -609,8 +609,8 @@ export default class BaseStage extends Scene {
                                         }
                                         break;
                                     case "bubble":
-                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
-                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.gameboard[flames_pos.x-1][flames_pos.y].destroy();
+                                        this.gameboard[flames_pos.x-1][flames_pos.y] = null;
                                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
                                         break;
                                     case "ember":
@@ -644,8 +644,8 @@ export default class BaseStage extends Scene {
                                         }
                                         break;
                                     case "bubble":
-                                        this.gameboard[flames_pos.x+1][flames_pos.y].destroy();
-                                        this.gameboard[flames_pos.x+1][flames_pos.y] = null;
+                                        this.gameboard[flames_pos.x][flames_pos.y-1].destroy();
+                                        this.gameboard[flames_pos.x][flames_pos.y-1] = null;
                                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "water"});
                                         break;
                                     case "ember":
