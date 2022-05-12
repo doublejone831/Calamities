@@ -17,7 +17,7 @@ export default class Stack<T> implements Collection {
      * Constructs a new stack
      * @param maxElements The maximum size of the stack
      */
-    constructor(maxElements: number = 100){
+    constructor(maxElements: number = 1000){
         this.MAX_ELEMENTS = maxElements;
         this.stack = new Array<T>(this.MAX_ELEMENTS);
         this.head = -1;
