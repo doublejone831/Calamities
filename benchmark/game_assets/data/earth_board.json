@@ -1,0 +1,469 @@
+{
+	"numElements": 116,
+	"elements": [
+		{
+			"position": [15, 16],
+			"type": "portal"
+		},
+		{
+			"position": [7, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 2],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 2],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 3],
+			"type": "rock_M"
+		},
+		{
+			"position": [10, 3],
+			"type": "rock_S"
+		},
+		{
+			"position": [13, 3],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 4],
+			"type": "rock_M"
+		},
+		{
+			"position": [10, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 4],
+			"type": "rock_S"
+		},
+		{
+			"position": [12, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 4],
+			"type": "rock_S"
+		},
+		{
+			"position": [15, 4],
+			"type": "rock_M"
+		},
+		{
+			"position": [16, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [17, 4],
+			"type": "rock_L"
+		},
+		{
+			"position": [2, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 5],
+			"type": "rock_M"
+		},
+		{
+			"position": [5, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 5],
+			"type": "rock_S"
+		},
+		{
+			"position": [7, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 5],
+			"type": "rock_M"
+		},
+		{
+			"position": [10, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 5],
+			"type": "rock_M"
+		},
+		{
+			"position": [12, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [15, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [16, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [3, 6],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [15, 6],
+			"type": "rock_M"
+		},
+		{
+			"position": [17, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [2, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [3, 7],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 7],
+			"type": "rock_S"
+		},
+		{
+			"position": [14, 7],
+			"type": "rock_S"
+		},
+		{
+			"position": [4, 8],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 8],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 8],
+			"type": "rock_M"
+		},
+		{
+			"position": [8, 8],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 8],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 8],
+			"type": "rock_L"
+		},
+		{
+			"position": [15, 8],
+			"type": "rock_S"
+		},
+		{
+			"position": [4, 9],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 9],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 9],
+			"type": "rock_S"
+		},
+		{
+			"position": [10, 9],
+			"type": "rock_S"
+		},
+		{
+			"position": [11, 9],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 9],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 9],
+			"type": "rock_M"
+		},
+		{
+			"position": [16, 9],
+			"type": "rock_L"
+		},
+		{
+			"position": [17, 9],
+			"type": "rock_S"
+		},
+		{
+			"position": [4, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 10],
+			"type": "rock_S"
+		},
+		{
+			"position": [6, 10],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 10],
+			"type": "rock_M"
+		},
+		{
+			"position": [12, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [15, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [16, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 11],
+			"type": "rock_S"
+		},
+		{
+			"position": [9, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 11],
+			"type": "rock_L"
+		},
+		{
+			"position": [16, 11],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 12],
+			"type": "rock_S"
+		},
+		{
+			"position": [11, 12],
+			"type": "rock_M"
+		},
+		{
+			"position": [12, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 12],
+			"type": "rock_M"
+		},
+		{
+			"position": [16, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 12],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 13],
+			"type": "rock_S"
+		},
+		{
+			"position": [10, 13],
+			"type": "rock_M"
+		},
+		{
+			"position": [11, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [14, 13],
+			"type": "rock_M"
+		},
+		{
+			"position": [17, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [2, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [5, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [6, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [8, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [15, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [16, 14],
+			"type": "rock_S"
+		},
+		{
+			"position": [17, 14],
+			"type": "rock_M"
+		},
+		{
+			"position": [3, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [8, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [12, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [13, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [14, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [16, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [17, 15],
+			"type": "rock_M"
+		},
+		{
+			"position": [6, 16],
+			"type": "rock_S"
+		},
+		{
+			"position": [10, 16],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 16],
+			"type": "rock_S"
+		},
+		{
+			"position": [14, 16],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 17],
+			"type": "rock_M"
+		},
+		{
+			"position": [10, 17],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 17],
+			"type": "rock_L"
+		},
+		{
+			"position": [13, 17],
+			"type": "rock_M"
+		},
+		{
+			"position": [16, 17],
+			"type": "rock_L"
+		}
+	]
+}

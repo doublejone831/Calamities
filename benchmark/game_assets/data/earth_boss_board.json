@@ -1,0 +1,93 @@
+{
+	"numElements": 22,
+	"elements": [
+		{
+			"position": [7, 5],
+			"type": "rock_L"
+		},
+		{
+			"position": [10, 6],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 12],
+			"type": "rock_M"
+		},
+		{
+			"position": [14, 12],
+			"type": "rock_M"
+		},
+		{
+			"position": [5, 8],
+			"type": "rock_S"
+		},
+		{
+			"position": [8, 13],
+			"type":"rock_S"
+		},
+		{
+			"position": [3, 2],
+			"type":"wall"
+		},
+		{
+			"position": [2, 10],
+			"type":"wall"
+		},
+		{
+			"position": [7, 11],
+			"type":"wall"
+		},
+		{
+			"position": [7, 7],
+			"type":"wall"
+		},
+		{
+			"position": [7, 17],
+			"type":"wall"
+		},
+		{
+			"position": [9, 8],
+			"type":"wall"
+		},
+		{
+			"position": [17, 5],
+			"type":"wall"
+		},
+		{
+			"position": [12, 4],
+			"type":"wall"
+		},
+		{
+			"position": [13, 4],
+			"type":"wall"
+		},
+		{
+			"position": [5, 14],
+			"type":"wall"
+		},
+		{
+			"position": [5, 13],
+			"type":"wall"
+		},
+		{
+			"position": [4, 14],
+			"type":"wall"
+		},
+		{
+			"position": [15, 15],
+			"type":"wall"
+		},
+		{
+			"position": [14, 15],
+			"type":"wall"
+		},
+		{
+			"position": [15, 14],
+			"type":"wall"
+		},
+		{
+			"position": [14, 14],
+			"type":"wall"
+		}
+	]
+}

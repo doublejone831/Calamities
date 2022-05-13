@@ -1,0 +1,139 @@
+{
+	"numElements": 31,
+	"elements": [
+		{
+			"position": [6, 13],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 13],
+			"type": "rock_L"
+		},
+		{
+			"position":[5, 14],
+			"type": "rock_S"
+		},
+		{
+			"position":[6, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 15],
+			"type": "rock_S"
+		},
+		{
+			"position": [5, 15],
+			"type": "rock_M"
+		},
+		{
+			"start": [11, 6],
+			"end": [11, 6],
+			"type": "tornado"
+		},
+		{
+			"start": [8, 8],
+			"end": [8, 14],
+			"type": "tornado"
+		},
+		{
+			"start": [6, 10],
+			"end": [13, 10],
+			"size": 8,
+			"direction": "right",
+			"type": "airstream"
+		},
+		{
+			"start": [15, 12],
+			"end": [6, 12],
+			"size": 10,
+			"direction": "left",
+			"type": "airstream"
+		},
+		{
+			"position": [12, 6],
+			"type": "hole"
+		},
+		{
+			"position": [11, 7],
+			"type": "rock_L"
+		},
+		{
+			"position": [9, 14],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 14],
+			"type": "deep_water"
+		},
+		{
+			"position": [12, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 14],
+			"type": "shallow_water"
+		},
+		{
+			"position": [14, 13],
+			"type": "deep_water"
+		},
+		{
+			"position": [14, 12],
+			"type": "deep_water"
+		},
+		{
+			"position": [14, 10],
+			"type": "deep_water"
+		},
+		{
+			"position": [14, 9],
+			"type": "deep_water"
+		},
+		{
+			"position": [14, 8],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 8],
+			"type": "shallow_water"
+		},
+		{
+			"position": [12, 8],
+			"type": "shallow_water"
+		},
+		{
+			"position": [10, 8],
+			"type": "shallow_water"
+		},
+		{
+			"position": [9, 8],
+			"type": "shallow_water"
+		},
+        {
+			"position": [11, 11],
+			"type": "flames",
+			"firepower": 1
+
+		},
+		{
+			"position": [11, 14],
+			"type": "wall"
+		},
+		{
+			"position": [15, 11],
+			"type": "torch"
+		},
+		{
+			"position": [14, 11],
+			"type": "ice_cube"
+		},
+		{
+			"position": [13, 7],
+			"type": "portal"
+		}
+	]
+}

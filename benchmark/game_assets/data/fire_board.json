@@ -1,0 +1,307 @@
+{
+	"numElements": 75,
+	"elements": [
+		{
+			"position": [10, 3],
+			"type": "torch"
+		},
+		{
+			"position": [4, 16],
+			"type": "torch"
+		},
+		{
+			"position": [14, 14],
+			"type": "flames",
+			"firepower": 1
+		},
+		{
+			"position": [2, 2],
+			"type": "flames",
+			"firepower": 1
+		},
+		{
+			"position": [6, 2],
+			"type": "hole"
+		},
+		{
+			"position": [6, 3],
+			"type": "hole"
+		},
+		{
+			"position": [6, 4],
+			"type": "hole"
+		},
+		{
+			"position": [6, 5],
+			"type": "hole"
+		},
+		{
+			"position": [6, 6],
+			"type": "hole"
+		},
+		{
+			"position": [6, 7],
+			"type": "hole"
+		},
+		{
+			"position": [2, 7],
+			"type": "hole"
+		},
+		{
+			"position": [3, 7],
+			"type": "hole"
+		},
+		{
+			"position": [4, 7],
+			"type": "hole"
+		},
+		{
+			"position": [5, 7],
+			"type": "hole"
+		},
+		{
+			"position": [17, 12],
+			"type": "wall"
+		},
+		{
+			"position": [16, 12],
+			"type": "wall"
+		},
+		{
+			"position": [15, 12],
+			"type": "wall"
+		},
+		{
+			"position": [12, 15],
+			"type": "wall"
+		},
+		{
+			"position": [12, 16],
+			"type": "wall"
+		},
+		{
+			"position": [12, 17],
+			"type": "wall"
+		},
+		{
+			"position": [3, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 13],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 13],
+			"type": "rock_M"
+		},
+		{
+			"position": [2, 14],
+			"type": "rock_S"
+		},
+		{
+			"position": [3, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 14],
+			"type": "rock_L"
+		},
+		{
+			"position": [4, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [3, 16],
+			"type": "rock_L"
+		},
+		{
+			"position": [5, 16],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [7, 15],
+			"type": "rock_L"
+		},
+		{
+			"position": [6, 16],
+			"type": "rock_S"
+		},
+		{
+			"position": [7, 16],
+			"type": "rock_M"
+		},
+		{
+			"position": [6, 17],
+			"type": "rock_M"
+		},
+		{
+			"position": [7, 17],
+			"type": "rock_L"
+		},
+		{
+			"position": [2, 15],
+			"type": "hole"
+		},
+		{
+			"position": [16, 9],
+			"type": "rock_M"
+		},
+		{
+			"position": [17, 10],
+			"type": "rock_L"
+		},
+		{
+			"position": [11, 11],
+			"type": "rock_M"
+		},
+		{
+			"position": [8, 9],
+			"type": "rock_S"
+		},
+		{
+			"position": [7, 2],
+			"type": "shallow_water"
+		},
+		{
+			"position": [7, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [7, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [7, 5],
+			"type": "shallow_water"
+		},
+		{
+			"position": [7, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [8, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [9, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [10, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [11, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [12, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 6],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 5],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 4],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 3],
+			"type": "shallow_water"
+		},
+		{
+			"position": [13, 2],
+			"type": "shallow_water"
+		},
+		{
+			"position": [8, 2],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 2],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 2],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 2],
+			"type": "deep_water"
+		},
+		{
+			"position": [12, 2],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 3],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 3],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 3],
+			"type": "deep_water"
+		},
+		{
+			"position": [12, 3],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 4],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 4],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 4],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 4],
+			"type": "deep_water"
+		},
+		{
+			"position": [12, 4],
+			"type": "deep_water"
+		},
+		{
+			"position": [8, 5],
+			"type": "deep_water"
+		},
+		{
+			"position": [9, 5],
+			"type": "deep_water"
+		},
+		{
+			"position": [10, 5],
+			"type": "deep_water"
+		},
+		{
+			"position": [11, 5],
+			"type": "deep_water"
+		},
+		{
+			"position": [12, 5],
+			"type": "deep_water"
+		}
+	]
+}

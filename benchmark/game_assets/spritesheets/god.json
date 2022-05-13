@@ -1,0 +1,450 @@
+{
+	"name": "god",
+	"spriteSheetImage": "god.png",
+	"spriteWidth": 16,
+	"spriteHeight": 16,
+	"leftBuffer": 0,
+	"rightBuffer": 0,
+	"topBuffer": 0,
+	"bottomBuffer": 0,
+	"columns": 6,
+	"rows": 10,
+	"animations": [
+		{
+			"name": "idle",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 0,
+					"duration": 12
+				}
+			]
+		},
+		{
+			"name": "face_2",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 2,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "walking_2",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 2,
+					"duration": 6
+				},
+				{
+					"index": 3,
+					"duration": 6
+				},
+				{
+					"index": 4,
+					"duration": 6
+				},
+				{
+					"index": 5,
+					"duration": 6
+				},
+				{
+					"index": 6,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "face_3",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 8,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "walking_3",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 8,
+					"duration": 6
+				},
+				{
+					"index": 9,
+					"duration": 6
+				},
+				{
+					"index": 10,
+					"duration": 6
+				},
+				{
+					"index": 11,
+					"duration": 6
+				},
+				{
+					"index": 12,
+					"duration": 6
+				},
+				{
+					"index": 13,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "face_0",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 14,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "walking_0",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 14,
+					"duration": 6
+				},
+				{
+					"index": 15,
+					"duration": 6
+				},
+				{
+					"index": 16,
+					"duration": 6
+				},
+				{
+					"index": 17,
+					"duration": 6
+				},
+				{
+					"index": 18,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "face_1",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 19,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "walking_1",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 19,
+					"duration": 6
+				},
+				{
+					"index": 20,
+					"duration": 6
+				},
+				{
+					"index": 21,
+					"duration": 6
+				},
+				{
+					"index": 22,
+					"duration": 6
+				},
+				{
+					"index": 23,
+					"duration": 6
+				},
+				{
+					"index": 24,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "casting_3",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 8,
+					"duration": 1
+				},
+				{
+					"index": 25,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "casting_1",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 19,
+					"duration": 1
+				},
+				{
+					"index": 26,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "casting_2",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 2,
+					"duration": 1
+				},
+				{
+					"index": 27,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "casting_0",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 14,
+					"duration": 1
+				},
+				{
+					"index": 29,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-idle",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 30,
+					"duration": 12
+				}
+			]
+		},
+		{
+			"name": "shield-face_2",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 32,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-walking_2",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 32,
+					"duration": 6
+				},
+				{
+					"index": 33,
+					"duration": 6
+				},
+				{
+					"index": 34,
+					"duration": 6
+				},
+				{
+					"index": 35,
+					"duration": 6
+				},
+				{
+					"index": 36,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-face_3",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 38,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-walking_3",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 38,
+					"duration": 6
+				},
+				{
+					"index": 39,
+					"duration": 6
+				},
+				{
+					"index": 40,
+					"duration": 6
+				},
+				{
+					"index": 41,
+					"duration": 6
+				},
+				{
+					"index": 42,
+					"duration": 6
+				},
+				{
+					"index": 43,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-face_0",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 44,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-walking_0",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 44,
+					"duration": 6
+				},
+				{
+					"index": 45,
+					"duration": 6
+				},
+				{
+					"index": 46,
+					"duration": 6
+				},
+				{
+					"index": 47,
+					"duration": 6
+				},
+				{
+					"index": 48,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-face_1",
+			"repeat": true,
+			"frames": [
+				{
+					"index": 49,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-walking_1",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 49,
+					"duration": 6
+				},
+				{
+					"index": 50,
+					"duration": 6
+				},
+				{
+					"index": 51,
+					"duration": 6
+				},
+				{
+					"index": 52,
+					"duration": 6
+				},
+				{
+					"index": 53,
+					"duration": 6
+				},
+				{
+					"index": 54,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-casting_3",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 38,
+					"duration": 1
+				},
+				{
+					"index": 55,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-casting_1",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 49,
+					"duration": 1
+				},
+				{
+					"index": 56,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-casting_2",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 32,
+					"duration": 1
+				},
+				{
+					"index": 57,
+					"duration": 6
+				}
+			]
+		},
+		{
+			"name": "shield-casting_0",
+			"repeat": false,
+			"frames": [
+				{
+					"index": 44,
+					"duration": 1
+				},
+				{
+					"index": 59,
+					"duration": 6
+				}
+			]
+		}
+	]
+}

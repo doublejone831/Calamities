@@ -75,7 +75,7 @@ export default class LevelSelection extends Scene {
 
         /* ICE ROW */
 
-        const ice = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 150), text: "TUTORIAL STAGE"});
+        const ice = <Button>this.add.uiElement(UIElementType.BUTTON, "levels", {position: new Vec2(center.x, center.y + 150), text: "EXPERIMENTAL"});
         ice.clone(earth, "play-ice", true);
         ice.size = new Vec2(300, 50);
 
