@@ -49,6 +49,7 @@ export default class BaseStage extends Scene {
     boss: AnimatedSprite = null;
 
     startScene(){
+        Input.enableInput();
         // Set the viewport
         this.viewport.setBounds(0, 0, this.viewportSize, this.viewportSize);
         this.viewport.enableZoom();
