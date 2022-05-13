@@ -34,7 +34,7 @@ export default class FireBoss extends BaseBoss {
         this.load.image("boss_block", "game_assets/sprites/invis_block.png");
         this.load.spritesheet("explosion", "game_assets/spritesheets/explosion.json");
         // map
-        this.load.tilemap("level", "game_assets/tilemaps/fire.json");
+        this.load.tilemap("level", "game_assets/tilemaps/fire_boss.json");
         this.load.object("board", "game_assets/data/fire_boss_board.json");
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/fire_wall.png");

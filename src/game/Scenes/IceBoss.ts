@@ -35,7 +35,7 @@ export default class IceBoss extends BaseBoss {
         this.load.image("boss_block", "game_assets/sprites/invis_block.png");
         this.load.spritesheet("explosion", "game_assets/spritesheets/explosion.json");
         // map
-        this.load.tilemap("level", "game_assets/tilemaps/ice.json");
+        this.load.tilemap("level", "game_assets/tilemaps/ice_boss.json");
         this.load.object("board", "game_assets/data/ice_boss_board.json");
         this.load.image("outofbounds", "game_assets/sprites/invis_block.png");
         this.load.image("wall", "game_assets/sprites/ice_wall.png");
