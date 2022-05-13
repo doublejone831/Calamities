@@ -144,7 +144,7 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
-                                CTCevent.DESTORY_ELEMENT,
+                                CTCevent.DESTROY_ELEMENT,
                                 CTCevent.TORNADO_MOVE_REQUEST,
                                 CTCevent.AIRSTREAM_EXTEND,
                                 CTCevent.WAVE_SPLASH,
@@ -350,7 +350,7 @@ export default class BaseStage extends Scene {
                             break;
                     }
                     break;
-                case CTCevent.DESTORY_ELEMENT:
+                case CTCevent.DESTROY_ELEMENT:
                     var removal = event.data.get("target");
                     removal.destroy();
                     break;
@@ -1307,7 +1307,7 @@ export default class BaseStage extends Scene {
                     ease: EaseFunctionType.IN_OUT_QUAD
                 }
             ],
-            onEnd: CTCevent.DESTORY_ELEMENT,
+            onEnd: CTCevent.DESTROY_ELEMENT,
             onEndData: {"target": fall}
         });
         fall.position.set(pos.x, pos.y);

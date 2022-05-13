@@ -24,7 +24,7 @@ export enum CTCevent {
     FLAMES_CHANGE = "flames_change",
     IGNITE_BURN = "ignite_burn",
     CHANGE_ELEMENT = "change_element",
-    DESTORY_ELEMENT = "destroy_element",
+    DESTROY_ELEMENT = "destroy_element",
 
     // stage events
     INTERACT_ELEMENT = "interact_element",
