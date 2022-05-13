@@ -2,6 +2,14 @@
 	"numElements": 27,
 	"elements": [
 		{
+			"position": [5, 14],
+			"type": "hole"
+		},
+		{
+			"position": [15, 3],
+			"type": "hole"
+		},
+		{
 			"position": [7, 5],
 			"type": "rock_L"
 		},
@@ -70,14 +78,6 @@
 			"start": [9, 12],
 			"end": [11, 12],
 			"type": "tornado"
-		},
-		{
-			"position": [5, 14],
-			"type": "hole"
-		},
-		{
-			"position": [15, 3],
-			"type": "hole"
 		},
 		{
 			"position": [7, 3],

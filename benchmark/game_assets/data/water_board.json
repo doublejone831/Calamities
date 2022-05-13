@@ -2,6 +2,30 @@
 	"numElements": 160,
 	"elements": [
 		{
+			"position": [14,9],
+			"type" : "hole"
+		},
+		{
+			"position": [14,10],
+			"type" : "hole"
+		},
+		{
+			"position": [14,11],
+			"type" : "hole"
+		},
+		{
+			"position": [5,10],
+			"type" : "hole"
+		},
+		{
+			"position": [6,10],
+			"type" : "hole"
+		},
+		{
+			"position": [9,10],
+			"type" : "hole"
+		},
+		{
 			"position": [16,17],
 			"type" : "portal"
 		},
@@ -359,18 +383,6 @@
 			"type" : "rock_S"
 		},
 		{
-			"position": [14,9],
-			"type" : "hole"
-		},
-		{
-			"position": [14,10],
-			"type" : "hole"
-		},
-		{
-			"position": [14,11],
-			"type" : "hole"
-		},
-		{
 			"position": [14,12],
 			"type" : "rock_S"
 		},
@@ -422,18 +434,6 @@
 		{
 			"position": [6,9],
 			"type" : "deep_water"
-		},
-		{
-			"position": [5,10],
-			"type" : "hole"
-		},
-		{
-			"position": [6,10],
-			"type" : "hole"
-		},
-		{
-			"position": [9,10],
-			"type" : "hole"
 		},
 		{
 			"position": [8,11],

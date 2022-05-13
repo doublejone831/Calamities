@@ -2,10 +2,6 @@
 	"numElements": 97,
 	"elements": [
 		{
-			"position": [2, 17],
-			"type": "portal"
-		},
-		{
 			"position": [2, 2],
 			"type": "hole"
 		},
@@ -16,6 +12,10 @@
 		{
 			"position": [2, 4],
 			"type": "hole"
+		},
+		{
+			"position": [2, 17],
+			"type": "portal"
 		},
 		{
 			"position": [3, 2],
