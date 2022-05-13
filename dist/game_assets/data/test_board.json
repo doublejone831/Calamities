@@ -2,6 +2,10 @@
 	"numElements": 31,
 	"elements": [
 		{
+			"position": [12, 6],
+			"type": "hole"
+		},
+		{
 			"position": [6, 13],
 			"type": "rock_M"
 		},
@@ -48,10 +52,6 @@
 			"size": 10,
 			"direction": "left",
 			"type": "airstream"
-		},
-		{
-			"position": [12, 6],
-			"type": "hole"
 		},
 		{
 			"position": [11, 7],

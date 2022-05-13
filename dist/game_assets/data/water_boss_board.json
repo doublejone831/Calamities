@@ -2,6 +2,18 @@
 	"numElements": 78,
 	"elements": [
 		{
+			"position": [3, 10],
+			"type": "hole"
+		},
+		{
+			"position": [14, 15],
+			"type": "hole"
+		},
+		{
+			"position": [15, 14],
+			"type": "hole"
+		},
+		{
 			"position": [7, 5],
 			"type": "rock_L"
 		},
@@ -52,24 +64,12 @@
 			"type": "wall"
 		},
 		{
-			"position": [3, 10],
-			"type": "hole"
-		},
-		{
 			"position": [14, 14],
 			"type": "wall"
 		},
 		{
 			"position": [15, 15],
 			"type": "wall"
-		},
-		{
-			"position": [14, 15],
-			"type": "hole"
-		},
-		{
-			"position": [15, 14],
-			"type": "hole"
 		},
 		{
 			"position": [3, 13],

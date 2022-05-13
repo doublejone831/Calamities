@@ -18,6 +18,8 @@ import WaveController from "../Element/WaveController";
 import IgniteController from "../Element/IgniteController";
 import FlamesController from "../Element/FlamesController";
 import { AudioChannelType } from "../../Wolfie2D/Sound/AudioManager";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
+import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
 
 export default class BaseStage extends Scene {
     // Pausing
@@ -142,6 +144,7 @@ export default class BaseStage extends Scene {
                                 CTCevent.PLACE_ELEMENT,
                                 CTCevent.PLAYER_MOVE_REQUEST,
                                 CTCevent.CHANGE_ELEMENT,
+                                CTCevent.DESTORY_ELEMENT,
                                 CTCevent.TORNADO_MOVE_REQUEST,
                                 CTCevent.AIRSTREAM_EXTEND,
                                 CTCevent.WAVE_SPLASH,
@@ -346,6 +349,10 @@ export default class BaseStage extends Scene {
                             this.elementGUI.animation.play("ice_equipped");
                             break;
                     }
+                    break;
+                case CTCevent.DESTORY_ELEMENT:
+                    var removal = event.data.get("target");
+                    removal.destroy();
                     break;
                 case CTCevent.PLAYER_MOVE_REQUEST:
                     if(this.inAir) break;
@@ -705,6 +712,7 @@ export default class BaseStage extends Scene {
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
+                            this.falling_animation(target.imageId, dest.add(dir).scale(16).add(new Vec2(8, 8)));
                             break;
                         case "flames":
                             dest.add(dir);
@@ -736,6 +744,7 @@ export default class BaseStage extends Scene {
                             shallowWater.position.set(deepWater.position.x, deepWater.position.y);
                             deepWater.destroy();
                             this.gameboard[dest.x][dest.y] = shallowWater;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                         case "shallow_water":
                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -744,6 +753,7 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
                             this.gameboard[targetposX][targetposY] = null;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                     }
                 } else {
@@ -765,6 +775,7 @@ export default class BaseStage extends Scene {
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
+                            this.falling_animation(target.imageId, dest.add(dir).scale(16).add(new Vec2(8, 8)));
                             break;
                         case "flames":
                             dest.add(dir);
@@ -796,6 +807,7 @@ export default class BaseStage extends Scene {
                             shallowWater.position.set(deepWater.position.x, deepWater.position.y);
                             deepWater.destroy();
                             this.gameboard[dest.x][dest.y] = shallowWater;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                         case "shallow_water":
                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -804,6 +816,7 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
                             this.gameboard[targetposX][targetposY] = null;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                     }
                 } else {
@@ -826,6 +839,7 @@ export default class BaseStage extends Scene {
                         case "hole":
                             this.gameboard[targetposX][targetposY] = null;
                             target.destroy();
+                            this.falling_animation(target.imageId, dest.add(dir).scale(16).add(new Vec2(8, 8)));
                             break;
                         case "flames":
                             dest.add(dir);
@@ -857,6 +871,7 @@ export default class BaseStage extends Scene {
                             shallowWater.position.set(deepWater.position.x, deepWater.position.y);
                             deepWater.destroy();
                             this.gameboard[dest.x][dest.y] = shallowWater;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                         case "shallow_water":
                             this.emitter.fireEvent(GameEventType.PLAY_SOUND,{key: "water"} );
@@ -865,6 +880,7 @@ export default class BaseStage extends Scene {
                             this.gameboard[dest.x][dest.y] = null;
                             this.gameboard[targetposX][targetposY].destroy();
                             this.gameboard[targetposX][targetposY] = null;
+                            this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                             break;
                     }
                 } else {
@@ -897,6 +913,7 @@ export default class BaseStage extends Scene {
                             case "hole":
                                 this.gameboard[targetposX][targetposY] = null;
                                 target.destroy();
+                                this.falling_animation(target.imageId, dest.add(dir).scale(16).add(new Vec2(8, 8)));
                                 rolling = false;
                                 break;
                             case "flames":
@@ -929,6 +946,7 @@ export default class BaseStage extends Scene {
                                 shallowWater.position.set(deepWater.position.x, deepWater.position.y);
                                 deepWater.destroy();
                                 this.gameboard[dest.x][dest.y] = shallowWater;
+                                this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                                 rolling = false;
                                 break;
                             case "shallow_water":
@@ -938,6 +956,7 @@ export default class BaseStage extends Scene {
                                 this.gameboard[dest.x][dest.y] = null;
                                 this.gameboard[targetposX][targetposY].destroy();
                                 this.gameboard[targetposX][targetposY] = null;
+                                this.falling_animation(target.imageId, dest.scale(16).add(new Vec2(8, 8)));
                                 rolling = false;
                                 break;
                             case "rock_S":
@@ -1261,5 +1280,37 @@ export default class BaseStage extends Scene {
     // position in row col to pixels
     board_pos_to_sprite_pos(posX: number, posY: number){
         return new Vec2(16*posX+8, 16*posY+8);
+    }
+
+    falling_animation(imageid: string, pos: Vec2){
+        var fall = this.add.sprite(imageid, "sky");
+        fall.tweens.add("fall", {
+            startDelay: 0,
+            duration: 500,
+            effects: [
+                {
+                    property: TweenableProperties.alpha,
+                    start: 1,
+                    end: 0,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                },
+                {
+                    property: TweenableProperties.scaleX,
+                    start: 1,
+                    end: .1,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                },
+                {
+                    property: TweenableProperties.scaleY,
+                    start: 1,
+                    end: .1,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                }
+            ],
+            onEnd: CTCevent.DESTORY_ELEMENT,
+            onEndData: {"target": fall}
+        });
+        fall.position.set(pos.x, pos.y);
+        fall.tweens.play("fall");
     }
 }

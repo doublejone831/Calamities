@@ -42,7 +42,7 @@ export default class FlamesController extends StateMachineAI {
         if(!this.paused) {
             if(this.level == -1) {
                 this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});
-            } else if(this.frames%120 == 0) {
+            } else if(this.frames%80 == 0) {
                 this.emitter.fireEvent(CTCevent.FLAMES_GROW, {"sprite": this.owner, "level": this.level});   
             }
             this.frames++;
